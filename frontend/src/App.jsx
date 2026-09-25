@@ -27,11 +27,11 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 text-black">
+    <div className="min-h-screen bg-neutral-50 text-ink">
       <header className="sticky top-0 z-10 border-b border-neutral-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-black text-xs font-bold text-white">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-xs font-bold text-white">
               VA
             </span>
             <h1 className="text-base font-semibold tracking-tight">
@@ -40,7 +40,7 @@ export default function App() {
           </div>
           <button
             onClick={handleLogout}
-            className="rounded-lg border border-black px-3.5 py-1.5 text-sm font-medium transition-colors hover:bg-black hover:text-white"
+            className="rounded-lg border border-brand-600 px-3.5 py-1.5 text-sm font-medium text-brand-700 transition-colors hover:bg-brand-600 hover:text-white"
           >
             Logout
           </button>
@@ -52,8 +52,8 @@ export default function App() {
               onClick={() => setTab(t.id)}
               className={`-mb-px border-b-2 pb-3 text-sm transition-colors ${
                 tab === t.id
-                  ? 'border-black font-semibold text-black'
-                  : 'border-transparent text-neutral-400 hover:text-black'
+                  ? 'border-brand-600 font-semibold text-brand-700'
+                  : 'border-transparent text-neutral-400 hover:text-ink'
               }`}
             >
               {t.label}

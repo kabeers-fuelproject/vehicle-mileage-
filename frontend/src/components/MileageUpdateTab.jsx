@@ -9,31 +9,50 @@ import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
 
 const COLUMNS = [
-  { key: 'sr', label: 'Sr' },
-  { key: 'vehicleCode', label: 'Vehicle Code' },
-  { key: 'vehType', label: 'Veh Type' },
-  { key: 'driverName', label: 'Driver Name' },
-  { key: 'usedFor', label: 'Used For' },
-  { key: 'supervisor', label: 'Supervisor' },
-  { key: 'mileage', label: 'Mileage' },
-  { key: 'workingHours', label: 'Working Hours' },
-  { key: 'status', label: 'Status' },
-  { key: 'lastUpdated', label: 'Last Updated Time' },
+  { key: 'sr', label: 'Sr', align: 'text-center' },
+  { key: 'vehicleCode', label: 'Vehicle Code', align: 'text-left' },
+  { key: 'vehType', label: 'Veh Type', align: 'text-left' },
+  { key: 'driverName', label: 'Driver Name', align: 'text-left' },
+  { key: 'usedFor', label: 'Used For', align: 'text-left' },
+  { key: 'supervisor', label: 'Supervisor', align: 'text-left' },
+  { key: 'mileage', label: 'Mileage', align: 'text-right' },
+  { key: 'workingHours', label: 'Working Hours', align: 'text-right' },
+  { key: 'status', label: 'Status', align: 'text-center' },
+  { key: 'lastUpdated', label: 'Last Updated', align: 'text-left' },
 ]
+
+const NUMERIC_KEYS = new Set(['mileage', 'workingHours'])
+
+const GROUP_START_KEYS = new Set(['vehicleCode', 'driverName', 'mileage'])
 
 const DATA_COLUMNS = COLUMNS.slice(2)
 
 const COLUMN_WIDTHS = [
-  '6%',
+  '5%',
   '11%',
-  '13%',
+  '12%',
   '13%',
   '11%',
   '11%',
   '8%',
-  '11%',
+  '10%',
   '7%',
-  '9%',
+  '12%',
+]
+
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ]
 
 function formatDate(date) {
@@ -41,6 +60,20 @@ function formatDate(date) {
   const m = String(date.getMonth() + 1).padStart(2, '0')
   const d = String(date.getDate()).padStart(2, '0')
   return `${y}-${m}-${d}`
+}
+
+function formatDay(date) {
+  return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`
+}
+
+function formatTime(date) {
+  const hh = String(date.getHours()).padStart(2, '0')
+  const mm = String(date.getMinutes()).padStart(2, '0')
+  return `${hh}:${mm}`
+}
+
+function formatStamp(date) {
+  return `${formatDay(date)}, ${formatTime(date)}`
 }
 
 function normalizeKey(value) {
@@ -88,6 +121,11 @@ function mergeHours(values) {
   return formatDuration(total)
 }
 
+function formatMileage(value) {
+  const n = parseNumber(value)
+  return n === null ? '' : n.toFixed(2)
+}
+
 function computeStatus(code, reportMap) {
   const threshold = findThreshold(displayValue(code, 'vehType', reportMap))
   if (!threshold) return ''
@@ -112,30 +150,78 @@ function displayValue(code, field, reportMap) {
   if (field === 'driverName') return driverOf(code)
   if (field === 'usedFor') return usedForOf(code)
   if (field === 'supervisor') return supervisorOf(code)
-  if (field === 'mileage' || field === 'workingHours') {
-    const fetched = reportMap[normalizeKey(code)]?.[field]
+  if (field === 'mileage') {
+    const fetched = reportMap[normalizeKey(code)]?.mileage
+    return fetched === undefined || fetched === null ? '' : formatMileage(fetched)
+  }
+  if (field === 'workingHours') {
+    const fetched = reportMap[normalizeKey(code)]?.workingHours
     return fetched === undefined || fetched === null ? '' : String(fetched)
   }
   return ''
 }
 
 const STATUS_BADGE_STYLES = {
-  Ok: 'bg-black text-white border border-black',
-  Low: 'bg-white text-black border-2 border-black font-semibold',
+  Ok: 'bg-brand-600 text-white border border-brand-600',
+  Low: 'bg-amber-100 text-amber-900 border border-amber-300 font-semibold',
+}
+
+const STATUS_DOT_STYLES = {
+  Ok: 'bg-white',
+  Low: 'bg-amber-500',
 }
 
 function StatusCell({ value }) {
   if (!value) return <span className="text-neutral-300">—</span>
+  const style = STATUS_BADGE_STYLES[value]
+  if (!style) {
+    return (
+      <span className="inline-block rounded-full border border-neutral-200 bg-neutral-100 px-2.5 py-1 text-[10px] font-semibold tracking-wide whitespace-nowrap text-neutral-600">
+        {value}
+      </span>
+    )
+  }
   return (
     <span
-      className={`inline-block rounded-full px-2.5 py-0.5 text-xs whitespace-nowrap ${
-        STATUS_BADGE_STYLES[value] ??
-        'bg-neutral-100 text-neutral-600 border border-neutral-200'
-      }`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide whitespace-nowrap uppercase ${style}`}
     >
+      <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT_STYLES[value]}`} />
       {value}
     </span>
   )
+}
+
+function Meta({ label, value }) {
+  return (
+    <div>
+      <dt className="text-[10px] font-semibold tracking-wider text-green-700 uppercase">
+        {label}
+      </dt>
+      <dd className="mt-1 text-sm font-semibold tabular-nums text-green-900">
+        {value}
+      </dd>
+    </div>
+  )
+}
+
+function cellClass(column, isLow = false) {
+  const divider = GROUP_START_KEYS.has(column.key)
+    ? `border-l ${isLow ? 'border-amber-200' : 'border-neutral-300'}`
+    : ''
+  if (column.key === 'sr')
+    return 'px-3 py-2.5 text-center align-middle text-xs tabular-nums text-neutral-400'
+  if (column.key === 'vehicleCode')
+    return `px-3 py-2.5 align-middle font-semibold ${divider}`
+  if (NUMERIC_KEYS.has(column.key))
+    return `px-3 py-2.5 text-right align-middle font-medium tabular-nums ${
+      isLow ? 'text-amber-900' : 'text-ink'
+    } ${divider}`
+  if (column.key === 'status') return 'px-3 py-2.5 text-center align-middle'
+  if (column.key === 'lastUpdated')
+    return 'px-3 py-2.5 align-middle text-xs tabular-nums whitespace-nowrap text-neutral-500'
+  return `px-3 py-2.5 align-middle break-words ${
+    isLow ? 'text-amber-900' : 'text-neutral-700'
+  } ${divider}`
 }
 
 function codeOf(vehicle) {
@@ -172,6 +258,7 @@ async function copyNodeAsImage(node, filename) {
 export default function MileageUpdateTab({ token }) {
   const [vehicles, setVehicles] = useState([])
   const [reportMap, setReportMap] = useState({})
+  const [generatedAt, setGeneratedAt] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
@@ -227,6 +314,23 @@ export default function MileageUpdateTab({ token }) {
     setCodeSort((prev) => (prev === 'asc' ? 'desc' : 'asc'))
   }
 
+  const stamp = generatedAt ?? new Date()
+
+  const totals = sortedVehicles.reduce(
+    (acc, vehicle) => {
+      const code = codeOf(vehicle)
+      const mileage = parseNumber(displayValue(code, 'mileage', reportMap))
+      const hours = parseDuration(displayValue(code, 'workingHours', reportMap))
+      if (mileage !== null) acc.mileage += mileage
+      if (hours !== null) acc.hours += hours
+      if (statusOf(vehicle) === 'Ok') acc.ok += 1
+      if (statusOf(vehicle) === 'Low') acc.low += 1
+      acc.count += 1
+      return acc
+    },
+    { mileage: 0, hours: 0, ok: 0, low: 0, count: 0 },
+  )
+
   useEffect(() => {
     let cancelled = false
     async function load() {
@@ -275,6 +379,7 @@ export default function MileageUpdateTab({ token }) {
             if (!cancelled) setError(err.message)
           }
           setReportMap(map)
+          setGeneratedAt(new Date())
         }
       } catch (err) {
         if (!cancelled) setError(err.message)
@@ -291,32 +396,31 @@ export default function MileageUpdateTab({ token }) {
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-bold tracking-tight">Mileage Update</h2>
-          <p className="mt-1 text-sm text-neutral-500">
-            Mileage, working hours and vehicle assignment records
-          </p>
+        <div className="flex items-start gap-3">
+          <span className="mt-1.5 h-7 w-1.5 rounded-full bg-brand-600" />
+          <div>
+            <h2 className="text-xl font-bold tracking-tight text-ink">
+              Mileage Update
+            </h2>
+            <p className="mt-1 text-sm text-neutral-500">
+              Daily mileage, working hours and vehicle assignment records
+            </p>
+          </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           {copyMessage && (
-            <span className="text-xs text-neutral-500">{copyMessage}</span>
+            <span className="text-xs font-medium text-brand-700">
+              {copyMessage}
+            </span>
           )}
-          <button
-            type="button"
-            onClick={copyAsImage}
-            disabled={copying || visibleVehicles.length === 0}
-            className="rounded-lg border border-black px-3 py-1.5 text-sm font-medium transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-black"
-          >
-            {copying ? 'Copying…' : 'Copy as Image'}
-          </button>
           <label className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+            <span className="text-[11px] font-semibold tracking-wider text-neutral-400 uppercase">
               Status
             </span>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-sm font-medium text-black transition-colors hover:border-black focus:border-black focus:outline-none"
+              className="rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:border-brand-600 focus:border-brand-600 focus:outline-none"
             >
               {STATUS_FILTERS.map((filter) => (
                 <option key={filter.key} value={filter.key}>
@@ -325,18 +429,26 @@ export default function MileageUpdateTab({ token }) {
               ))}
             </select>
           </label>
+          <button
+            type="button"
+            onClick={copyAsImage}
+            disabled={copying || visibleVehicles.length === 0}
+            className="rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-brand-600"
+          >
+            {copying ? 'Copying…' : 'Copy as Image'}
+          </button>
         </div>
       </div>
 
       {error && (
-        <p className="mb-4 border-l-4 border-black bg-neutral-100 px-4 py-3 text-sm font-medium text-black">
+        <p className="mb-4 border-l-4 border-brand-600 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-700">
           {error}
         </p>
       )}
 
       {loading && (
         <div className="flex items-center gap-3 text-sm text-neutral-500">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
           Loading vehicles...
         </div>
       )}
@@ -356,76 +468,192 @@ export default function MileageUpdateTab({ token }) {
       {visibleVehicles.length > 0 && (
         <div
           ref={tableRef}
-          className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm"
+          className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm"
         >
-          <table className="w-full table-fixed text-left text-sm">
-            <colgroup>
-              {COLUMN_WIDTHS.map((width) => (
-                <col key={width} style={{ width }} />
-              ))}
-            </colgroup>
-            <thead>
-              <tr className="bg-black text-[11px] uppercase tracking-wider text-white">
-                {COLUMNS.map((column) => (
-                  <th
-                    key={column.key}
-                    className="px-3 py-3.5 align-middle font-semibold"
-                  >
-                    {column.key === 'vehicleCode' ? (
-                      <button
-                        type="button"
-                        onClick={toggleCodeSort}
-                        title="Sort by vehicle code"
-                        className="inline-flex items-center gap-1 whitespace-nowrap transition-colors hover:text-white/70"
-                      >
-                        {column.label}
-                        <span className="text-[9px]">
-                          {codeSort === 'asc' ? '▲' : '▼'}
-                        </span>
-                      </button>
-                    ) : (
-                      column.label
-                    )}
-                  </th>
+          <div className="h-1.5 w-full bg-green-700" />
+          <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
+            <div className="flex items-center gap-4">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-green-700 text-sm font-bold text-white">
+                VA
+              </span>
+              <div>
+                <p className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
+                  Vehicle Automation
+                </p>
+                <h3 className="text-lg font-bold tracking-tight text-ink">
+                  Mileage Update Report
+                </h3>
+                <p className="mt-0.5 text-xs text-neutral-500">
+                  Daily mileage, working hours and assignment status per vehicle
+                </p>
+              </div>
+            </div>
+            <dl className="grid grid-cols-2 gap-x-8 gap-y-3 rounded-xl border border-green-200 bg-green-50 px-5 py-3.5 sm:grid-cols-4">
+              <Meta label="Report Date" value={formatDay(stamp)} />
+              <Meta label="Generated" value={formatTime(stamp)} />
+              <Meta label="Vehicles" value={sortedVehicles.length} />
+              <Meta
+                label="Ok / Low"
+                value={`${statusCounts.Ok} / ${statusCounts.Low}`}
+              />
+            </dl>
+          </div>
+
+          <div className="no-scrollbar overflow-x-auto">
+            <table className="w-full table-fixed text-left text-sm">
+              <colgroup>
+                {COLUMN_WIDTHS.map((width) => (
+                  <col key={width} style={{ width }} />
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sortedVehicles.map((vehicle, index) => {
-                const code = codeOf(vehicle)
-                return (
-                  <tr
-                    key={vehicle.unitID}
-                    className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50"
+              </colgroup>
+              <thead>
+                <tr className="bg-green-700 text-[10px] tracking-wider text-white uppercase">
+                  <th className="px-3 py-2" />
+                  <th
+                    colSpan={2}
+                    className="border-l border-white/25 px-3 py-2 text-center font-semibold"
                   >
-                    <td className="px-3 py-2 align-middle text-neutral-400">
-                      {index + 1}
-                    </td>
-                    <td className="px-3 py-2 align-middle font-semibold break-words text-black">
-                      {code}
-                    </td>
-                    {DATA_COLUMNS.map((column) => {
-                      const value = displayValue(code, column.key, reportMap)
-                      return (
-                        <td
-                          key={column.key}
-                          className="px-3 py-2 align-middle break-words"
+                    Vehicle
+                  </th>
+                  <th
+                    colSpan={3}
+                    className="border-l border-white/25 px-3 py-2 text-center font-semibold"
+                  >
+                    Assignment
+                  </th>
+                  <th
+                    colSpan={4}
+                    className="border-l border-white/25 px-3 py-2 text-center font-semibold"
+                  >
+                    Today&apos;s Performance
+                  </th>
+                </tr>
+                <tr className="border-b-2 border-green-700 bg-green-100 text-[10px] tracking-wider text-green-900 uppercase">
+                  {COLUMNS.map((column) => (
+                    <th
+                      key={column.key}
+                      className={`px-3 py-2.5 align-middle font-semibold ${
+                        GROUP_START_KEYS.has(column.key)
+                          ? 'border-l border-neutral-300'
+                          : ''
+                      } ${column.align}`}
+                    >
+                      {column.key === 'vehicleCode' ? (
+                        <button
+                          type="button"
+                          onClick={toggleCodeSort}
+                          title="Sort by vehicle code"
+                          className="inline-flex items-center gap-1 whitespace-nowrap transition-colors hover:text-green-900"
                         >
-                          {column.key === 'status' ? (
-                            <StatusCell value={value} />
-                          ) : value ? (
-                            value
-                          ) : (
-                            <span className="text-neutral-300">—</span>
-                          )}
-                        </td>
-                      )
-                    })}
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                          {column.label}
+                          <span className="text-[9px]">
+                            {codeSort === 'asc' ? '▲' : '▼'}
+                          </span>
+                        </button>
+                      ) : (
+                        column.label
+                      )}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {sortedVehicles.map((vehicle, index) => {
+                  const code = codeOf(vehicle)
+                  const status = displayValue(code, 'status', reportMap)
+                  const isLow = status === 'Low'
+                  return (
+                    <tr
+                      key={vehicle.unitID}
+                      className={`border-b border-neutral-300 transition-colors last:border-b-0 ${
+                        isLow ? 'bg-amber-50' : 'bg-white hover:bg-neutral-50'
+                      }`}
+                    >
+                      <td
+                        className={`px-3 py-2.5 text-center align-middle text-xs tabular-nums border-l-4 ${
+                          isLow
+                            ? 'border-l-amber-500 font-semibold text-amber-900'
+                            : 'border-l-transparent text-neutral-400'
+                        }`}
+                      >
+                        {index + 1}
+                      </td>
+                      <td
+                        className={`px-3 py-2.5 align-middle font-semibold ${
+                          isLow ? 'text-amber-900' : 'text-ink'
+                        }`}
+                      >
+                        {code}
+                      </td>
+                      {DATA_COLUMNS.map((column) => {
+                        const value =
+                          column.key === 'status'
+                            ? status
+                            : displayValue(code, column.key, reportMap)
+                        return (
+                          <td
+                            key={column.key}
+                            className={cellClass(column, isLow)}
+                          >
+                            {column.key === 'status' ? (
+                              <StatusCell value={value} />
+                            ) : value ? (
+                              value
+                            ) : (
+                              <span className="text-neutral-300">—</span>
+                            )}
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  )
+                })}
+              </tbody>
+              <tfoot>
+                <tr className="border-t-2 border-green-700 bg-green-50 text-[11px] font-semibold text-green-900">
+                  <td className="px-3 py-3 text-center text-neutral-300">Σ</td>
+                  <td className="px-3 py-3 tracking-wider whitespace-nowrap uppercase">
+                    Total ({totals.count})
+                  </td>
+                  <td className="border-l border-neutral-300 px-3 py-3 text-neutral-400">
+                    —
+                  </td>
+                  <td className="px-3 py-3 text-neutral-400">—</td>
+                  <td className="px-3 py-3 text-neutral-400">—</td>
+                  <td className="px-3 py-3 text-neutral-400">—</td>
+                  <td className="border-l border-neutral-300 px-3 py-3 text-right tabular-nums">
+                    {totals.mileage.toFixed(2)}
+                  </td>
+                  <td className="px-3 py-3 text-right tabular-nums">
+                    {formatDuration(totals.hours)}
+                  </td>
+                  <td className="px-3 py-3 text-center text-[10px] tracking-wider whitespace-nowrap uppercase">
+                    <span className="text-green-800">{totals.ok} Ok</span>
+                    <span className="text-neutral-300"> / </span>
+                    <span className="text-amber-700">{totals.low} Low</span>
+                  </td>
+                  <td className="px-3 py-3 text-neutral-400">—</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-6 py-3.5">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium text-green-900/80">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-brand-600" />
+                Ok — meets mileage and working-hour threshold
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-amber-500" />
+                Low — below threshold
+              </span>
+            </div>
+            <p className="text-[11px] text-green-800">
+              Source: TrackingWorld · Generated {formatStamp(stamp)}
+            </p>
+          </div>
+          <div className="h-1 w-full bg-green-700" />
         </div>
       )}
     </div>

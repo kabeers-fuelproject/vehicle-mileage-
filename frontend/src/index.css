@@ -1,7 +1,17 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-200: #fed7aa;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+  --color-ink: #1c1917;
+}
+
 ::selection {
-  background: #000;
+  background: #ea580c;
   color: #fff;
 }
 
@@ -30,4 +40,13 @@ html {
   background: #a3a3a3;
   background-clip: content-box;
   border: 2px solid transparent;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

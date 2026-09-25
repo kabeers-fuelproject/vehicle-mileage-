@@ -16,7 +16,7 @@ export default function ThresholdTab() {
       <div className="max-w-2xl overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
         <table className="w-full text-left text-sm">
           <thead>
-            <tr className="bg-black text-[11px] uppercase tracking-wider text-white">
+            <tr className="bg-brand-600 text-[11px] uppercase tracking-wider text-white">
               {COLUMNS.map((column) => (
                 <th key={column} className="px-4 py-3.5 font-semibold">
                   {column}
@@ -30,10 +30,10 @@ export default function ThresholdTab() {
                 key={row.vehType}
                 className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50"
               >
-                <td className="px-4 py-3 font-semibold text-black">
+                <td className="px-4 py-3 font-semibold text-ink">
                   {row.vehType}
                 </td>
-                <td className="px-4 py-3 text-black">{row.mileage}</td>
+                <td className="px-4 py-3 text-ink">{row.mileage}</td>
                 <td className="px-4 py-3 text-neutral-600">
                   {row.workingHours}
                 </td>

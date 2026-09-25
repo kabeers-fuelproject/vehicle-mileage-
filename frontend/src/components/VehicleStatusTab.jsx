@@ -6,8 +6,8 @@ function StatCard({ label, value, invert = false }) {
     <div
       className={`rounded-xl border p-4 ${
         invert
-          ? 'border-black bg-black text-white'
-          : 'border-neutral-200 bg-white text-black'
+          ? 'border-brand-600 bg-brand-600 text-white'
+          : 'border-neutral-200 bg-white text-ink'
       }`}
     >
       <p
@@ -23,15 +23,15 @@ function StatCard({ label, value, invert = false }) {
 }
 
 const BADGE_STYLES = {
-  Reporting: 'bg-black text-white border border-black',
-  'Not Reporting': 'bg-white text-black border-2 border-black font-semibold',
-  Moving: 'bg-black text-white border border-black',
-  Idle: 'bg-white text-black border border-neutral-300',
-  'Excess Idling': 'bg-white text-black border-2 border-black font-semibold',
+  Reporting: 'bg-brand-600 text-white border border-brand-600',
+  'Not Reporting': 'bg-white text-ink border-2 border-ink font-semibold',
+  Moving: 'bg-brand-600 text-white border border-brand-600',
+  Idle: 'bg-white text-neutral-600 border border-neutral-300',
+  'Excess Idling': 'bg-white text-ink border-2 border-ink font-semibold',
   Parked: 'bg-neutral-100 text-neutral-600 border border-neutral-200',
   'No Activity Since Yesterday':
-    'bg-white text-black border border-dashed border-black',
-  Ok: 'bg-black text-white border border-black',
+    'bg-white text-neutral-600 border border-dashed border-neutral-400',
+  Ok: 'bg-brand-600 text-white border border-brand-600',
 }
 
 function StatusBadge({ value }) {
@@ -53,7 +53,7 @@ function BatteryValue({ value }) {
   const low = value < 11.5
   if (low) {
     return (
-      <span className="rounded bg-black px-1.5 py-0.5 text-xs font-semibold text-white">
+      <span className="rounded bg-brand-600 px-1.5 py-0.5 text-xs font-semibold text-white">
         {Number(value).toFixed(2)} V
       </span>
     )
@@ -98,14 +98,14 @@ export default function VehicleStatusTab({ token }) {
         <button
           onClick={load}
           disabled={loading}
-          className="rounded-lg bg-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-neutral-800 disabled:opacity-40"
+          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-40"
         >
           {loading ? 'Loading...' : 'Refresh'}
         </button>
       </div>
 
       {error && (
-        <p className="mt-4 border-l-4 border-black bg-neutral-100 px-4 py-3 text-sm font-medium text-black">
+        <p className="mt-4 border-l-4 border-brand-600 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-700">
           {error}
         </p>
       )}
@@ -123,7 +123,7 @@ export default function VehicleStatusTab({ token }) {
 
       {loading && !data && (
         <div className="mt-8 flex items-center gap-3 text-sm text-neutral-500">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
           Loading vehicle status...
         </div>
       )}
@@ -136,7 +136,7 @@ export default function VehicleStatusTab({ token }) {
         <div className="mt-6 overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="bg-black text-[11px] uppercase tracking-wider text-white">
+              <tr className="bg-brand-600 text-[11px] uppercase tracking-wider text-white">
                 <th className="px-4 py-3.5 font-semibold">Vehicle Reg No.</th>
                 <th className="px-4 py-3.5 font-semibold">Region</th>
                 <th className="px-4 py-3.5 font-semibold">
@@ -155,7 +155,7 @@ export default function VehicleStatusTab({ token }) {
                   key={v.regNo + i}
                   className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50"
                 >
-                  <td className="px-4 py-3 font-semibold text-black">
+                  <td className="px-4 py-3 font-semibold text-ink">
                     {v.regNo}
                   </td>
                   <td className="px-4 py-3 text-neutral-600">{v.region}</td>

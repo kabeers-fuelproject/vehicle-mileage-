@@ -30,7 +30,7 @@ export default function Login({ onLogin }) {
     <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
       <div className="w-full max-w-sm">
         <div className="mb-6 flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-black text-sm font-bold text-white">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-600 text-sm font-bold text-white">
             VA
           </span>
           <span className="text-lg font-semibold tracking-tight">
@@ -55,7 +55,7 @@ export default function Login({ onLogin }) {
               onChange={(e) => setUsername(e.target.value)}
               required
               autoFocus
-              className="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-black transition-colors placeholder:text-neutral-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/15"
+              className="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-ink transition-colors placeholder:text-neutral-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
             />
           </label>
 
@@ -66,12 +66,12 @@ export default function Login({ onLogin }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-black transition-colors placeholder:text-neutral-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/15"
+              className="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-ink transition-colors placeholder:text-neutral-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
             />
           </label>
 
           {error && (
-            <p className="mt-4 border-l-4 border-black bg-neutral-100 px-3 py-2 text-sm font-medium text-black">
+            <p className="mt-4 border-l-4 border-brand-600 bg-brand-50 px-3 py-2 text-sm font-medium text-brand-700">
               {error}
             </p>
           )}
@@ -79,7 +79,7 @@ export default function Login({ onLogin }) {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 w-full rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
+            className="mt-6 w-full rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {loading ? 'Signing in...' : 'Sign in'}
           </button>

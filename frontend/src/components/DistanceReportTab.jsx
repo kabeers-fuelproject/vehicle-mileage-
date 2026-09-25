@@ -138,7 +138,7 @@ export default function DistanceReportTab({ token }) {
               value={fromDate}
               onChange={(e) => setFromDate(e.target.value)}
               required
-              className="mt-2 block rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-black transition-colors focus:border-black focus:outline-none focus:ring-2 focus:ring-black/15"
+              className="mt-2 block rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-ink transition-colors focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
             />
           </label>
           <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
@@ -148,13 +148,13 @@ export default function DistanceReportTab({ token }) {
               value={toDate}
               onChange={(e) => setToDate(e.target.value)}
               required
-              className="mt-2 block rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-black transition-colors focus:border-black focus:outline-none focus:ring-2 focus:ring-black/15"
+              className="mt-2 block rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-ink transition-colors focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
             />
           </label>
           <button
             type="submit"
             disabled={generating || loadingUnits}
-            className="rounded-lg bg-black px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {generating ? 'Generating...' : 'Generate Report'}
           </button>
@@ -170,7 +170,7 @@ export default function DistanceReportTab({ token }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Type to search vehicle codes..."
-              className="w-72 rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-black transition-colors placeholder:text-neutral-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/15"
+              className="w-72 rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-ink transition-colors placeholder:text-neutral-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
             />
             {search.trim() && (
               <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-600">
@@ -188,12 +188,12 @@ export default function DistanceReportTab({ token }) {
 
           {loadingUnits && (
             <div className="mt-3 flex items-center gap-2.5 text-sm text-neutral-500">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
               Loading vehicles...
             </div>
           )}
           {unitsError && (
-            <p className="mt-3 border-l-4 border-black bg-neutral-100 px-3 py-2 text-sm font-medium text-black">
+            <p className="mt-3 border-l-4 border-brand-600 bg-brand-50 px-3 py-2 text-sm font-medium text-brand-700">
               {unitsError}
             </p>
           )}
@@ -234,7 +234,7 @@ export default function DistanceReportTab({ token }) {
         </div>
 
         {error && (
-          <p className="mt-4 border-l-4 border-black bg-neutral-100 px-3 py-2 text-sm font-medium text-black">
+          <p className="mt-4 border-l-4 border-brand-600 bg-brand-50 px-3 py-2 text-sm font-medium text-brand-700">
             {error}
           </p>
         )}
@@ -242,7 +242,7 @@ export default function DistanceReportTab({ token }) {
 
       {generating && (
         <div className="mt-6 flex items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
           <span className="text-sm text-neutral-500">
             Loading distance report...
           </span>
@@ -270,7 +270,7 @@ export default function DistanceReportTab({ token }) {
             <div className="mt-3 overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="bg-black text-[11px] uppercase tracking-wider text-white">
+                  <tr className="bg-brand-600 text-[11px] uppercase tracking-wider text-white">
                     <th className="px-4 py-3.5 font-semibold">S #</th>
                     <th className="px-4 py-3.5 font-semibold">
                       Vehicle Reg Number
@@ -293,7 +293,7 @@ export default function DistanceReportTab({ token }) {
                       <td className="px-4 py-3 text-neutral-400">
                         {row.s_No}
                       </td>
-                      <td className="px-4 py-3 font-semibold text-black">
+                      <td className="px-4 py-3 font-semibold text-ink">
                         {row.vehicleRegNumber}
                       </td>
                       <td className="px-4 py-3 text-neutral-600">
@@ -302,7 +302,7 @@ export default function DistanceReportTab({ token }) {
                       <td className="px-4 py-3 text-neutral-600">
                         {row.town}
                       </td>
-                      <td className="px-4 py-3 text-black">{row.mileage}</td>
+                      <td className="px-4 py-3 text-ink">{row.mileage}</td>
                       <td className="px-4 py-3 text-neutral-600">
                         {row.igONTime}
                       </td>
