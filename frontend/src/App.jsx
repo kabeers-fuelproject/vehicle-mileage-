@@ -65,7 +65,7 @@ export default function App() {
       <main className="mx-auto max-w-7xl px-6 py-8">
         {tab === 'status' && <VehicleStatusTab token={token} />}
         {tab === 'distance' && <DistanceReportTab token={token} />}
-        {tab === 'mileage' && <MileageUpdateTab />}
+        {tab === 'mileage' && <MileageUpdateTab token={token} />}
         {tab === 'threshold' && <ThresholdTab />}
       </main>
     </div>

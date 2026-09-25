@@ -1,19 +1,70 @@
+import { useEffect, useState } from 'react'
+import { api } from '../api'
+
 const COLUMNS = [
-  'Sr',
-  'Vehicle Code',
-  'Veh Type',
-  'Driver Name',
-  'Used For',
-  'Supervisor',
-  'Mileage',
-  'Working Hours',
-  'Status',
-  'Last Updated Time',
+  { key: 'sr', label: 'Sr' },
+  { key: 'vehicleCode', label: 'Vehicle Code' },
+  { key: 'vehType', label: 'Veh Type' },
+  { key: 'driverName', label: 'Driver Name' },
+  { key: 'usedFor', label: 'Used For' },
+  { key: 'supervisor', label: 'Supervisor' },
+  { key: 'mileage', label: 'Mileage' },
+  { key: 'workingHours', label: 'Working Hours' },
+  { key: 'status', label: 'Status' },
+  { key: 'lastUpdated', label: 'Last Updated Time' },
 ]
 
-const rows = []
+const EDITABLE_FIELDS = COLUMNS.slice(2).map((c) => c.key)
 
-export default function MileageUpdateTab() {
+const STORAGE_KEY = 'mileageRecords'
+
+function loadRecords() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? {}
+  } catch {
+    return {}
+  }
+}
+
+export default function MileageUpdateTab({ token }) {
+  const [vehicles, setVehicles] = useState([])
+  const [records, setRecords] = useState(loadRecords)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let cancelled = false
+    async function load() {
+      try {
+        const data = await api('/vehicle/getlist', { token })
+        if (!cancelled) setVehicles(data?.data ?? [])
+      } catch (err) {
+        if (!cancelled) setError(err.message)
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [token])
+
+  function update(code, field, value) {
+    setRecords((prev) => {
+      const next = {
+        ...prev,
+        [code]: { ...prev[code], [field]: value },
+      }
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+      } catch {
+        // storage unavailable or full — keep in-memory state
+      }
+      return next
+    })
+  }
+
   return (
     <div>
       <div className="mb-6">
@@ -23,61 +74,71 @@ export default function MileageUpdateTab() {
         </p>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
-          <thead>
-            <tr className="bg-black text-[11px] uppercase tracking-wider text-white">
-              {COLUMNS.map((column) => (
-                <th key={column} className="px-4 py-3.5 font-semibold">
-                  {column}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={COLUMNS.length}
-                  className="px-4 py-12 text-center text-sm text-neutral-500"
-                >
-                  No mileage records yet.
-                </td>
+      {error && (
+        <p className="mb-4 border-l-4 border-black bg-neutral-100 px-4 py-3 text-sm font-medium text-black">
+          {error}
+        </p>
+      )}
+
+      {loading && (
+        <div className="flex items-center gap-3 text-sm text-neutral-500">
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+          Loading vehicles...
+        </div>
+      )}
+
+      {!loading && vehicles.length === 0 && !error && (
+        <p className="text-sm text-neutral-500">No vehicles found.</p>
+      )}
+
+      {vehicles.length > 0 && (
+        <div className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="bg-black text-[11px] uppercase tracking-wider text-white">
+                {COLUMNS.map((column) => (
+                  <th
+                    key={column.key}
+                    className="px-3 py-3.5 font-semibold whitespace-nowrap"
+                  >
+                    {column.label}
+                  </th>
+                ))}
               </tr>
-            ) : (
-              rows.map((row, index) => (
-                <tr
-                  key={row.id ?? index}
-                  className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50"
-                >
-                  <td className="px-4 py-3 text-neutral-400">{index + 1}</td>
-                  <td className="px-4 py-3 font-semibold text-black">
-                    {row.vehicleCode}
-                  </td>
-                  <td className="px-4 py-3 text-neutral-600">{row.vehType}</td>
-                  <td className="px-4 py-3 text-neutral-600">
-                    {row.driverName}
-                  </td>
-                  <td className="px-4 py-3 text-neutral-600">{row.usedFor}</td>
-                  <td className="px-4 py-3 text-neutral-600">
-                    {row.supervisor}
-                  </td>
-                  <td className="px-4 py-3 text-black">{row.mileage}</td>
-                  <td className="px-4 py-3 text-black">{row.workingHours}</td>
-                  <td className="px-4 py-3">
-                    <span className="inline-block rounded-full border border-neutral-300 bg-white px-2.5 py-0.5 text-xs text-black">
-                      {row.status ?? '—'}
-                    </span>
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-3 text-neutral-500">
-                    {row.lastUpdated ?? '—'}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {vehicles.map((vehicle, index) => {
+                const code = vehicle.alias || vehicle.unitID
+                const record = records[code] ?? {}
+                return (
+                  <tr
+                    key={vehicle.unitID}
+                    className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50"
+                  >
+                    <td className="px-3 py-2 text-neutral-400">
+                      {index + 1}
+                    </td>
+                    <td className="px-3 py-2 font-semibold whitespace-nowrap text-black">
+                      {code}
+                    </td>
+                    {EDITABLE_FIELDS.map((field) => (
+                      <td key={field} className="p-1">
+                        <input
+                          type="text"
+                          value={record[field] ?? ''}
+                          onChange={(e) => update(code, field, e.target.value)}
+                          placeholder="—"
+                          className="w-full min-w-24 rounded border border-neutral-200 bg-white px-2 py-1.5 text-sm text-black transition-colors placeholder:text-neutral-300 hover:border-neutral-300 focus:border-black focus:outline-none focus:ring-1 focus:ring-black/15"
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }
