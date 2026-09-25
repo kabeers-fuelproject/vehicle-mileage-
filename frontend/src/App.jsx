@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import DistanceReportTab from './components/DistanceReportTab'
 import Login from './components/Login'
+import MileageUpdateTab from './components/MileageUpdateTab'
 import VehicleStatusTab from './components/VehicleStatusTab'
 
 const TABS = [
   { id: 'status', label: 'Vehicle Status' },
   { id: 'distance', label: 'Distance Report' },
+  { id: 'mileage', label: 'Mileage Update' },
 ]
 
 export default function App() {
   const [token, setToken] = useState(() => localStorage.getItem('token'))
   const [tab, setTab] = useState(() => {
     const requested = new URLSearchParams(window.location.search).get('tab')
-    return requested === 'distance' ? 'distance' : 'status'
+    return TABS.some((t) => t.id === requested) ? requested : 'status'
   })
 
   if (!token) return <Login onLogin={setToken} />
@@ -59,11 +61,9 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-7xl px-6 py-8">
-        {tab === 'status' ? (
-          <VehicleStatusTab token={token} />
-        ) : (
-          <DistanceReportTab token={token} />
-        )}
+        {tab === 'status' && <VehicleStatusTab token={token} />}
+        {tab === 'distance' && <DistanceReportTab token={token} />}
+        {tab === 'mileage' && <MileageUpdateTab />}
       </main>
     </div>
   )
