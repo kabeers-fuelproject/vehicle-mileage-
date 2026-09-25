@@ -27,53 +27,64 @@ export default function Login({ onLogin }) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-xl bg-white p-8 shadow-lg"
-      >
-        <h1 className="text-2xl font-bold text-slate-800">Sign in</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Vehicle Automation Dashboard
-        </p>
+    <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-black text-sm font-bold text-white">
+            VA
+          </span>
+          <span className="text-lg font-semibold tracking-tight">
+            Vehicle Automation
+          </span>
+        </div>
 
-        <label className="mt-6 block text-sm font-medium text-slate-700">
-          Username
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            autoFocus
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          />
-        </label>
-
-        <label className="mt-4 block text-sm font-medium text-slate-700">
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          />
-        </label>
-
-        {error && (
-          <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
-            {error}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="mt-6 w-full rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm"
         >
-          {loading ? 'Signing in...' : 'Sign in'}
-        </button>
-      </form>
+          <h1 className="text-2xl font-bold tracking-tight">Sign in</h1>
+          <p className="mt-1 text-sm text-neutral-500">
+            Enter your credentials to continue
+          </p>
+
+          <label className="mt-6 block text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            Username
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              autoFocus
+              className="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-black transition-colors placeholder:text-neutral-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/15"
+            />
+          </label>
+
+          <label className="mt-4 block text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="mt-2 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-black transition-colors placeholder:text-neutral-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/15"
+            />
+          </label>
+
+          {error && (
+            <p className="mt-4 border-l-4 border-black bg-neutral-100 px-3 py-2 text-sm font-medium text-black">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-6 w-full rounded-lg bg-black px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {loading ? 'Signing in...' : 'Sign in'}
+          </button>
+        </form>
+      </div>
     </div>
   )
 }
