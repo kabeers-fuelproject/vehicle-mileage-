@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../api'
 import { vehicleTypeOf } from '../vehicleTypes'
+import { driverOf } from '../drivers'
 
 const COLUMNS = [
   { key: 'sr', label: 'Sr' },
@@ -30,6 +31,14 @@ function loadRecords() {
   } catch {
     return {}
   }
+}
+
+function displayValue(record, code, field) {
+  const manual = record[field]
+  if (manual?.trim()) return manual
+  if (field === 'vehType') return vehicleTypeOf(code)
+  if (field === 'driverName') return driverOf(code)
+  return manual ?? ''
 }
 
 export default function MileageUpdateTab({ token }) {
@@ -131,13 +140,7 @@ export default function MileageUpdateTab({ token }) {
                       <td key={field} className="p-1">
                         <input
                           type="text"
-                          value={
-                            field === 'vehType'
-                              ? record.vehType?.trim()
-                                ? record.vehType
-                                : vehicleTypeOf(code)
-                              : record[field] ?? ''
-                          }
+                          value={displayValue(record, code, field)}
                           onChange={(e) => update(code, field, e.target.value)}
                           placeholder="—"
                           className="w-full min-w-24 rounded border border-neutral-200 bg-white px-2 py-1.5 text-sm text-black transition-colors placeholder:text-neutral-300 hover:border-neutral-300 focus:border-black focus:outline-none focus:ring-1 focus:ring-black/15"
