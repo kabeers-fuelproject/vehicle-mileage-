@@ -164,29 +164,41 @@ export default function DistanceReportTab({ token }) {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search vehicles..."
+              placeholder="Type to search vehicle codes..."
               className="w-64 rounded-lg border border-slate-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
-            <label className="flex items-center gap-2 text-sm text-slate-600">
-              <input
-                type="checkbox"
-                checked={allVisibleSelected}
-                onChange={toggleAll}
-                disabled={filteredUnits.length === 0}
-                className="h-4 w-4 rounded border-slate-300"
-              />
-              Select all visible
-            </label>
+            {search.trim() && (
+              <label className="flex items-center gap-2 text-sm text-slate-600">
+                <input
+                  type="checkbox"
+                  checked={allVisibleSelected}
+                  onChange={toggleAll}
+                  disabled={filteredUnits.length === 0}
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                Select all visible
+              </label>
+            )}
           </div>
 
-          {loadingUnits && <p className="mt-3 text-sm text-slate-500">Loading vehicles...</p>}
+          {loadingUnits && (
+            <p className="mt-3 text-sm text-slate-500">Loading vehicles...</p>
+          )}
           {unitsError && (
             <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
               {unitsError}
             </p>
           )}
 
-          {!loadingUnits && !unitsError && (
+          {!loadingUnits && !unitsError && !search.trim() && (
+            <p className="mt-3 rounded-lg border border-dashed border-slate-300 px-4 py-5 text-center text-sm text-slate-500">
+              Type a vehicle code (e.g. HND-AR002) to search and select
+              vehicles. All vehicles are included until you change the
+              selection.
+            </p>
+          )}
+
+          {!loadingUnits && !unitsError && search.trim() && (
             <div className="mt-3 max-h-56 overflow-y-auto rounded-lg border border-slate-200 p-2">
               {filteredUnits.length === 0 && (
                 <p className="px-2 py-1 text-sm text-slate-500">
