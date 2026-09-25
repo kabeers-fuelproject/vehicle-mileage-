@@ -128,6 +128,10 @@ function StatusCell({ value }) {
   )
 }
 
+function codeOf(vehicle) {
+  return String(vehicle.alias || vehicle.unitID).trim()
+}
+
 const STATUS_FILTERS = [
   { key: 'all', label: 'All' },
   { key: 'Ok', label: 'Ok' },
@@ -162,6 +166,7 @@ export default function MileageUpdateTab({ token }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [codeSort, setCodeSort] = useState('asc')
   const tableRef = useRef(null)
   const [copying, setCopying] = useState(false)
   const [copyMessage, setCopyMessage] = useState('')
@@ -185,7 +190,7 @@ export default function MileageUpdateTab({ token }) {
   }
 
   function statusOf(vehicle) {
-    const code = String(vehicle.alias || vehicle.unitID).trim()
+    const code = codeOf(vehicle)
     return displayValue(records[code] ?? {}, code, 'status', reportMap)
   }
 
@@ -198,6 +203,21 @@ export default function MileageUpdateTab({ token }) {
     statusFilter === 'all'
       ? vehicles
       : vehicles.filter((vehicle) => statusOf(vehicle) === statusFilter)
+
+  const sortedVehicles =
+    codeSort === 'none'
+      ? visibleVehicles
+      : [...visibleVehicles].sort((a, b) => {
+          const result = codeOf(a).localeCompare(codeOf(b), undefined, {
+            numeric: true,
+            sensitivity: 'base',
+          })
+          return codeSort === 'asc' ? result : -result
+        })
+
+  function toggleCodeSort() {
+    setCodeSort((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -336,14 +356,28 @@ export default function MileageUpdateTab({ token }) {
                     key={column.key}
                     className="px-3 py-3.5 align-middle font-semibold"
                   >
-                    {column.label}
+                    {column.key === 'vehicleCode' ? (
+                      <button
+                        type="button"
+                        onClick={toggleCodeSort}
+                        title="Sort by vehicle code"
+                        className="inline-flex items-center gap-1 whitespace-nowrap transition-colors hover:text-white/70"
+                      >
+                        {column.label}
+                        <span className="text-[9px]">
+                          {codeSort === 'asc' ? '▲' : '▼'}
+                        </span>
+                      </button>
+                    ) : (
+                      column.label
+                    )}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {visibleVehicles.map((vehicle, index) => {
-                const code = String(vehicle.alias || vehicle.unitID).trim()
+              {sortedVehicles.map((vehicle, index) => {
+                const code = codeOf(vehicle)
                 const record = records[code] ?? {}
                 return (
                   <tr
