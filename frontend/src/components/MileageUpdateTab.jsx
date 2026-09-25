@@ -6,6 +6,7 @@ import { driverOf } from '../drivers'
 import { usedForOf } from '../usedFor'
 import { supervisorOf } from '../supervisors'
 import { findThreshold } from '../thresholds'
+import { dayRange } from '../reportRange'
 
 const COLUMNS = [
   { key: 'sr', label: 'Sr' },
@@ -35,26 +36,17 @@ const COLUMN_WIDTHS = [
   '9%',
 ]
 
-const STORAGE_KEY = 'mileageRecords'
-
-function loadRecords() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? {}
-    const normalized = {}
-    for (const [key, value] of Object.entries(raw)) {
-      normalized[key.trim()] = value
-    }
-    return normalized
-  } catch {
-    return {}
-  }
-}
-
 function formatDate(date) {
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
   const d = String(date.getDate()).padStart(2, '0')
   return `${y}-${m}-${d}`
+}
+
+function normalizeKey(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
 }
 
 function parseNumber(value) {
@@ -72,15 +64,35 @@ function parseDuration(value) {
   return parts[0] * 3600
 }
 
-function computeStatus(record, code, reportMap) {
-  const threshold = findThreshold(
-    displayValue(record, code, 'vehType', reportMap),
-  )
+function formatDuration(totalSeconds) {
+  const seconds = Math.max(0, Math.round(totalSeconds))
+  const h = Math.floor(seconds / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  const s = seconds % 60
+  return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
+
+function mergeMileage(values) {
+  if (values.length === 1) return values[0] ?? ''
+  const numbers = values.map(parseNumber).filter((n) => n !== null)
+  if (numbers.length === 0) return ''
+  const total = numbers.reduce((sum, n) => sum + n, 0)
+  return String(Math.round(total * 10) / 10)
+}
+
+function mergeHours(values) {
+  if (values.length === 1) return values[0] ?? ''
+  const durations = values.map(parseDuration)
+  if (durations.every((d) => d === null)) return ''
+  const total = durations.reduce((sum, d) => sum + (d ?? 0), 0)
+  return formatDuration(total)
+}
+
+function computeStatus(code, reportMap) {
+  const threshold = findThreshold(displayValue(code, 'vehType', reportMap))
   if (!threshold) return ''
-  const mileage = parseNumber(displayValue(record, code, 'mileage', reportMap))
-  const hours = parseDuration(
-    displayValue(record, code, 'workingHours', reportMap),
-  )
+  const mileage = parseNumber(displayValue(code, 'mileage', reportMap))
+  const hours = parseDuration(displayValue(code, 'workingHours', reportMap))
   const requiredHours = parseDuration(threshold.workingHours)
   if (mileage === null || hours === null) return ''
   const mileageOk = mileage >= threshold.mileage
@@ -88,25 +100,23 @@ function computeStatus(record, code, reportMap) {
   return mileageOk && hoursOk ? 'Ok' : 'Low'
 }
 
-function displayValue(record, code, field, reportMap) {
-  if (field === 'status') return computeStatus(record, code, reportMap)
+function displayValue(code, field, reportMap) {
+  if (field === 'status') return computeStatus(code, reportMap)
   if (field === 'lastUpdated') {
-    const fetched = reportMap[code]?.lastUpdated
+    const fetched = reportMap[normalizeKey(code)]?.lastUpdated
     return fetched === undefined || fetched === null
       ? ''
       : String(fetched).replace('T', ' ')
   }
-  const manual = record[field]
-  if (manual?.trim()) return manual
   if (field === 'vehType') return vehicleTypeOf(code)
   if (field === 'driverName') return driverOf(code)
   if (field === 'usedFor') return usedForOf(code)
   if (field === 'supervisor') return supervisorOf(code)
   if (field === 'mileage' || field === 'workingHours') {
-    const fetched = reportMap[code]?.[field]
+    const fetched = reportMap[normalizeKey(code)]?.[field]
     return fetched === undefined || fetched === null ? '' : String(fetched)
   }
-  return manual ?? ''
+  return ''
 }
 
 const STATUS_BADGE_STYLES = {
@@ -161,7 +171,6 @@ async function copyNodeAsImage(node, filename) {
 
 export default function MileageUpdateTab({ token }) {
   const [vehicles, setVehicles] = useState([])
-  const [records] = useState(loadRecords)
   const [reportMap, setReportMap] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -190,8 +199,7 @@ export default function MileageUpdateTab({ token }) {
   }
 
   function statusOf(vehicle) {
-    const code = codeOf(vehicle)
-    return displayValue(records[code] ?? {}, code, 'status', reportMap)
+    return displayValue(codeOf(vehicle), 'status', reportMap)
   }
 
   const statusCounts = { all: vehicles.length, Ok: 0, Low: 0 }
@@ -228,22 +236,29 @@ export default function MileageUpdateTab({ token }) {
         if (cancelled) return
         setVehicles(list)
         if (list.length > 0) {
-          const today = formatDate(new Date())
+          const range = dayRange(new Date())
           const map = {}
           try {
             const report = await api('/report/distance/preview', {
               token,
               body: {
                 UnitIDs: list.map((u) => u.unitID),
-                FromDate: `${today}T00:00:00`,
-                ToDate: `${today}T23:59:59`,
+                ...range,
               },
             })
             if (cancelled) return
+            const grouped = new Map()
             for (const row of report?.summary ?? []) {
-              const reg = String(row.vehicleRegNumber ?? '').trim()
-              if (reg)
-                map[reg] = { mileage: row.mileage, workingHours: row.igONTime }
+              const key = normalizeKey(row.vehicleRegNumber)
+              if (!key) continue
+              if (!grouped.has(key)) grouped.set(key, [])
+              grouped.get(key).push(row)
+            }
+            for (const [key, rows] of grouped) {
+              map[key] = {
+                mileage: mergeMileage(rows.map((row) => row.mileage)),
+                workingHours: mergeHours(rows.map((row) => row.igONTime)),
+              }
             }
           } catch (err) {
             if (!cancelled) setError(err.message)
@@ -252,9 +267,9 @@ export default function MileageUpdateTab({ token }) {
             const status = await api('/vehicle/getstatus', { token })
             if (cancelled) return
             for (const v of status?.vehicles ?? []) {
-              const reg = String(v.regNo ?? '').trim()
-              if (!reg) continue
-              map[reg] = { ...map[reg], lastUpdated: v.reportingDateTime }
+              const key = normalizeKey(v.regNo)
+              if (!key) continue
+              map[key] = { ...map[key], lastUpdated: v.reportingDateTime }
             }
           } catch (err) {
             if (!cancelled) setError(err.message)
@@ -378,7 +393,6 @@ export default function MileageUpdateTab({ token }) {
             <tbody>
               {sortedVehicles.map((vehicle, index) => {
                 const code = codeOf(vehicle)
-                const record = records[code] ?? {}
                 return (
                   <tr
                     key={vehicle.unitID}
@@ -391,12 +405,7 @@ export default function MileageUpdateTab({ token }) {
                       {code}
                     </td>
                     {DATA_COLUMNS.map((column) => {
-                      const value = displayValue(
-                        record,
-                        code,
-                        column.key,
-                        reportMap,
-                      )
+                      const value = displayValue(code, column.key, reportMap)
                       return (
                         <td
                           key={column.key}

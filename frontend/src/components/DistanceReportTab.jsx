@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '../api'
+import { dayRange } from '../reportRange'
 
 function formatDate(date) {
   const y = date.getFullYear()
@@ -35,8 +36,7 @@ export default function DistanceReportTab({ token }) {
         token,
         body: {
           UnitIDs: unitIds,
-          FromDate: `${from}T00:00:00`,
-          ToDate: `${to}T23:59:59`,
+          ...dayRange(from, to),
         },
       })
       setRows(data.summary ?? [])

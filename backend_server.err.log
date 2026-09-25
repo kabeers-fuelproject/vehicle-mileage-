@@ -1,0 +1,64 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.25:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 562-470-731
+127.0.0.1 - - [25/Sep/2026 16:43:52] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:43:53] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:43:53] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:43:55] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:43:55] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:43:57] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:43:57] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+192.168.100.25 - - [25/Sep/2026 16:44:18] "GET / HTTP/1.1" 404 -
+192.168.100.25 - - [25/Sep/2026 16:44:19] "GET /favicon.ico HTTP/1.1" 404 -
+192.168.100.25 - - [25/Sep/2026 16:44:24] "GET / HTTP/1.1" 404 -
+127.0.0.1 - - [25/Sep/2026 16:45:46] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:45:47] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:45:47] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:45:50] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:45:50] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:46:01] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:46:50] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:46:50] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:46:50] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:46:50] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:46:52] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:46:53] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:47:01] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:47:01] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:47:02] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:47:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:47:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:47:10] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:47:11] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:11] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:11] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:11] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:11] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:12] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:13] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:13] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:13] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:14] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:49:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:54:38] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:54:38] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:54:39] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:54:39] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:54:41] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:54:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:55:31] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:55:31] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:55:33] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:55:33] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:55:45] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:55:45] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:55:47] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:56:29] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:56:29] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:56:31] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [25/Sep/2026 16:56:31] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
