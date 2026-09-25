@@ -19,7 +19,7 @@ const COLUMNS = [
   { key: 'lastUpdated', label: 'Last Updated Time' },
 ]
 
-const EDITABLE_FIELDS = COLUMNS.slice(2).map((c) => c.key)
+const DATA_COLUMNS = COLUMNS.slice(2)
 
 const STORAGE_KEY = 'mileageRecords'
 
@@ -75,6 +75,13 @@ function computeStatus(record, code, reportMap) {
 }
 
 function displayValue(record, code, field, reportMap) {
+  if (field === 'status') return computeStatus(record, code, reportMap)
+  if (field === 'lastUpdated') {
+    const fetched = reportMap[code]?.lastUpdated
+    return fetched === undefined || fetched === null
+      ? ''
+      : String(fetched).replace('T', ' ')
+  }
   const manual = record[field]
   if (manual?.trim()) return manual
   if (field === 'vehType') return vehicleTypeOf(code)
@@ -85,19 +92,31 @@ function displayValue(record, code, field, reportMap) {
     const fetched = reportMap[code]?.[field]
     return fetched === undefined || fetched === null ? '' : String(fetched)
   }
-  if (field === 'lastUpdated') {
-    const fetched = reportMap[code]?.lastUpdated
-    return fetched === undefined || fetched === null
-      ? ''
-      : String(fetched).replace('T', ' ')
-  }
-  if (field === 'status') return computeStatus(record, code, reportMap)
   return manual ?? ''
+}
+
+const STATUS_BADGE_STYLES = {
+  Ok: 'bg-black text-white border border-black',
+  Low: 'bg-white text-black border-2 border-black font-semibold',
+}
+
+function StatusCell({ value }) {
+  if (!value) return <span className="text-neutral-300">—</span>
+  return (
+    <span
+      className={`inline-block rounded-full px-2.5 py-0.5 text-xs whitespace-nowrap ${
+        STATUS_BADGE_STYLES[value] ??
+        'bg-neutral-100 text-neutral-600 border border-neutral-200'
+      }`}
+    >
+      {value}
+    </span>
+  )
 }
 
 export default function MileageUpdateTab({ token }) {
   const [vehicles, setVehicles] = useState([])
-  const [records, setRecords] = useState(loadRecords)
+  const [records] = useState(loadRecords)
   const [reportMap, setReportMap] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -156,21 +175,6 @@ export default function MileageUpdateTab({ token }) {
     }
   }, [token])
 
-  function update(code, field, value) {
-    setRecords((prev) => {
-      const next = {
-        ...prev,
-        [code]: { ...prev[code], [field]: value },
-      }
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-      } catch {
-        // storage unavailable or full — keep in-memory state
-      }
-      return next
-    })
-  }
-
   return (
     <div>
       <div className="mb-6">
@@ -227,17 +231,28 @@ export default function MileageUpdateTab({ token }) {
                     <td className="px-3 py-2 font-semibold whitespace-nowrap text-black">
                       {code}
                     </td>
-                    {EDITABLE_FIELDS.map((field) => (
-                      <td key={field} className="p-1">
-                        <input
-                          type="text"
-                          value={displayValue(record, code, field, reportMap)}
-                          onChange={(e) => update(code, field, e.target.value)}
-                          placeholder="—"
-                          className="w-full min-w-24 rounded border border-neutral-200 bg-white px-2 py-1.5 text-sm text-black transition-colors placeholder:text-neutral-300 hover:border-neutral-300 focus:border-black focus:outline-none focus:ring-1 focus:ring-black/15"
-                        />
-                      </td>
-                    ))}
+                    {DATA_COLUMNS.map((column) => {
+                      const value = displayValue(
+                        record,
+                        code,
+                        column.key,
+                        reportMap,
+                      )
+                      return (
+                        <td
+                          key={column.key}
+                          className="px-3 py-2 whitespace-nowrap"
+                        >
+                          {column.key === 'status' ? (
+                            <StatusCell value={value} />
+                          ) : value ? (
+                            value
+                          ) : (
+                            <span className="text-neutral-300">—</span>
+                          )}
+                        </td>
+                      )
+                    })}
                   </tr>
                 )
               })}
