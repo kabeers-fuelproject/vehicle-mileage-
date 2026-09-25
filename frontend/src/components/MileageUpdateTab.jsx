@@ -206,7 +206,7 @@ function Meta({ label, value }) {
 
 function cellClass(column, isLow = false) {
   const divider = GROUP_START_KEYS.has(column.key)
-    ? `border-l ${isLow ? 'border-amber-200' : 'border-neutral-300'}`
+    ? `border-l ${isLow ? 'border-amber-300' : 'border-neutral-400'}`
     : ''
   if (column.key === 'sr')
     return 'px-3 py-2.5 text-center align-middle text-xs tabular-nums text-neutral-400'
@@ -468,7 +468,7 @@ export default function MileageUpdateTab({ token }) {
       {visibleVehicles.length > 0 && (
         <div
           ref={tableRef}
-          className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm"
+          className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm"
         >
           <div className="h-1.5 w-full bg-green-700" />
           <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
@@ -534,7 +534,7 @@ export default function MileageUpdateTab({ token }) {
                       key={column.key}
                       className={`px-3 py-2.5 align-middle font-semibold ${
                         GROUP_START_KEYS.has(column.key)
-                          ? 'border-l border-neutral-300'
+                          ? 'border-l border-neutral-400'
                           : ''
                       } ${column.align}`}
                     >
@@ -565,8 +565,10 @@ export default function MileageUpdateTab({ token }) {
                   return (
                     <tr
                       key={vehicle.unitID}
-                      className={`border-b border-neutral-300 transition-colors last:border-b-0 ${
-                        isLow ? 'bg-amber-50' : 'bg-white hover:bg-neutral-50'
+                      className={`border-b border-neutral-400 transition-colors last:border-b-0 ${
+                        index % 2 === 0
+                          ? 'bg-green-50 hover:bg-green-100'
+                          : 'bg-white hover:bg-neutral-50'
                       }`}
                     >
                       <td
@@ -615,13 +617,13 @@ export default function MileageUpdateTab({ token }) {
                   <td className="px-3 py-3 tracking-wider whitespace-nowrap uppercase">
                     Total ({totals.count})
                   </td>
-                  <td className="border-l border-neutral-300 px-3 py-3 text-neutral-400">
+                  <td className="border-l border-neutral-400 px-3 py-3 text-neutral-400">
                     —
                   </td>
                   <td className="px-3 py-3 text-neutral-400">—</td>
                   <td className="px-3 py-3 text-neutral-400">—</td>
                   <td className="px-3 py-3 text-neutral-400">—</td>
-                  <td className="border-l border-neutral-300 px-3 py-3 text-right tabular-nums">
+                  <td className="border-l border-neutral-400 px-3 py-3 text-right tabular-nums">
                     {totals.mileage.toFixed(2)}
                   </td>
                   <td className="px-3 py-3 text-right tabular-nums">
