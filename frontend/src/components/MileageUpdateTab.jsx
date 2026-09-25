@@ -35,19 +35,31 @@ function loadRecords() {
   }
 }
 
-function displayValue(record, code, field) {
+function formatDate(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function displayValue(record, code, field, mileageMap) {
   const manual = record[field]
   if (manual?.trim()) return manual
   if (field === 'vehType') return vehicleTypeOf(code)
   if (field === 'driverName') return driverOf(code)
   if (field === 'usedFor') return usedForOf(code)
   if (field === 'supervisor') return supervisorOf(code)
+  if (field === 'mileage') {
+    const fetched = mileageMap[code]
+    return fetched === undefined || fetched === null ? '' : String(fetched)
+  }
   return manual ?? ''
 }
 
 export default function MileageUpdateTab({ token }) {
   const [vehicles, setVehicles] = useState([])
   const [records, setRecords] = useState(loadRecords)
+  const [mileageMap, setMileageMap] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -56,7 +68,31 @@ export default function MileageUpdateTab({ token }) {
     async function load() {
       try {
         const data = await api('/vehicle/getlist', { token })
-        if (!cancelled) setVehicles(data?.data ?? [])
+        const list = data?.data ?? []
+        if (cancelled) return
+        setVehicles(list)
+        if (list.length > 0) {
+          const today = formatDate(new Date())
+          try {
+            const report = await api('/report/distance/preview', {
+              token,
+              body: {
+                UnitIDs: list.map((u) => u.unitID),
+                FromDate: `${today}T00:00:00`,
+                ToDate: `${today}T23:59:59`,
+              },
+            })
+            if (cancelled) return
+            const map = {}
+            for (const row of report?.summary ?? []) {
+              const reg = String(row.vehicleRegNumber ?? '').trim()
+              if (reg) map[reg] = row.mileage
+            }
+            setMileageMap(map)
+          } catch (err) {
+            if (!cancelled) setError(err.message)
+          }
+        }
       } catch (err) {
         if (!cancelled) setError(err.message)
       } finally {
@@ -144,7 +180,7 @@ export default function MileageUpdateTab({ token }) {
                       <td key={field} className="p-1">
                         <input
                           type="text"
-                          value={displayValue(record, code, field)}
+                          value={displayValue(record, code, field, mileageMap)}
                           onChange={(e) => update(code, field, e.target.value)}
                           placeholder="—"
                           className="w-full min-w-24 rounded border border-neutral-200 bg-white px-2 py-1.5 text-sm text-black transition-colors placeholder:text-neutral-300 hover:border-neutral-300 focus:border-black focus:outline-none focus:ring-1 focus:ring-black/15"
