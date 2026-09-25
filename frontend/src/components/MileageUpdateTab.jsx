@@ -42,15 +42,15 @@ function formatDate(date) {
   return `${y}-${m}-${d}`
 }
 
-function displayValue(record, code, field, mileageMap) {
+function displayValue(record, code, field, reportMap) {
   const manual = record[field]
   if (manual?.trim()) return manual
   if (field === 'vehType') return vehicleTypeOf(code)
   if (field === 'driverName') return driverOf(code)
   if (field === 'usedFor') return usedForOf(code)
   if (field === 'supervisor') return supervisorOf(code)
-  if (field === 'mileage') {
-    const fetched = mileageMap[code]
+  if (field === 'mileage' || field === 'workingHours') {
+    const fetched = reportMap[code]?.[field]
     return fetched === undefined || fetched === null ? '' : String(fetched)
   }
   return manual ?? ''
@@ -59,7 +59,7 @@ function displayValue(record, code, field, mileageMap) {
 export default function MileageUpdateTab({ token }) {
   const [vehicles, setVehicles] = useState([])
   const [records, setRecords] = useState(loadRecords)
-  const [mileageMap, setMileageMap] = useState({})
+  const [reportMap, setReportMap] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -86,9 +86,10 @@ export default function MileageUpdateTab({ token }) {
             const map = {}
             for (const row of report?.summary ?? []) {
               const reg = String(row.vehicleRegNumber ?? '').trim()
-              if (reg) map[reg] = row.mileage
+              if (reg)
+                map[reg] = { mileage: row.mileage, workingHours: row.igONTime }
             }
-            setMileageMap(map)
+            setReportMap(map)
           } catch (err) {
             if (!cancelled) setError(err.message)
           }
@@ -180,7 +181,7 @@ export default function MileageUpdateTab({ token }) {
                       <td key={field} className="p-1">
                         <input
                           type="text"
-                          value={displayValue(record, code, field, mileageMap)}
+                          value={displayValue(record, code, field, reportMap)}
                           onChange={(e) => update(code, field, e.target.value)}
                           placeholder="—"
                           className="w-full min-w-24 rounded border border-neutral-200 bg-white px-2 py-1.5 text-sm text-black transition-colors placeholder:text-neutral-300 hover:border-neutral-300 focus:border-black focus:outline-none focus:ring-1 focus:ring-black/15"
