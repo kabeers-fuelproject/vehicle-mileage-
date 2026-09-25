@@ -105,3 +105,16 @@ Port 5173 is in use, trying another one...
 [2m3:14:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
 [2m3:14:25 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
 [2m3:14:36 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:17:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:17:30 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:18:13 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:18:29 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:18:36 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:18:36 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:21:02 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:21:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mdependency optimized: [33mhtml-to-image[32m[39m
+[2m3:21:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32moptimized dependencies changed. reloading[39m
+[2m3:21:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:21:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:21:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m3:21:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m

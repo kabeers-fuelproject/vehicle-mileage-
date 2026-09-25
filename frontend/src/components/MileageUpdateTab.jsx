@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { toPng } from 'html-to-image'
 import { api } from '../api'
 import { vehicleTypeOf } from '../vehicleTypes'
 import { driverOf } from '../drivers'
@@ -20,6 +21,19 @@ const COLUMNS = [
 ]
 
 const DATA_COLUMNS = COLUMNS.slice(2)
+
+const COLUMN_WIDTHS = [
+  '6%',
+  '11%',
+  '13%',
+  '13%',
+  '11%',
+  '11%',
+  '8%',
+  '11%',
+  '7%',
+  '9%',
+]
 
 const STORAGE_KEY = 'mileageRecords'
 
@@ -114,12 +128,76 @@ function StatusCell({ value }) {
   )
 }
 
+const STATUS_FILTERS = [
+  { key: 'all', label: 'All' },
+  { key: 'Ok', label: 'Ok' },
+  { key: 'Low', label: 'Low' },
+]
+
+async function copyNodeAsImage(node, filename) {
+  const dataUrl = await toPng(node, {
+    pixelRatio: 2,
+    backgroundColor: '#ffffff',
+  })
+  const blob = await (await fetch(dataUrl)).blob()
+  if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+    await navigator.clipboard.write([
+      new ClipboardItem({ 'image/png': blob }),
+    ])
+    return 'Image copied to clipboard'
+  }
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.click()
+  URL.revokeObjectURL(url)
+  return 'Clipboard unavailable — image downloaded'
+}
+
 export default function MileageUpdateTab({ token }) {
   const [vehicles, setVehicles] = useState([])
   const [records] = useState(loadRecords)
   const [reportMap, setReportMap] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const tableRef = useRef(null)
+  const [copying, setCopying] = useState(false)
+  const [copyMessage, setCopyMessage] = useState('')
+
+  async function copyAsImage() {
+    const node = tableRef.current
+    if (!node || copying) return
+    setCopying(true)
+    setCopyMessage('')
+    try {
+      const message = await copyNodeAsImage(
+        node,
+        `mileage-update-${formatDate(new Date())}.png`,
+      )
+      setCopyMessage(message)
+    } catch (err) {
+      setCopyMessage(err?.message || 'Could not copy image')
+    } finally {
+      setCopying(false)
+    }
+  }
+
+  function statusOf(vehicle) {
+    const code = String(vehicle.alias || vehicle.unitID).trim()
+    return displayValue(records[code] ?? {}, code, 'status', reportMap)
+  }
+
+  const statusCounts = { all: vehicles.length, Ok: 0, Low: 0 }
+  for (const vehicle of vehicles) {
+    const value = statusOf(vehicle)
+    if (statusCounts[value] !== undefined) statusCounts[value] += 1
+  }
+  const visibleVehicles =
+    statusFilter === 'all'
+      ? vehicles
+      : vehicles.filter((vehicle) => statusOf(vehicle) === statusFilter)
 
   useEffect(() => {
     let cancelled = false
@@ -177,11 +255,42 @@ export default function MileageUpdateTab({ token }) {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-xl font-bold tracking-tight">Mileage Update</h2>
-        <p className="mt-1 text-sm text-neutral-500">
-          Mileage, working hours and vehicle assignment records
-        </p>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-bold tracking-tight">Mileage Update</h2>
+          <p className="mt-1 text-sm text-neutral-500">
+            Mileage, working hours and vehicle assignment records
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          {copyMessage && (
+            <span className="text-xs text-neutral-500">{copyMessage}</span>
+          )}
+          <button
+            type="button"
+            onClick={copyAsImage}
+            disabled={copying || visibleVehicles.length === 0}
+            className="rounded-lg border border-black px-3 py-1.5 text-sm font-medium transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-black"
+          >
+            {copying ? 'Copying…' : 'Copy as Image'}
+          </button>
+          <label className="flex items-center gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+              Status
+            </span>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-sm font-medium text-black transition-colors hover:border-black focus:border-black focus:outline-none"
+            >
+              {STATUS_FILTERS.map((filter) => (
+                <option key={filter.key} value={filter.key}>
+                  {filter.label} ({statusCounts[filter.key] ?? 0})
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
 
       {error && (
@@ -201,15 +310,31 @@ export default function MileageUpdateTab({ token }) {
         <p className="text-sm text-neutral-500">No vehicles found.</p>
       )}
 
-      {vehicles.length > 0 && (
-        <div className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
-          <table className="w-full text-left text-sm">
+      {!loading &&
+        vehicles.length > 0 &&
+        visibleVehicles.length === 0 && (
+          <p className="text-sm text-neutral-500">
+            No vehicles with status {statusFilter}.
+          </p>
+        )}
+
+      {visibleVehicles.length > 0 && (
+        <div
+          ref={tableRef}
+          className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm"
+        >
+          <table className="w-full table-fixed text-left text-sm">
+            <colgroup>
+              {COLUMN_WIDTHS.map((width) => (
+                <col key={width} style={{ width }} />
+              ))}
+            </colgroup>
             <thead>
               <tr className="bg-black text-[11px] uppercase tracking-wider text-white">
                 {COLUMNS.map((column) => (
                   <th
                     key={column.key}
-                    className="px-3 py-3.5 font-semibold whitespace-nowrap"
+                    className="px-3 py-3.5 align-middle font-semibold"
                   >
                     {column.label}
                   </th>
@@ -217,7 +342,7 @@ export default function MileageUpdateTab({ token }) {
               </tr>
             </thead>
             <tbody>
-              {vehicles.map((vehicle, index) => {
+              {visibleVehicles.map((vehicle, index) => {
                 const code = String(vehicle.alias || vehicle.unitID).trim()
                 const record = records[code] ?? {}
                 return (
@@ -225,10 +350,10 @@ export default function MileageUpdateTab({ token }) {
                     key={vehicle.unitID}
                     className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50"
                   >
-                    <td className="px-3 py-2 text-neutral-400">
+                    <td className="px-3 py-2 align-middle text-neutral-400">
                       {index + 1}
                     </td>
-                    <td className="px-3 py-2 font-semibold whitespace-nowrap text-black">
+                    <td className="px-3 py-2 align-middle font-semibold break-words text-black">
                       {code}
                     </td>
                     {DATA_COLUMNS.map((column) => {
@@ -241,7 +366,7 @@ export default function MileageUpdateTab({ token }) {
                       return (
                         <td
                           key={column.key}
-                          className="px-3 py-2 whitespace-nowrap"
+                          className="px-3 py-2 align-middle break-words"
                         >
                           {column.key === 'status' ? (
                             <StatusCell value={value} />
