@@ -4,6 +4,7 @@ import { vehicleTypeOf } from '../vehicleTypes'
 import { driverOf } from '../drivers'
 import { usedForOf } from '../usedFor'
 import { supervisorOf } from '../supervisors'
+import { findThreshold } from '../thresholds'
 
 const COLUMNS = [
   { key: 'sr', label: 'Sr' },
@@ -42,6 +43,37 @@ function formatDate(date) {
   return `${y}-${m}-${d}`
 }
 
+function parseNumber(value) {
+  const n = parseFloat(String(value ?? '').replace(/[^0-9.]/g, ''))
+  return Number.isFinite(n) ? n : null
+}
+
+function parseDuration(value) {
+  const text = String(value ?? '').trim()
+  if (!text) return null
+  const parts = text.split(':').map((part) => parseFloat(part))
+  if (parts.some((part) => !Number.isFinite(part))) return null
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2]
+  if (parts.length === 2) return parts[0] * 3600 + parts[1] * 60
+  return parts[0] * 3600
+}
+
+function computeStatus(record, code, reportMap) {
+  const threshold = findThreshold(
+    displayValue(record, code, 'vehType', reportMap),
+  )
+  if (!threshold) return ''
+  const mileage = parseNumber(displayValue(record, code, 'mileage', reportMap))
+  const hours = parseDuration(
+    displayValue(record, code, 'workingHours', reportMap),
+  )
+  const requiredHours = parseDuration(threshold.workingHours)
+  if (mileage === null || hours === null) return ''
+  const mileageOk = mileage >= threshold.mileage
+  const hoursOk = requiredHours === null || hours >= requiredHours
+  return mileageOk && hoursOk ? 'Ok' : 'Low'
+}
+
 function displayValue(record, code, field, reportMap) {
   const manual = record[field]
   if (manual?.trim()) return manual
@@ -59,6 +91,7 @@ function displayValue(record, code, field, reportMap) {
       ? ''
       : String(fetched).replace('T', ' ')
   }
+  if (field === 'status') return computeStatus(record, code, reportMap)
   return manual ?? ''
 }
 

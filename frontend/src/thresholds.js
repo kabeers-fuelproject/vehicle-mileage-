@@ -13,13 +13,20 @@ export const THRESHOLDS = [
   { vehType: 'Drain Cleaner', mileage: 2, workingHours: '6:00:00' },
 ]
 
+function normalize(text) {
+  return String(text ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/[\s\-–—]+/g, ' ')
+}
+
 export function findThreshold(vehType) {
-  if (!vehType) return null
-  const normalized = vehType.trim().toLowerCase().replace(/[\s-]+/g, ' ')
-  const exact = THRESHOLDS.find(
-    (t) => t.vehType.toLowerCase() === normalized,
-  )
+  const normalized = normalize(vehType)
+  if (!normalized) return null
+  const exact = THRESHOLDS.find((t) => normalize(t.vehType) === normalized)
   if (exact) return exact
   // e.g. "Mini Tipper Petrol" → "Mini Tipper"
-  return THRESHOLDS.find((t) => normalized.startsWith(t.vehType.toLowerCase())) ?? null
+  return (
+    THRESHOLDS.find((t) => normalized.startsWith(normalize(t.vehType))) ?? null
+  )
 }
