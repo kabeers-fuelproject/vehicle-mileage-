@@ -79,6 +79,13 @@ export default function DistanceReportTab({ token }) {
     return units.filter((u) => u.alias?.toLowerCase().includes(q))
   }, [units, search])
 
+  const filteredRows = useMemo(() => {
+    if (!rows) return null
+    const q = search.trim().toLowerCase()
+    if (!q) return rows
+    return rows.filter((r) => r.vehicleRegNumber?.toLowerCase().includes(q))
+  }, [rows, search])
+
   function toggle(unitId) {
     setSelected((prev) => {
       const next = new Set(prev)
@@ -222,16 +229,22 @@ export default function DistanceReportTab({ token }) {
         </div>
       )}
 
-      {rows && (
+      {filteredRows && (
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-slate-800">Report results</h3>
-            <span className="text-sm text-slate-500">{rows.length} vehicles</span>
+            <span className="text-sm text-slate-500">
+              {search.trim()
+                ? `${filteredRows.length} of ${rows.length} vehicles (filtered)`
+                : `${rows.length} vehicles`}
+            </span>
           </div>
 
-          {rows.length === 0 ? (
+          {filteredRows.length === 0 ? (
             <p className="mt-3 text-sm text-slate-500">
-              No data for the selected vehicles and date range.
+              {rows.length === 0
+                ? 'No data for the selected vehicles and date range.'
+                : `No report rows match "${search.trim()}".`}
             </p>
           ) : (
             <div className="mt-3 overflow-x-auto rounded-xl bg-white shadow-sm">
@@ -248,7 +261,7 @@ export default function DistanceReportTab({ token }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map((row) => (
+                  {filteredRows.map((row) => (
                     <tr
                       key={row.s_No}
                       className="border-b border-slate-100 last:border-0 hover:bg-slate-50"
