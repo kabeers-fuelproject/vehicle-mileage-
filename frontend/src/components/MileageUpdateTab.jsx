@@ -53,6 +53,12 @@ function displayValue(record, code, field, reportMap) {
     const fetched = reportMap[code]?.[field]
     return fetched === undefined || fetched === null ? '' : String(fetched)
   }
+  if (field === 'lastUpdated') {
+    const fetched = reportMap[code]?.lastUpdated
+    return fetched === undefined || fetched === null
+      ? ''
+      : String(fetched).replace('T', ' ')
+  }
   return manual ?? ''
 }
 
@@ -73,6 +79,7 @@ export default function MileageUpdateTab({ token }) {
         setVehicles(list)
         if (list.length > 0) {
           const today = formatDate(new Date())
+          const map = {}
           try {
             const report = await api('/report/distance/preview', {
               token,
@@ -83,16 +90,26 @@ export default function MileageUpdateTab({ token }) {
               },
             })
             if (cancelled) return
-            const map = {}
             for (const row of report?.summary ?? []) {
               const reg = String(row.vehicleRegNumber ?? '').trim()
               if (reg)
                 map[reg] = { mileage: row.mileage, workingHours: row.igONTime }
             }
-            setReportMap(map)
           } catch (err) {
             if (!cancelled) setError(err.message)
           }
+          try {
+            const status = await api('/vehicle/getstatus', { token })
+            if (cancelled) return
+            for (const v of status?.vehicles ?? []) {
+              const reg = String(v.regNo ?? '').trim()
+              if (!reg) continue
+              map[reg] = { ...map[reg], lastUpdated: v.reportingDateTime }
+            }
+          } catch (err) {
+            if (!cancelled) setError(err.message)
+          }
+          setReportMap(map)
         }
       } catch (err) {
         if (!cancelled) setError(err.message)
