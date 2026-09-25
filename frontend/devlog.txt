@@ -53,3 +53,34 @@ Port 5173 is in use, trying another one...
 [2m2:24:35 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
 [2m2:24:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
 [2m2:24:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m2:34:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m2:34:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m2:41:31 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m2:41:31 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Failed to resolve import "../supervisors" from "src/components/MileageUpdateTab.jsx". Does the file exist?
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mE:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx[39m:6:29
+[33m  4  |  import { driverOf } from "../drivers";
+  5  |  import { usedForOf } from "../usedFor";
+  6  |  import { supervisorOf } from "../supervisors";
+     |                                ^
+  7  |  var _jsxFileName = "E:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx";
+  8  |  import { jsxDEV as _jsxDEV } from "react/jsx-dev-runtime";[39m
+[2m2:41:31 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../supervisors" from "src/components/MileageUpdateTab.jsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mE:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx[39m:6:29
+[33m  4  |  import { driverOf } from "../drivers";
+  5  |  import { usedForOf } from "../usedFor";
+  6  |  import { supervisorOf } from "../supervisors";
+     |                                ^
+  7  |  var _jsxFileName = "E:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx";
+  8  |  import { jsxDEV as _jsxDEV } from "react/jsx-dev-runtime";[39m
+      at TransformPluginContext._formatLog (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:8736:39)
+      at TransformPluginContext.error (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:8733:14)
+      at normalizeUrl (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:26423:18)
+      at async file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:26493:30
+      at async Promise.all (index 5)
+      at async TransformPluginContext.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:26459:4)
+      at async EnvironmentPluginContainer.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:8515:14)
+      at async loadAndTransform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:19998:26)
+[2m2:41:31 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx[22m
+[2m2:41:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m

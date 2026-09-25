@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { api } from '../api'
 import { vehicleTypeOf } from '../vehicleTypes'
 import { driverOf } from '../drivers'
+import { usedForOf } from '../usedFor'
+import { supervisorOf } from '../supervisors'
 
 const COLUMNS = [
   { key: 'sr', label: 'Sr' },
@@ -38,6 +40,8 @@ function displayValue(record, code, field) {
   if (manual?.trim()) return manual
   if (field === 'vehType') return vehicleTypeOf(code)
   if (field === 'driverName') return driverOf(code)
+  if (field === 'usedFor') return usedForOf(code)
+  if (field === 'supervisor') return supervisorOf(code)
   return manual ?? ''
 }
 
