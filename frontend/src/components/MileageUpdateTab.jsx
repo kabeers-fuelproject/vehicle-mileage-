@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../api'
+import { vehicleTypeOf } from '../vehicleTypes'
 
 const COLUMNS = [
   { key: 'sr', label: 'Sr' },
@@ -20,7 +21,12 @@ const STORAGE_KEY = 'mileageRecords'
 
 function loadRecords() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? {}
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? {}
+    const normalized = {}
+    for (const [key, value] of Object.entries(raw)) {
+      normalized[key.trim()] = value
+    }
+    return normalized
   } catch {
     return {}
   }
@@ -108,7 +114,7 @@ export default function MileageUpdateTab({ token }) {
             </thead>
             <tbody>
               {vehicles.map((vehicle, index) => {
-                const code = vehicle.alias || vehicle.unitID
+                const code = String(vehicle.alias || vehicle.unitID).trim()
                 const record = records[code] ?? {}
                 return (
                   <tr
@@ -125,7 +131,13 @@ export default function MileageUpdateTab({ token }) {
                       <td key={field} className="p-1">
                         <input
                           type="text"
-                          value={record[field] ?? ''}
+                          value={
+                            field === 'vehType'
+                              ? record.vehType?.trim()
+                                ? record.vehType
+                                : vehicleTypeOf(code)
+                              : record[field] ?? ''
+                          }
                           onChange={(e) => update(code, field, e.target.value)}
                           placeholder="—"
                           className="w-full min-w-24 rounded border border-neutral-200 bg-white px-2 py-1.5 text-sm text-black transition-colors placeholder:text-neutral-300 hover:border-neutral-300 focus:border-black focus:outline-none focus:ring-1 focus:ring-black/15"

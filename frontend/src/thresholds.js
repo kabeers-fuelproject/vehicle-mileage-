@@ -16,7 +16,10 @@ export const THRESHOLDS = [
 export function findThreshold(vehType) {
   if (!vehType) return null
   const normalized = vehType.trim().toLowerCase().replace(/[\s-]+/g, ' ')
-  return (
-    THRESHOLDS.find((t) => t.vehType.toLowerCase() === normalized) ?? null
+  const exact = THRESHOLDS.find(
+    (t) => t.vehType.toLowerCase() === normalized,
   )
+  if (exact) return exact
+  // e.g. "Mini Tipper Petrol" → "Mini Tipper"
+  return THRESHOLDS.find((t) => normalized.startsWith(t.vehType.toLowerCase())) ?? null
 }
