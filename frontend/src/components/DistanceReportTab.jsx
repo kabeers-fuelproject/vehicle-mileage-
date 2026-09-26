@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { api } from '../api'
 import { dayRange } from '../reportRange'
 import { buildTablePdf } from '../reportPdf'
+import VaLogo from './VaLogo'
 
 const PDF_COLUMNS = [
   { label: 'S #', align: 'center', width: 6 },
@@ -14,6 +15,7 @@ const PDF_COLUMNS = [
 ]
 
 const PDF_MUTED = [156, 163, 175]
+const PDF_GREEN = [21, 128, 61]
 
 function formatDate(date) {
   const y = date.getFullYear()
@@ -30,6 +32,28 @@ function formatDateTime(date) {
   return `${formatDate(date)} ${hh}:${mm}`
 }
 
+function Meta({ label, value }) {
+  return (
+    <div>
+      <dt className="text-[10px] font-semibold tracking-wider text-green-700 uppercase">
+        {label}
+      </dt>
+      <dd className="mt-1 text-sm font-semibold tabular-nums text-green-900">
+        {value}
+      </dd>
+    </div>
+  )
+}
+
+const inputClass =
+  'mt-1.5 block rounded-lg border border-green-200 bg-white px-3.5 py-2.5 text-sm text-ink transition-all duration-200 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none'
+
+const labelClass =
+  'text-[10px] font-semibold tracking-wider text-green-700 uppercase'
+
+const primaryBtnClass =
+  'btn-shine relative overflow-hidden rounded-full bg-gradient-to-r from-green-700 to-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-green-700/25 transition-all duration-200 hover:from-green-600 hover:to-green-500 hover:shadow-lg hover:shadow-green-700/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+
 export default function DistanceReportTab({ token }) {
   const [fromDate, setFromDate] = useState(formatDate(TODAY))
   const [toDate, setToDate] = useState(formatDate(TODAY))
@@ -42,6 +66,7 @@ export default function DistanceReportTab({ token }) {
   const [generating, setGenerating] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [rows, setRows] = useState(null)
+  const [stamp, setStamp] = useState(null)
 
   async function runReport(from, to, unitIds) {
     setError('')
@@ -60,6 +85,7 @@ export default function DistanceReportTab({ token }) {
         },
       })
       setRows(data.summary ?? [])
+      setStamp(new Date())
     } catch (err) {
       setError(err.message)
     } finally {
@@ -152,7 +178,7 @@ export default function DistanceReportTab({ token }) {
         filename: `distance-report-${fromDate}-to-${toDate}.pdf`,
         title: 'Distance Report',
         subtitle: `${filteredRows.length} vehicle${filteredRows.length === 1 ? '' : 's'} · ${fromDate} to ${toDate} · Generated ${formatDateTime(new Date())}`,
-        accent: [234, 88, 12],
+        accent: PDF_GREEN,
         columns: PDF_COLUMNS,
         rows: pdfRows,
       })
@@ -168,49 +194,72 @@ export default function DistanceReportTab({ token }) {
     filteredUnits.every((u) => selected.has(u.unitID))
 
   return (
-    <div>
-      <div className="mb-6">
-        <h2 className="text-xl font-bold tracking-tight">Distance Report</h2>
-        <p className="mt-1 text-sm text-neutral-500">
-          Distance and usage report for any date range
-        </p>
+    <div className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
+      <div className="h-1.5 w-full bg-green-700" />
+
+      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
+        <div className="flex items-center gap-4">
+          <VaLogo className="h-11 w-11" />
+          <div>
+            <p className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
+              Vehicle Automation
+            </p>
+            <h3 className="text-lg font-bold tracking-tight text-ink">
+              Distance Report
+            </h3>
+            <p className="mt-0.5 text-xs text-neutral-500">
+              Distance and usage report for any date range
+            </p>
+          </div>
+        </div>
+        <dl className="grid grid-cols-2 gap-x-8 gap-y-3 rounded-xl border border-green-200 bg-green-50 px-5 py-3.5">
+          <Meta label="Date Range" value={`${fromDate} → ${toDate}`} />
+          <Meta
+            label="Vehicles"
+            value={`${selected.size} / ${units.length}`}
+          />
+        </dl>
       </div>
 
       <form
         onSubmit={generate}
-        className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm"
+        className="border-b border-neutral-200 px-6 py-5"
       >
-        <div className="flex flex-wrap items-end gap-4">
-          <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-            From
-            <input
-              type="date"
-              value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
-              required
-              className="mt-2 block rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-ink transition-colors focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
-            />
-          </label>
-          <label className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-            To
-            <input
-              type="date"
-              value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
-              required
-              className="mt-2 block rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-ink transition-colors focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
-            />
-          </label>
-          <button
-            type="submit"
-            disabled={generating || loadingUnits}
-            className="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            {generating ? 'Generating...' : 'Generate Report'}
-          </button>
-          <span className="text-sm text-neutral-500">
-            {selected.size} of {units.length} vehicles selected
-          </span>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-wrap items-end gap-4">
+            <label className={labelClass}>
+              From
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                required
+                className={inputClass}
+              />
+            </label>
+            <label className={labelClass}>
+              To
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                required
+                className={inputClass}
+              />
+            </label>
+          </div>
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="text-sm text-neutral-500">
+              {selected.size} of {units.length} vehicles selected
+            </span>
+            <button
+              type="submit"
+              disabled={generating || loadingUnits}
+              className={primaryBtnClass}
+            >
+              {generating ? 'Generating...' : 'Generate Report'}
+            </button>
+          </div>
         </div>
 
         <div className="mt-5">
@@ -220,7 +269,7 @@ export default function DistanceReportTab({ token }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Type to search vehicle codes..."
-              className="w-72 rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-ink transition-colors placeholder:text-neutral-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20"
+              className="w-72 rounded-lg border border-green-200 bg-white px-3.5 py-2.5 text-sm text-ink transition-all duration-200 placeholder:text-neutral-400 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
             />
             {search.trim() && (
               <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-600">
@@ -229,7 +278,7 @@ export default function DistanceReportTab({ token }) {
                   checked={allVisibleSelected}
                   onChange={toggleAll}
                   disabled={filteredUnits.length === 0}
-                  className="h-4 w-4 accent-black"
+                  className="h-4 w-4 accent-green-700"
                 />
                 Select all visible
               </label>
@@ -238,18 +287,18 @@ export default function DistanceReportTab({ token }) {
 
           {loadingUnits && (
             <div className="mt-3 flex items-center gap-2.5 text-sm text-neutral-500">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
               Loading vehicles...
             </div>
           )}
           {unitsError && (
-            <p className="mt-3 border-l-4 border-brand-600 bg-brand-50 px-3 py-2 text-sm font-medium text-brand-700">
+            <p className="mt-3 border-l-4 border-green-700 bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
               {unitsError}
             </p>
           )}
 
           {!loadingUnits && !unitsError && !search.trim() && (
-            <p className="mt-3 rounded-xl border border-dashed border-neutral-300 px-4 py-6 text-center text-sm text-neutral-500">
+            <p className="mt-3 rounded-xl border border-dashed border-green-200 bg-green-50/60 px-4 py-6 text-center text-sm text-green-800/80">
               Type a vehicle code (e.g. HND-AR002) to search and select
               vehicles. All vehicles are included until you change the
               selection.
@@ -257,7 +306,7 @@ export default function DistanceReportTab({ token }) {
           )}
 
           {!loadingUnits && !unitsError && search.trim() && (
-            <div className="mt-3 max-h-56 overflow-y-auto rounded-xl border border-neutral-200 p-2">
+            <div className="mt-3 max-h-56 overflow-y-auto rounded-xl border border-green-200 p-2">
               {filteredUnits.length === 0 && (
                 <p className="px-2 py-1 text-sm text-neutral-500">
                   No vehicles match "{search}"
@@ -267,13 +316,13 @@ export default function DistanceReportTab({ token }) {
                 {filteredUnits.map((u) => (
                   <label
                     key={u.unitID}
-                    className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-100"
+                    className="flex cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-green-100"
                   >
                     <input
                       type="checkbox"
                       checked={selected.has(u.unitID)}
                       onChange={() => toggle(u.unitID)}
-                      className="h-4 w-4 accent-black"
+                      className="h-4 w-4 accent-green-700"
                     />
                     {u.alias || u.unitID}
                   </label>
@@ -284,101 +333,133 @@ export default function DistanceReportTab({ token }) {
         </div>
 
         {error && (
-          <p className="mt-4 border-l-4 border-brand-600 bg-brand-50 px-3 py-2 text-sm font-medium text-brand-700">
+          <p className="mt-4 border-l-4 border-green-700 bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
             {error}
           </p>
         )}
       </form>
 
-      {generating && (
-        <div className="mt-6 flex items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
-          <span className="text-sm text-neutral-500">
+      <div className="px-6 py-5">
+        {generating && (
+          <div className="flex items-center gap-3 text-sm text-neutral-500">
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
             Loading distance report...
-          </span>
-        </div>
-      )}
+          </div>
+        )}
 
-      {filteredRows && (
-        <div className="mt-8">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold tracking-tight">Report results</h3>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-neutral-500">
-                {search.trim()
-                  ? `${filteredRows.length} of ${rows.length} vehicles (filtered)`
-                  : `${rows.length} vehicles`}
-              </span>
+        {filteredRows && (
+          <>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-baseline gap-3">
+                <h4 className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
+                  Report Results
+                </h4>
+                <span className="text-sm text-neutral-500">
+                  {search.trim()
+                    ? `${filteredRows.length} of ${rows.length} vehicles (filtered)`
+                    : `${rows.length} vehicles`}
+                </span>
+              </div>
               {filteredRows.length > 0 && (
                 <button
                   type="button"
                   onClick={downloadPdf}
                   disabled={downloading}
-                  className="rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40"
+                  className={`${primaryBtnClass} px-4 py-2`}
                 >
                   {downloading ? 'Preparing…' : 'Download PDF'}
                 </button>
               )}
             </div>
-          </div>
 
-          {filteredRows.length === 0 ? (
-            <p className="mt-3 text-sm text-neutral-500">
-              {rows.length === 0
-                ? 'No data for the selected vehicles and date range.'
-                : `No report rows match "${search.trim()}".`}
-            </p>
-          ) : (
-            <div className="mt-3 overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="bg-brand-600 text-[11px] uppercase tracking-wider text-white">
-                    <th className="px-4 py-3.5 font-semibold">S #</th>
-                    <th className="px-4 py-3.5 font-semibold">
-                      Vehicle Reg Number
-                    </th>
-                    <th className="px-4 py-3.5 font-semibold">Vehicle type</th>
-                    <th className="px-4 py-3.5 font-semibold">Town</th>
-                    <th className="px-4 py-3.5 font-semibold">Mileage</th>
-                    <th className="px-4 py-3.5 font-semibold">IG Time</th>
-                    <th className="px-4 py-3.5 font-semibold">
-                      Fuel Allocated
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredRows.map((row) => (
-                    <tr
-                      key={row.s_No}
-                      className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50"
-                    >
-                      <td className="px-4 py-3 text-neutral-400">
-                        {row.s_No}
-                      </td>
-                      <td className="px-4 py-3 font-semibold text-ink">
-                        {row.vehicleRegNumber}
-                      </td>
-                      <td className="px-4 py-3 text-neutral-600">
-                        {row.vehType}
-                      </td>
-                      <td className="px-4 py-3 text-neutral-600">
-                        {row.town}
-                      </td>
-                      <td className="px-4 py-3 text-ink">{row.mileage}</td>
-                      <td className="px-4 py-3 text-neutral-600">
-                        {row.igONTime}
-                      </td>
-                      <td className="px-4 py-3 text-neutral-600">
-                        {row.fuelAllocated}
-                      </td>
+            {filteredRows.length === 0 ? (
+              <p className="mt-3 text-sm text-neutral-500">
+                {rows.length === 0
+                  ? 'No data for the selected vehicles and date range.'
+                  : `No report rows match "${search.trim()}"`}
+              </p>
+            ) : (
+              <div className="mt-4 -mx-6 overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-green-700 text-[10px] tracking-wider text-white uppercase">
+                      <th className="px-6 py-2.5 font-semibold">S #</th>
+                      <th className="border-l border-white/25 px-4 py-2.5 font-semibold">
+                        Vehicle Reg Number
+                      </th>
+                      <th className="border-l border-white/25 px-4 py-2.5 font-semibold">
+                        Vehicle type
+                      </th>
+                      <th className="border-l border-white/25 px-4 py-2.5 font-semibold">
+                        Town
+                      </th>
+                      <th className="border-l border-white/25 px-4 py-2.5 font-semibold">
+                        Mileage
+                      </th>
+                      <th className="border-l border-white/25 px-4 py-2.5 font-semibold">
+                        IG Time
+                      </th>
+                      <th className="border-l border-white/25 px-6 py-2.5 font-semibold">
+                        Fuel Allocated
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+                  <tbody>
+                    {filteredRows.map((row, i) => (
+                      <tr
+                        key={row.s_No}
+                        className={`border-b border-neutral-100 transition-colors last:border-0 hover:bg-green-100 ${
+                          i % 2 === 1 ? 'bg-green-50' : ''
+                        }`}
+                      >
+                        <td className="px-6 py-3 text-neutral-400">
+                          {row.s_No}
+                        </td>
+                        <td className="border-l border-neutral-300 px-4 py-3 font-semibold text-ink">
+                          {row.vehicleRegNumber}
+                        </td>
+                        <td className="border-l border-neutral-300 px-4 py-3 text-neutral-600">
+                          {row.vehType}
+                        </td>
+                        <td className="border-l border-neutral-300 px-4 py-3 text-neutral-600">
+                          {row.town}
+                        </td>
+                        <td className="border-l border-neutral-300 px-4 py-3 text-ink">
+                          {row.mileage}
+                        </td>
+                        <td className="border-l border-neutral-300 px-4 py-3 text-neutral-600">
+                          {row.igONTime}
+                        </td>
+                        <td className="border-l border-neutral-300 px-6 py-3 text-neutral-600">
+                          {row.fuelAllocated}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-6 py-3.5">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium text-green-900/80">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-green-700" />
+            Mileage — distance covered in the selected range
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-neutral-400" />
+            IG Time — ignition on · Fuel Allocated — fuel issued
+          </span>
         </div>
-      )}
+        <p className="text-[11px] text-green-800">
+          Source: TrackingWorld · Generated{' '}
+          {stamp ? formatDateTime(stamp) : '—'}
+        </p>
+      </div>
+      <div className="h-1 w-full bg-green-700" />
     </div>
   )
 }
