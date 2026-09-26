@@ -177,13 +177,13 @@ function displayValue(code, field, reportMap) {
 }
 
 const STATUS_BADGE_STYLES = {
-  Ok: 'bg-brand-600 text-white border border-brand-600',
-  Low: 'bg-amber-100 text-amber-900 border border-amber-300 font-semibold',
+  Ok: 'bg-amber-100 text-amber-900 border border-amber-300 font-semibold',
+  Low: 'bg-brand-600 text-white border border-brand-600',
 }
 
 const STATUS_DOT_STYLES = {
-  Ok: 'bg-white',
-  Low: 'bg-amber-500',
+  Ok: 'bg-amber-500',
+  Low: 'bg-white',
 }
 
 function StatusCell({ value }) {
@@ -327,12 +327,12 @@ export default function MileageUpdateTab({ token }) {
             if (col.key === 'status') {
               if (status === 'Ok') {
                 return {
-                  badge: { text: 'Ok', bg: [234, 88, 12], color: [255, 255, 255] },
+                  badge: { text: 'Ok', bg: [254, 243, 199], color: PDF_LOW_TEXT },
                 }
               }
               if (isLow) {
                 return {
-                  badge: { text: 'Low', bg: [254, 243, 199], color: PDF_LOW_TEXT },
+                  badge: { text: 'Low', bg: [234, 88, 12], color: [255, 255, 255] },
                 }
               }
               return { text: '—', align: 'center', color: PDF_MUTED }
@@ -763,9 +763,9 @@ export default function MileageUpdateTab({ token }) {
                     {formatDuration(totals.hours)}
                   </td>
                   <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-center tracking-wider whitespace-nowrap uppercase">
-                    <span className="text-green-800">{totals.ok} Ok</span>
+                    <span className="text-amber-700">{totals.ok} Ok</span>
                     <span className="text-neutral-300"> / </span>
-                    <span className="text-amber-700">{totals.low} Low</span>
+                    <span className="text-brand-700">{totals.low} Low</span>
                   </td>
                   <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
                     —
@@ -778,11 +778,11 @@ export default function MileageUpdateTab({ token }) {
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-6 py-3.5">
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium text-green-900/80">
               <span className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-brand-600" />
+                <span className="h-2 w-2 rounded-full bg-amber-500" />
                 Ok — meets mileage and working-hour threshold
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-amber-500" />
+                <span className="h-2 w-2 rounded-full bg-brand-600" />
                 Low — below threshold
               </span>
             </div>
