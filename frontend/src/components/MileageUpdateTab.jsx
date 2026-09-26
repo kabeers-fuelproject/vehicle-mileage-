@@ -219,22 +219,17 @@ function Meta({ label, value }) {
   )
 }
 
-function cellClass(column, isLow = false) {
-  const base = 'px-3 py-2.5 align-middle border border-neutral-300'
-  if (column.key === 'sr')
-    return `${base} text-center tabular-nums text-neutral-400`
-  if (column.key === 'vehicleCode')
-    return `${base} font-semibold ${isLow ? 'text-amber-900' : 'text-ink'}`
-  if (NUMERIC_KEYS.has(column.key))
-    return `${base} text-right font-medium tabular-nums ${
-      isLow ? 'text-amber-900' : 'text-ink'
-    }`
-  if (column.key === 'status') return `${base} text-center`
+function cellClass(column) {
+  const base =
+    'px-3 py-2.5 align-middle border border-neutral-300 font-semibold text-black'
+  if (column.key === 'sr') return `${base} text-center tabular-nums`
+  if (column.key === 'vehicleCode') return base
+  if (NUMERIC_KEYS.has(column.key)) return `${base} text-right tabular-nums`
+  if (column.key === 'status')
+    return 'px-3 py-2.5 align-middle border border-neutral-300 text-center'
   if (column.key === 'lastUpdated')
-    return `${base} tabular-nums whitespace-nowrap text-neutral-500`
-  return `${base} break-words ${
-    isLow ? 'text-amber-900' : 'text-neutral-700'
-  }`
+    return `${base} tabular-nums whitespace-nowrap`
+  return `${base} break-words`
 }
 
 function codeOf(vehicle) {
@@ -672,7 +667,6 @@ export default function MileageUpdateTab({ token }) {
                 {sortedVehicles.map((vehicle, index) => {
                   const code = codeOf(vehicle)
                   const status = displayValue(code, 'status', reportMap)
-                  const isLow = status === 'Low'
                   return (
                     <tr
                       key={vehicle.unitID}
@@ -683,18 +677,12 @@ export default function MileageUpdateTab({ token }) {
                       }`}
                     >
                       <td
-                        className={`px-3 py-2.5 text-center align-middle tabular-nums border border-neutral-300 ${
-                          isLow
-                            ? 'shadow-[inset_3px_0_0_0_#f59e0b] font-semibold text-amber-900'
-                            : 'text-neutral-400'
-                        }`}
+                        className="px-3 py-2.5 text-center align-middle tabular-nums border border-neutral-300 font-semibold text-black"
                       >
                         {index + 1}
                       </td>
                       <td
-                        className={`px-3 py-2.5 align-middle font-semibold border border-neutral-300 ${
-                          isLow ? 'text-amber-900' : 'text-ink'
-                        }`}
+                        className="px-3 py-2.5 align-middle font-semibold border border-neutral-300 text-black"
                       >
                         {code}
                       </td>
@@ -706,7 +694,7 @@ export default function MileageUpdateTab({ token }) {
                         return (
                           <td
                             key={column.key}
-                            className={cellClass(column, isLow)}
+                            className={cellClass(column)}
                           >
                             {column.key === 'status' ? (
                               <StatusCell value={value} />
