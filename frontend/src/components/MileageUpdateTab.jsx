@@ -310,14 +310,10 @@ export default function MileageUpdateTab({ token }) {
         align: PDF_ALIGN[col.align] ?? 'left',
         width: parseFloat(COLUMN_WIDTHS[i]) || 10,
       }))
-      let okCount = 0
-      let lowCount = 0
       const pdfRows = sortedVehicles.map((vehicle, index) => {
         const code = codeOf(vehicle)
         const status = displayValue(code, 'status', reportMap)
         const isLow = status === 'Low'
-        if (status === 'Ok') okCount += 1
-        if (isLow) lowCount += 1
         return {
           bg: index % 2 === 0 ? PDF_ZEBRA : [255, 255, 255],
           cells: COLUMNS.map((col) => {
@@ -350,18 +346,6 @@ export default function MileageUpdateTab({ token }) {
           }),
         }
       })
-      const footer = {
-        cells: COLUMNS.map((col) => {
-          if (col.key === 'sr') return { text: 'Σ', align: 'center' }
-          if (col.key === 'vehicleCode') return { text: `Total (${totals.count})` }
-          if (col.key === 'mileage') return { text: totals.mileage.toFixed(2) }
-          if (col.key === 'workingHours') return { text: formatDuration(totals.hours) }
-          if (col.key === 'status') {
-            return { text: `${okCount} Ok / ${lowCount} Low`, align: 'center' }
-          }
-          return { text: '—', color: PDF_MUTED }
-        }),
-      }
       buildTablePdf({
         filename: `mileage-update-${formatDate(new Date())}.pdf`,
         title: 'Mileage Update Report',
@@ -371,7 +355,6 @@ export default function MileageUpdateTab({ token }) {
         zebra: PDF_ZEBRA,
         columns,
         rows: pdfRows,
-        footer,
       })
       setExportMessage('PDF downloaded')
     } catch (err) {
@@ -411,21 +394,6 @@ export default function MileageUpdateTab({ token }) {
   }
 
   const stamp = generatedAt ?? new Date()
-
-  const totals = sortedVehicles.reduce(
-    (acc, vehicle) => {
-      const code = codeOf(vehicle)
-      const mileage = parseNumber(displayValue(code, 'mileage', reportMap))
-      const hours = parseDuration(displayValue(code, 'workingHours', reportMap))
-      if (mileage !== null) acc.mileage += mileage
-      if (hours !== null) acc.hours += hours
-      if (statusOf(vehicle) === 'Ok') acc.ok += 1
-      if (statusOf(vehicle) === 'Low') acc.low += 1
-      acc.count += 1
-      return acc
-    },
-    { mileage: 0, hours: 0, ok: 0, low: 0, count: 0 },
-  )
 
   async function loadMileage(initial = false) {
     const runId = ++runIdRef.current
@@ -754,42 +722,6 @@ export default function MileageUpdateTab({ token }) {
                   )
                 })}
               </tbody>
-              <tfoot>
-                <tr className="bg-green-50 font-semibold text-green-900">
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-center text-neutral-300">
-                    Σ
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 tracking-wider whitespace-nowrap uppercase">
-                    Total ({totals.count})
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
-                    —
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
-                    —
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
-                    —
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
-                    —
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-right tabular-nums">
-                    {totals.mileage.toFixed(2)}
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-right tabular-nums">
-                    {formatDuration(totals.hours)}
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-center tracking-wider whitespace-nowrap uppercase">
-                    <span className="text-amber-700">{totals.ok} Ok</span>
-                    <span className="text-neutral-300"> / </span>
-                    <span className="text-brand-700">{totals.low} Low</span>
-                  </td>
-                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
-                    —
-                  </td>
-                </tr>
-              </tfoot>
             </table>
           </div>
 
