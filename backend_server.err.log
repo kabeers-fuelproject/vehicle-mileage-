@@ -6,3 +6,859 @@ Press CTRL+C to quit
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 562-470-731
+127.0.0.1 - - [26/Sep/2026 11:06:30] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:06:31] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:06:32] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:06:33] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:06:34] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:06:36] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:06:37] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:35] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:35] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:36] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:42] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:42] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:44] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:45] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:45] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:46] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:48] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:53] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:55] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:56] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:18:58] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:00] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:01] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:02] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:04] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:04] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:11] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:14] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:16] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:19:16] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:20:11] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:20:11] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:21:08] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:21:08] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:21:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:21:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:21:10] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:21:11] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:23:22] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:23:29] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:23:32] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:23:37] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:23:37] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:23:57] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:23:57] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:24:01] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:24:02] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:24:05] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:24:07] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:24:09] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:24:12] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:24:15] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:24:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:25:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:25:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:25:39] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:25:39] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:01] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:01] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:02] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:02] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:04] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:04] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:10] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:10] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:30] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:30] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:41] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:26:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:28:30] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:28:30] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:29:40] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:29:40] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:29:42] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:29:42] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:29:48] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:29:49] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:31:31] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:31:33] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:31:34] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:33:44] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:33:45] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:33:50] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:33:50] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:35:55] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:35:55] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:01] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:01] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:07] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:07] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:15] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:50] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:53] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:36:54] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:37:38] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:37:40] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:37:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:40:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:40:40] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:40:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:37] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:38] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:40] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:45] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:45] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:45] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:45] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:45] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:46] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:46] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:44:46] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:45:01] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:45:03] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:47:13] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:47:16] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:47:17] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:47:18] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:47:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:47:25] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:08] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:14] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:14] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:14] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:14] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:17] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:20] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:20] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:25] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:31] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:32] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:48:43] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:59:45] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 11:59:45] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:02:29] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:02:30] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:02:35] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:02:39] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:08] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:38] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:38] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:42] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:44] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:44] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:52] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:03:56] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:21] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:21] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:25] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:27] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:51] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:51] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:53] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:53] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:04:55] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:21:21] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:21:26] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:21:28] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:23:33] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:23:38] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:23:38] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:24:25] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:24:27] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:24:28] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:29:39] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:29:46] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:29:47] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:05] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:05] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:05] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:05] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:06] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:06] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:09] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:09] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:09] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:10] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:15] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:30:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:03] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:03] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:07] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:07] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:10] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:11] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:11] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:16] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:41:17] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:43:48] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:43:53] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:43:53] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:43:55] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:01] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:01] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:03] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:04] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:19] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:22] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:26] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:28] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:28] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:31] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:32] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:42] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:44:42] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:47:48] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:47:48] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:49:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:49:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:49:43] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:49:43] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:49:47] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:49:52] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:49:52] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:49:55] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:50:15] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:50:15] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:50:39] "POST /api/vehicle/getstatus HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 12:50:39] "POST /api/vehicle/getstatus HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 239, in _new_conn
+    sock = connection.create_connection(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 499, in _make_request
+    conn.request(
+    ^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 567, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1362, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1122, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1066, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 398, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 248, in _new_conn
+    raise ConnectTimeoutError(
+    ^^^^^^^^
+urllib3.exceptions.ConnectTimeoutError: (<HTTPConnection(host='wmc.trackingworld.com.pk', port=80) at 0x24d63cf9bf0>, 'Connection to wmc.trackingworld.com.pk timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 696, in send
+    resp = conn.urlopen(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\retry.py", line 555, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='wmc.trackingworld.com.pk', port=80): Max retries exceeded with url: /api/vehicle/getstatus (Caused by ConnectTimeoutError(<HTTPConnection(host='wmc.trackingworld.com.pk', port=80) at 0x24d63cf9bf0>, 'Connection to wmc.trackingworld.com.pk timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "E:\vehicle-automation\backend\app.py", line 90, in vehicle_getstatus
+    resp = requests.post(VEHICLE_LIST_URL, json=body, headers=status_headers)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 134, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 717, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPConnectionPool(host='wmc.trackingworld.com.pk', port=80): Max retries exceeded with url: /api/vehicle/getstatus (Caused by ConnectTimeoutError(<HTTPConnection(host='wmc.trackingworld.com.pk', port=80) at 0x24d63cf9bf0>, 'Connection to wmc.trackingworld.com.pk timed out. (connect timeout=None)'))
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 239, in _new_conn
+    sock = connection.create_connection(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 499, in _make_request
+    conn.request(
+    ^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 567, in request
+    self.endheaders()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1362, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1122, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1066, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 398, in connect
+    self.sock = self._new_conn()
+                ~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 248, in _new_conn
+    raise ConnectTimeoutError(
+    ^^^^^^^^
+urllib3.exceptions.ConnectTimeoutError: (<HTTPConnection(host='wmc.trackingworld.com.pk', port=80) at 0x24d63cf9040>, 'Connection to wmc.trackingworld.com.pk timed out. (connect timeout=None)')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 696, in send
+    resp = conn.urlopen(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\retry.py", line 555, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='wmc.trackingworld.com.pk', port=80): Max retries exceeded with url: /api/vehicle/getstatus (Caused by ConnectTimeoutError(<HTTPConnection(host='wmc.trackingworld.com.pk', port=80) at 0x24d63cf9040>, 'Connection to wmc.trackingworld.com.pk timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "E:\vehicle-automation\backend\app.py", line 90, in vehicle_getstatus
+    resp = requests.post(VEHICLE_LIST_URL, json=body, headers=status_headers)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 134, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 717, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPConnectionPool(host='wmc.trackingworld.com.pk', port=80): Max retries exceeded with url: /api/vehicle/getstatus (Caused by ConnectTimeoutError(<HTTPConnection(host='wmc.trackingworld.com.pk', port=80) at 0x24d63cf9040>, 'Connection to wmc.trackingworld.com.pk timed out. (connect timeout=None)'))
+127.0.0.1 - - [26/Sep/2026 12:51:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:18] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:18] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:22] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:22] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:32] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:37] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:51] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:51] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:51] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:52] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:51:52] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:52:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:52:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:52:23] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:52:23] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:52:33] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:52:38] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:52:49] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:52:50] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:53:13] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:53:16] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:53:16] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:53:55] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:53:55] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:54:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:54:11] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:54:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:54:38] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:54:38] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:55:13] "POST /api/vehicle/getstatus HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 12:55:13] "POST /api/vehicle/getstatus HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 540, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 638, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1459, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 336, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 297, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\socket.py", line 729, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 696, in send
+    resp = conn.urlopen(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\retry.py", line 510, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 540, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 638, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1459, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 336, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 297, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\socket.py", line 729, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "E:\vehicle-automation\backend\app.py", line 90, in vehicle_getstatus
+    resp = requests.post(VEHICLE_LIST_URL, json=body, headers=status_headers)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 134, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 711, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None))
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 540, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 638, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1459, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 336, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 297, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\socket.py", line 729, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 696, in send
+    resp = conn.urlopen(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\retry.py", line 510, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+    
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 540, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 638, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1459, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 336, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 297, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\socket.py", line 729, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "E:\vehicle-automation\backend\app.py", line 90, in vehicle_getstatus
+    resp = requests.post(VEHICLE_LIST_URL, json=body, headers=status_headers)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 134, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 71, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\MC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 711, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionAbortedError(10053, 'An established connection was aborted by the software in your host machine', None, 10053, None))
+127.0.0.1 - - [26/Sep/2026 12:55:36] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:55:36] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:58:25] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:58:25] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:58:27] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 12:58:28] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:01:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:01:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:02:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:02:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:03:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:03:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:03:59] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:03:59] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:07:43] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:07:43] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:08:39] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:08:39] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:11:54] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:11:54] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:12:01] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:12:02] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:17:52] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:17:52] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:44] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:46] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:46] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:55] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:55] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:57] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:57] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:58] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:20:59] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:06] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:06] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:08] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:16] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:16] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:23] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:27] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:32] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:34] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:36] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:36] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:40] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:41] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:53] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:53] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:55] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:21:56] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:23:15] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:23:15] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:23:17] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:23:17] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:23:38] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:23:38] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:23:39] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:23:47] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:02] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:03] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:03] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:03] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:05] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:08] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:08] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:31] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:31] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:32] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:24:33] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:26:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 13:26:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:02:50] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:02:50] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:19:48] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:19:48] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:19:51] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:19:52] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:20:42] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:20:43] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:20:44] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:20:49] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:20:50] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:20:51] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:22:19] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:22:19] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:23:38] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:23:38] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:30:24] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:30:24] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:30:24] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:30:25] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:30:25] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:30:26] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:30:27] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:31:18] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:31:18] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:31:18] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:31:25] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:31:26] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:31:26] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:12] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:13] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:13] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:14] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:16] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:17] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:17] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:20] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:21] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:42] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:42] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:47] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:32:47] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:33:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:33:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:33] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:33] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:33] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:35] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:35] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:35] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:36] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:36] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:37] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:39] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:34:39] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:35:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:35:25] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:35:33] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:35:33] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:08] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:08] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:08] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:48] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:48] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:48] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:52] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:52] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:36:52] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:00] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:01] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:01] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:02] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:02] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:03] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:03] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:06] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:06] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:08] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:08] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:09] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:09] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:09] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:11] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:37:11] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:16] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:16] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:17] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:18] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:19] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:21] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:21] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:22] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:23] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:24] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:25] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:27] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:38:27] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:39:44] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:39:44] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:39:44] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:39:46] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:43:13] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:43:13] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:43:13] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:43:15] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:43:22] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:43:22] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:43:22] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:43:24] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:47:43] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:47:43] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:47:43] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:47:44] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:50:03] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:04] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:05] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:05] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:06] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:13] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:14] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:15] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:30] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:31] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:47] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:47] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:50:49] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:51:43] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:51:44] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:51:44] "POST /api/generate-token HTTP/1.1" 500 -
+127.0.0.1 - - [26/Sep/2026 14:52:11] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:11] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:15] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:17] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:17] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:17] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:31] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:31] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:31] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:35] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:35] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:52:35] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:35] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:35] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:35] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:46] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:46] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:46] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:57] "POST /api/generate-token HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:57] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:54:57] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:55:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:55:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:55:27] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:55:27] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:56:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:56:12] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:56:27] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 14:56:27] "POST /api/vehicle/getstatus HTTP/1.1" 200 -

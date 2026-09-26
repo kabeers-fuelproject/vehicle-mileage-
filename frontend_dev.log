@@ -6,3 +6,30 @@ npm notice run vite
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.25:[1m5173[22m/[39m  [2mWi-Fi[22m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m11:35:17 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m11:35:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m11:35:48 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:24:51 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:24:52 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:25:54 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:25:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:25:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:25:56 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:25:57 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:48:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:48:35 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:49:00 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:49:22 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:49:51 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m12:59:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m2:30:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
+[2m2:41:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m2:41:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m2:41:36 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
+[2m2:53:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/LoginBackdrop.jsx[22m
+[2m2:53:57 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
+[2m2:54:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
+[2m2:54:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m2:54:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m2:55:58 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
+[2m2:56:08 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
