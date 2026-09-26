@@ -1869,3 +1869,4 @@ requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionAbortedEr
 127.0.0.1 - - [26/Sep/2026 17:02:20] "POST /api/vehicle/getlist HTTP/1.1" 200 -
 127.0.0.1 - - [26/Sep/2026 17:02:20] "POST /api/vehicle/getlist HTTP/1.1" 200 -
 127.0.0.1 - - [26/Sep/2026 17:02:22] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 17:02:22] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
