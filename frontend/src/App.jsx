@@ -30,8 +30,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-neutral-50 text-ink">
       <div className="sticky top-0 z-20">
-        <div className="h-1 w-full bg-gradient-to-r from-green-800 via-green-500 to-green-800" />
-        <header className="border-b border-green-200 bg-white/95 backdrop-blur">
+        <div className="h-1 w-full bg-gradient-to-r from-green-600 via-green-300 to-green-600" />
+        <header className="border-b border-green-100 bg-white/95 backdrop-blur">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-3">
             <div className="flex items-center gap-3">
               <VaLogo className="h-9 w-9" />
@@ -45,15 +45,15 @@ export default function App() {
               </div>
             </div>
 
-            <nav className="flex flex-wrap items-center gap-1 rounded-full border border-green-200 bg-green-50 p-1">
+            <nav className="flex flex-wrap items-center gap-1 rounded-full border border-green-100 bg-green-50/60 p-1">
               {TABS.map((t) => (
                 <button
                   key={t.id}
                   onClick={() => setTab(t.id)}
                   className={`rounded-full px-4 py-1.5 text-sm whitespace-nowrap transition-all duration-200 ${
                     tab === t.id
-                      ? 'bg-green-700 text-white shadow-md shadow-green-700/30'
-                      : 'text-green-800/70 hover:bg-white hover:text-green-900'
+                      ? 'bg-green-600 text-white shadow-sm shadow-green-600/30'
+                      : 'text-neutral-500 hover:bg-green-100/70 hover:text-green-800'
                   }`}
                 >
                   {t.label}
@@ -63,7 +63,7 @@ export default function App() {
 
             <button
               onClick={handleLogout}
-              className="group flex items-center gap-2 rounded-full border border-green-700 px-4 py-1.5 text-sm font-medium text-green-700 transition-all duration-200 hover:bg-green-700 hover:text-white active:scale-95"
+              className="group flex items-center gap-2 rounded-full border border-green-600 bg-green-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm shadow-green-600/30 transition-all duration-200 hover:bg-green-700 hover:border-green-700 active:scale-95"
             >
               <svg
                 viewBox="0 0 24 24"
