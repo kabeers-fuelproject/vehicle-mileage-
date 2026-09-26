@@ -29,37 +29,61 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-neutral-50 text-ink">
-      <header className="sticky top-0 z-10 border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <VaLogo variant="brand" className="h-8 w-8" />
-            <h1 className="text-base font-semibold tracking-tight">
-              Vehicle Automation
-            </h1>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="rounded-lg border border-brand-600 px-3.5 py-1.5 text-sm font-medium text-brand-700 transition-colors hover:bg-brand-600 hover:text-white"
-          >
-            Logout
-          </button>
-        </div>
-        <nav className="mx-auto flex max-w-7xl gap-6 px-6">
-          {TABS.map((t) => (
+      <div className="sticky top-0 z-20">
+        <div className="h-1 w-full bg-gradient-to-r from-green-800 via-green-500 to-green-800" />
+        <header className="border-b border-green-200 bg-white/95 backdrop-blur">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-3">
+            <div className="flex items-center gap-3">
+              <VaLogo className="h-9 w-9" />
+              <div>
+                <p className="text-[9px] leading-tight font-semibold tracking-widest text-green-700 uppercase">
+                  Vehicle Automation
+                </p>
+                <h1 className="text-base leading-tight font-bold tracking-tight text-ink">
+                  Fleet Control Center
+                </h1>
+              </div>
+            </div>
+
+            <nav className="flex flex-wrap items-center gap-1 rounded-full border border-green-200 bg-green-50 p-1">
+              {TABS.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`rounded-full px-4 py-1.5 text-sm whitespace-nowrap transition-all duration-200 ${
+                    tab === t.id
+                      ? 'bg-green-700 text-white shadow-md shadow-green-700/30'
+                      : 'text-green-800/70 hover:bg-white hover:text-green-900'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </nav>
+
             <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`-mb-px border-b-2 pb-3 text-sm transition-colors ${
-                tab === t.id
-                  ? 'border-brand-600 font-semibold text-brand-700'
-                  : 'border-transparent text-neutral-400 hover:text-ink'
-              }`}
+              onClick={handleLogout}
+              className="group flex items-center gap-2 rounded-full border border-green-700 px-4 py-1.5 text-sm font-medium text-green-700 transition-all duration-200 hover:bg-green-700 hover:text-white active:scale-95"
             >
-              {t.label}
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-90"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <path d="m16 17 5-5-5-5" />
+                <path d="M21 12H9" />
+              </svg>
+              Logout
             </button>
-          ))}
-        </nav>
-      </header>
+          </div>
+        </header>
+      </div>
 
       <main className="mx-auto max-w-7xl px-6 py-8">
         {tab === 'status' && <VehicleStatusTab token={token} />}
