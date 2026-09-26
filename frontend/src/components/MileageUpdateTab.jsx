@@ -523,17 +523,35 @@ export default function MileageUpdateTab({ token }) {
             <span className="text-[11px] font-semibold tracking-wider text-neutral-400 uppercase">
               Status
             </span>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-lg border border-green-200 bg-white px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:border-green-600 focus:border-green-600 focus:outline-none"
-            >
-              {STATUS_FILTERS.map((filter) => (
-                <option key={filter.key} value={filter.key}>
-                  {filter.label} ({statusCounts[filter.key] ?? 0})
-                </option>
-              ))}
-            </select>
+            <span className="relative inline-flex">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="cursor-pointer appearance-none rounded-full border border-green-300 bg-white py-1.5 pr-9 pl-4 text-sm font-medium text-black shadow-sm transition-all duration-200 hover:border-green-600 focus:border-green-600 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
+              >
+                {STATUS_FILTERS.map((filter) => (
+                  <option
+                    key={filter.key}
+                    value={filter.key}
+                    className="bg-white text-black"
+                  >
+                    {filter.label} ({statusCounts[filter.key] ?? 0})
+                  </option>
+                ))}
+              </select>
+              <svg
+                viewBox="0 0 24 24"
+                className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-green-700"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </span>
           </label>
           <button
             type="button"
