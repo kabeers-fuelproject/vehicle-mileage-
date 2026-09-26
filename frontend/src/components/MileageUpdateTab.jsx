@@ -277,6 +277,8 @@ export default function MileageUpdateTab({ token }) {
   const tableRef = useRef(null)
   const [exporting, setExporting] = useState('')
   const [exportMessage, setExportMessage] = useState('')
+  const [refreshing, setRefreshing] = useState(false)
+  const runIdRef = useRef(0)
 
   async function copyAsImage() {
     const node = tableRef.current
@@ -423,66 +425,76 @@ export default function MileageUpdateTab({ token }) {
     { mileage: 0, hours: 0, ok: 0, low: 0, count: 0 },
   )
 
-  useEffect(() => {
-    let cancelled = false
-    async function load() {
-      try {
-        const data = await api('/vehicle/getlist', { token })
-        const list = data?.data ?? []
-        if (cancelled) return
-        setVehicles(list)
-        if (list.length > 0) {
-          const range = dayRange(new Date())
-          const map = {}
-          try {
-            const report = await api('/report/distance/preview', {
-              token,
-              body: {
-                UnitIDs: list.map((u) => u.unitID),
-                ...range,
-              },
-            })
-            if (cancelled) return
-            const grouped = new Map()
-            for (const row of report?.summary ?? []) {
-              const key = normalizeKey(row.vehicleRegNumber)
-              if (!key) continue
-              if (!grouped.has(key)) grouped.set(key, [])
-              grouped.get(key).push(row)
-            }
-            for (const [key, rows] of grouped) {
-              map[key] = {
-                mileage: mergeMileage(rows.map((row) => row.mileage)),
-                workingHours: mergeHours(rows.map((row) => row.igONTime)),
-              }
-            }
-          } catch (err) {
-            if (!cancelled) setError(err.message)
+  async function loadMileage(initial = false) {
+    const runId = ++runIdRef.current
+    const isCurrent = () => runIdRef.current === runId
+    if (initial) setLoading(true)
+    else setRefreshing(true)
+    setError('')
+    try {
+      const data = await api('/vehicle/getlist', { token })
+      const list = data?.data ?? []
+      if (!isCurrent()) return
+      setVehicles(list)
+      if (list.length > 0) {
+        const range = dayRange(new Date())
+        const map = {}
+        try {
+          const report = await api('/report/distance/preview', {
+            token,
+            body: {
+              UnitIDs: list.map((u) => u.unitID),
+              ...range,
+            },
+          })
+          if (!isCurrent()) return
+          const grouped = new Map()
+          for (const row of report?.summary ?? []) {
+            const key = normalizeKey(row.vehicleRegNumber)
+            if (!key) continue
+            if (!grouped.has(key)) grouped.set(key, [])
+            grouped.get(key).push(row)
           }
-          try {
-            const status = await api('/vehicle/getstatus', { token })
-            if (cancelled) return
-            for (const v of status?.vehicles ?? []) {
-              const key = normalizeKey(v.regNo)
-              if (!key) continue
-              map[key] = { ...map[key], lastUpdated: v.reportingDateTime }
+          for (const [key, rows] of grouped) {
+            map[key] = {
+              mileage: mergeMileage(rows.map((row) => row.mileage)),
+              workingHours: mergeHours(rows.map((row) => row.igONTime)),
             }
-          } catch (err) {
-            if (!cancelled) setError(err.message)
           }
-          setReportMap(map)
-          setGeneratedAt(new Date())
+        } catch (err) {
+          if (isCurrent()) setError(err.message)
         }
-      } catch (err) {
-        if (!cancelled) setError(err.message)
-      } finally {
-        if (!cancelled) setLoading(false)
+        try {
+          const status = await api('/vehicle/getstatus', { token })
+          if (!isCurrent()) return
+          for (const v of status?.vehicles ?? []) {
+            const key = normalizeKey(v.regNo)
+            if (!key) continue
+            map[key] = { ...map[key], lastUpdated: v.reportingDateTime }
+          }
+        } catch (err) {
+          if (isCurrent()) setError(err.message)
+        }
+        if (!isCurrent()) return
+        setReportMap(map)
+        setGeneratedAt(new Date())
+      }
+    } catch (err) {
+      if (isCurrent()) setError(err.message)
+    } finally {
+      if (isCurrent()) {
+        setLoading(false)
+        setRefreshing(false)
       }
     }
-    load()
+  }
+
+  useEffect(() => {
+    loadMileage(true)
     return () => {
-      cancelled = true
+      runIdRef.current += 1
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
   return (
@@ -521,6 +533,21 @@ export default function MileageUpdateTab({ token }) {
               ))}
             </select>
           </label>
+          <button
+            type="button"
+            onClick={() => loadMileage(false)}
+            disabled={refreshing || loading || Boolean(exporting)}
+            className="rounded-lg border border-brand-600 px-3.5 py-2 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+          >
+            {refreshing ? (
+              <span className="flex items-center gap-2">
+                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
+                Refreshing…
+              </span>
+            ) : (
+              'Refresh Mileage'
+            )}
+          </button>
           <button
             type="button"
             onClick={downloadPdf}
