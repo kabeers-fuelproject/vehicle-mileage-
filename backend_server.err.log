@@ -1127,3 +1127,14 @@ requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionAbortedEr
 127.0.0.1 - - [26/Sep/2026 15:26:15] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
 127.0.0.1 - - [26/Sep/2026 15:26:15] "POST /api/report/distance/preview HTTP/1.1" 200 -
 127.0.0.1 - - [26/Sep/2026 15:26:15] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:48] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:49] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:49] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:51] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:51] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:51] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:51] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:51] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:53] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:57] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 15:26:57] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
