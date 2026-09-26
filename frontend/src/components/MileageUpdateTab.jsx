@@ -48,10 +48,10 @@ const PDF_ALIGN = {
 const PDF_MUTED = [156, 163, 175]
 
 const primaryBtnClass =
-  'btn-shine relative overflow-hidden rounded-full bg-gradient-to-r from-green-700 to-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-green-700/25 transition-all duration-200 hover:from-green-600 hover:to-green-500 hover:shadow-lg hover:shadow-green-700/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+  'btn-shine relative overflow-hidden rounded-full bg-gradient-to-r from-green-700 to-green-600 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-green-700/25 transition-all duration-200 hover:from-green-600 hover:to-green-500 hover:shadow-lg hover:shadow-green-700/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
 
 const outlineBtnClass =
-  'rounded-full border border-green-300 bg-white px-4 py-2 text-sm font-semibold text-green-700 transition-all duration-200 hover:border-green-600 hover:bg-green-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white'
+  'rounded-full border border-green-300 bg-white px-5 py-2 text-sm font-semibold text-green-700 transition-all duration-200 hover:border-green-600 hover:bg-green-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white'
 const PDF_LOW_TEXT = [120, 53, 15]
 const PDF_ZEBRA = [240, 253, 244]
 
@@ -520,14 +520,14 @@ export default function MileageUpdateTab({ token }) {
             </span>
           )}
           <label className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold tracking-wider text-neutral-400 uppercase">
+            <span className="text-sm font-semibold text-black">
               Status
             </span>
             <span className="relative inline-flex">
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="cursor-pointer appearance-none rounded-full border border-green-300 bg-white py-1.5 pr-9 pl-4 text-sm font-medium text-black shadow-sm transition-all duration-200 hover:border-green-600 focus:border-green-600 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
+                className="cursor-pointer appearance-none rounded-full border border-green-300 bg-white py-2 pr-10 pl-4 text-sm font-semibold text-black shadow-sm transition-all duration-200 hover:border-green-600 focus:border-green-600 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
               >
                 {STATUS_FILTERS.map((filter) => (
                   <option
