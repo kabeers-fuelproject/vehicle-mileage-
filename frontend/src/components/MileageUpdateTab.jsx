@@ -24,8 +24,6 @@ const COLUMNS = [
 
 const NUMERIC_KEYS = new Set(['mileage', 'workingHours'])
 
-const GROUP_START_KEYS = new Set(['vehicleCode', 'driverName', 'mileage'])
-
 const DATA_COLUMNS = COLUMNS.slice(2)
 
 const COLUMN_WIDTHS = [
@@ -193,14 +191,14 @@ function StatusCell({ value }) {
   const style = STATUS_BADGE_STYLES[value]
   if (!style) {
     return (
-      <span className="inline-block rounded-full border border-neutral-200 bg-neutral-100 px-2.5 py-1 text-[10px] font-semibold tracking-wide whitespace-nowrap text-neutral-600">
+      <span className="inline-block rounded-full border border-neutral-200 bg-neutral-100 px-2.5 py-1 text-xs font-semibold tracking-wide whitespace-nowrap text-neutral-600">
         {value}
       </span>
     )
   }
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-wide whitespace-nowrap uppercase ${style}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide whitespace-nowrap uppercase ${style}`}
     >
       <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT_STYLES[value]}`} />
       {value}
@@ -222,23 +220,21 @@ function Meta({ label, value }) {
 }
 
 function cellClass(column, isLow = false) {
-  const divider = GROUP_START_KEYS.has(column.key)
-    ? `border-l ${isLow ? 'border-amber-300' : 'border-neutral-400'}`
-    : ''
+  const base = 'px-3 py-2.5 align-middle border border-neutral-300'
   if (column.key === 'sr')
-    return 'px-3 py-2.5 text-center align-middle text-xs tabular-nums text-neutral-400'
+    return `${base} text-center tabular-nums text-neutral-400`
   if (column.key === 'vehicleCode')
-    return `px-3 py-2.5 align-middle font-semibold ${divider}`
+    return `${base} font-semibold ${isLow ? 'text-amber-900' : 'text-ink'}`
   if (NUMERIC_KEYS.has(column.key))
-    return `px-3 py-2.5 text-right align-middle font-medium tabular-nums ${
+    return `${base} text-right font-medium tabular-nums ${
       isLow ? 'text-amber-900' : 'text-ink'
-    } ${divider}`
-  if (column.key === 'status') return 'px-3 py-2.5 text-center align-middle'
+    }`
+  if (column.key === 'status') return `${base} text-center`
   if (column.key === 'lastUpdated')
-    return 'px-3 py-2.5 align-middle text-xs tabular-nums whitespace-nowrap text-neutral-500'
-  return `px-3 py-2.5 align-middle break-words ${
+    return `${base} tabular-nums whitespace-nowrap text-neutral-500`
+  return `${base} break-words ${
     isLow ? 'text-amber-900' : 'text-neutral-700'
-  } ${divider}`
+  }`
 }
 
 function codeOf(vehicle) {
@@ -633,43 +629,39 @@ export default function MileageUpdateTab({ token }) {
           </div>
 
           <div className="no-scrollbar overflow-x-auto">
-            <table className="w-full table-fixed text-left text-sm">
+            <table className="w-full table-fixed text-left text-xs">
               <colgroup>
                 {COLUMN_WIDTHS.map((width) => (
                   <col key={width} style={{ width }} />
                 ))}
               </colgroup>
               <thead>
-                <tr className="bg-green-700 text-[10px] tracking-wider text-white uppercase">
-                  <th className="px-3 py-2" />
+                <tr className="bg-green-700 tracking-wider text-white uppercase">
+                  <th className="border border-white/25 px-3 py-2" />
                   <th
                     colSpan={2}
-                    className="border-l border-white/25 px-3 py-2 text-center font-semibold"
+                    className="border border-l-2 border-l-white/70 border-white/25 px-3 py-2 text-center font-semibold"
                   >
                     Vehicle
                   </th>
                   <th
                     colSpan={3}
-                    className="border-l border-white/25 px-3 py-2 text-center font-semibold"
+                    className="border border-l-2 border-l-white/70 border-white/25 px-3 py-2 text-center font-semibold"
                   >
                     Assignment
                   </th>
                   <th
                     colSpan={4}
-                    className="border-l border-white/25 px-3 py-2 text-center font-semibold"
+                    className="border border-l-2 border-l-white/70 border-white/25 px-3 py-2 text-center font-semibold"
                   >
                     Today&apos;s Performance
                   </th>
                 </tr>
-                <tr className="border-b-2 border-green-700 bg-green-100 text-[10px] tracking-wider text-green-900 uppercase">
+                <tr className="bg-green-100 tracking-wider text-green-900 uppercase">
                   {COLUMNS.map((column) => (
                     <th
                       key={column.key}
-                      className={`px-3 py-2.5 align-middle font-semibold ${
-                        GROUP_START_KEYS.has(column.key)
-                          ? 'border-l border-neutral-400'
-                          : ''
-                      } ${column.align}`}
+                      className={`border border-b-2 border-b-green-700 border-green-900/25 px-3 py-2.5 align-middle font-semibold ${column.align}`}
                     >
                       {column.key === 'vehicleCode' ? (
                         <button
@@ -698,23 +690,23 @@ export default function MileageUpdateTab({ token }) {
                   return (
                     <tr
                       key={vehicle.unitID}
-                      className={`border-b border-neutral-400 transition-colors last:border-b-0 ${
+                      className={`transition-colors hover:bg-green-100 ${
                         index % 2 === 0
-                          ? 'bg-green-50 hover:bg-green-100'
-                          : 'bg-white hover:bg-neutral-50'
+                          ? 'bg-green-50'
+                          : 'bg-white'
                       }`}
                     >
                       <td
-                        className={`px-3 py-2.5 text-center align-middle text-xs tabular-nums border-l-4 ${
+                        className={`px-3 py-2.5 text-center align-middle tabular-nums border border-neutral-300 ${
                           isLow
-                            ? 'border-l-amber-500 font-semibold text-amber-900'
-                            : 'border-l-transparent text-neutral-400'
+                            ? 'shadow-[inset_3px_0_0_0_#f59e0b] font-semibold text-amber-900'
+                            : 'text-neutral-400'
                         }`}
                       >
                         {index + 1}
                       </td>
                       <td
-                        className={`px-3 py-2.5 align-middle font-semibold ${
+                        className={`px-3 py-2.5 align-middle font-semibold border border-neutral-300 ${
                           isLow ? 'text-amber-900' : 'text-ink'
                         }`}
                       >
@@ -745,29 +737,39 @@ export default function MileageUpdateTab({ token }) {
                 })}
               </tbody>
               <tfoot>
-                <tr className="border-t-2 border-green-700 bg-green-50 text-[11px] font-semibold text-green-900">
-                  <td className="px-3 py-3 text-center text-neutral-300">Σ</td>
-                  <td className="px-3 py-3 tracking-wider whitespace-nowrap uppercase">
+                <tr className="bg-green-50 font-semibold text-green-900">
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-center text-neutral-300">
+                    Σ
+                  </td>
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 tracking-wider whitespace-nowrap uppercase">
                     Total ({totals.count})
                   </td>
-                  <td className="border-l border-neutral-400 px-3 py-3 text-neutral-400">
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
                     —
                   </td>
-                  <td className="px-3 py-3 text-neutral-400">—</td>
-                  <td className="px-3 py-3 text-neutral-400">—</td>
-                  <td className="px-3 py-3 text-neutral-400">—</td>
-                  <td className="border-l border-neutral-400 px-3 py-3 text-right tabular-nums">
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
+                    —
+                  </td>
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
+                    —
+                  </td>
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
+                    —
+                  </td>
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-right tabular-nums">
                     {totals.mileage.toFixed(2)}
                   </td>
-                  <td className="px-3 py-3 text-right tabular-nums">
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-right tabular-nums">
                     {formatDuration(totals.hours)}
                   </td>
-                  <td className="px-3 py-3 text-center text-[10px] tracking-wider whitespace-nowrap uppercase">
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-center tracking-wider whitespace-nowrap uppercase">
                     <span className="text-green-800">{totals.ok} Ok</span>
                     <span className="text-neutral-300"> / </span>
                     <span className="text-amber-700">{totals.low} Low</span>
                   </td>
-                  <td className="px-3 py-3 text-neutral-400">—</td>
+                  <td className="border border-t-2 border-t-green-700 border-neutral-300 px-3 py-2.5 text-neutral-400">
+                    —
+                  </td>
                 </tr>
               </tfoot>
             </table>
