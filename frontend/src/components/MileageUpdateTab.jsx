@@ -191,14 +191,14 @@ function StatusCell({ value }) {
   const style = STATUS_BADGE_STYLES[value]
   if (!style) {
     return (
-      <span className="inline-block rounded-full border border-neutral-200 bg-neutral-100 px-2.5 py-1 text-xs font-semibold tracking-wide whitespace-nowrap text-neutral-600">
+      <span className="inline-block rounded-full border border-neutral-200 bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold tracking-wide whitespace-nowrap text-neutral-600">
         {value}
       </span>
     )
   }
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide whitespace-nowrap uppercase ${style}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide whitespace-nowrap uppercase ${style}`}
     >
       <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT_STYLES[value]}`} />
       {value}
