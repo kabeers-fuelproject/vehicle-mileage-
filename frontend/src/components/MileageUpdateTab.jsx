@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { toPng } from 'html-to-image'
+import { buildTablePdf } from '../reportPdf'
 import { api } from '../api'
 import { vehicleTypeOf } from '../vehicleTypes'
 import { driverOf } from '../drivers'
@@ -39,6 +40,16 @@ const COLUMN_WIDTHS = [
   '7%',
   '12%',
 ]
+
+const PDF_ALIGN = {
+  'text-center': 'center',
+  'text-right': 'right',
+  'text-left': 'left',
+}
+
+const PDF_MUTED = [156, 163, 175]
+const PDF_LOW_TEXT = [120, 53, 15]
+const PDF_ZEBRA = [240, 253, 244]
 
 const MONTHS = [
   'Jan',
@@ -264,24 +275,101 @@ export default function MileageUpdateTab({ token }) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [codeSort, setCodeSort] = useState('asc')
   const tableRef = useRef(null)
-  const [copying, setCopying] = useState(false)
-  const [copyMessage, setCopyMessage] = useState('')
+  const [exporting, setExporting] = useState('')
+  const [exportMessage, setExportMessage] = useState('')
 
   async function copyAsImage() {
     const node = tableRef.current
-    if (!node || copying) return
-    setCopying(true)
-    setCopyMessage('')
+    if (!node || exporting) return
+    setExporting('copy')
+    setExportMessage('')
     try {
       const message = await copyNodeAsImage(
         node,
         `mileage-update-${formatDate(new Date())}.png`,
       )
-      setCopyMessage(message)
+      setExportMessage(message)
     } catch (err) {
-      setCopyMessage(err?.message || 'Could not copy image')
+      setExportMessage(err?.message || 'Could not copy image')
     } finally {
-      setCopying(false)
+      setExporting('')
+    }
+  }
+
+  function downloadPdf() {
+    if (exporting || sortedVehicles.length === 0) return
+    setExporting('pdf')
+    setExportMessage('')
+    try {
+      const columns = COLUMNS.map((col, i) => ({
+        label: col.label,
+        align: PDF_ALIGN[col.align] ?? 'left',
+        width: parseFloat(COLUMN_WIDTHS[i]) || 10,
+      }))
+      const pdfRows = sortedVehicles.map((vehicle, index) => {
+        const code = codeOf(vehicle)
+        const status = displayValue(code, 'status', reportMap)
+        const isLow = status === 'Low'
+        return {
+          bg: index % 2 === 0 ? PDF_ZEBRA : [255, 255, 255],
+          cells: COLUMNS.map((col) => {
+            if (col.key === 'sr') {
+              return { text: index + 1, align: 'center', color: PDF_MUTED }
+            }
+            if (col.key === 'status') {
+              if (status === 'Ok') {
+                return {
+                  badge: { text: 'Ok', bg: [234, 88, 12], color: [255, 255, 255] },
+                }
+              }
+              if (isLow) {
+                return {
+                  badge: { text: 'Low', bg: [254, 243, 199], color: PDF_LOW_TEXT },
+                }
+              }
+              return { text: '—', align: 'center', color: PDF_MUTED }
+            }
+            const value =
+              col.key === 'vehicleCode'
+                ? code
+                : displayValue(code, col.key, reportMap)
+            if (!value) return { text: '—', color: PDF_MUTED }
+            return {
+              text: value,
+              bold: col.key === 'vehicleCode',
+              color: isLow ? PDF_LOW_TEXT : undefined,
+            }
+          }),
+        }
+      })
+      const footer = {
+        cells: COLUMNS.map((col) => {
+          if (col.key === 'sr') return { text: 'Σ', align: 'center' }
+          if (col.key === 'vehicleCode') return { text: `Total (${totals.count})` }
+          if (col.key === 'mileage') return { text: totals.mileage.toFixed(2) }
+          if (col.key === 'workingHours') return { text: formatDuration(totals.hours) }
+          if (col.key === 'status') {
+            return { text: `${totals.ok} Ok / ${totals.low} Low`, align: 'center' }
+          }
+          return { text: '—', color: PDF_MUTED }
+        }),
+      }
+      buildTablePdf({
+        filename: `mileage-update-${formatDate(new Date())}.pdf`,
+        title: 'Mileage Update Report',
+        subtitle: `Daily mileage, working hours and assignment status · ${formatDay(stamp)} · Generated ${formatTime(stamp)} · Vehicles ${sortedVehicles.length} · Ok ${totals.ok} / Low ${totals.low}`,
+        note: 'Ok — meets mileage and working-hour threshold · Low — below threshold · Source: TrackingWorld',
+        accent: [21, 128, 61],
+        zebra: PDF_ZEBRA,
+        columns,
+        rows: pdfRows,
+        footer,
+      })
+      setExportMessage('PDF downloaded')
+    } catch (err) {
+      setExportMessage(err?.message || 'Could not download PDF')
+    } finally {
+      setExporting('')
     }
   }
 
@@ -408,9 +496,9 @@ export default function MileageUpdateTab({ token }) {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          {copyMessage && (
+          {exportMessage && (
             <span className="text-xs font-medium text-brand-700">
-              {copyMessage}
+              {exportMessage}
             </span>
           )}
           <label className="flex items-center gap-2">
@@ -431,11 +519,19 @@ export default function MileageUpdateTab({ token }) {
           </label>
           <button
             type="button"
-            onClick={copyAsImage}
-            disabled={copying || visibleVehicles.length === 0}
+            onClick={downloadPdf}
+            disabled={Boolean(exporting) || visibleVehicles.length === 0}
             className="rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-brand-600"
           >
-            {copying ? 'Copying…' : 'Copy as Image'}
+            {exporting === 'pdf' ? 'Preparing…' : 'Download PDF'}
+          </button>
+          <button
+            type="button"
+            onClick={copyAsImage}
+            disabled={Boolean(exporting) || visibleVehicles.length === 0}
+            className="rounded-lg border border-brand-600 px-3.5 py-2 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+          >
+            {exporting === 'copy' ? 'Copying…' : 'Copy as Image'}
           </button>
         </div>
       </div>

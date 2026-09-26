@@ -1,6 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '../api'
 import { dayRange } from '../reportRange'
+import { buildTablePdf } from '../reportPdf'
+
+const PDF_COLUMNS = [
+  { label: 'S #', align: 'center', width: 6 },
+  { label: 'Vehicle Reg Number', align: 'left', width: 18 },
+  { label: 'Vehicle type', align: 'left', width: 15 },
+  { label: 'Town', align: 'left', width: 15 },
+  { label: 'Mileage', align: 'right', width: 10 },
+  { label: 'IG Time', align: 'left', width: 16 },
+  { label: 'Fuel Allocated', align: 'right', width: 14 },
+]
+
+const PDF_MUTED = [156, 163, 175]
 
 function formatDate(date) {
   const y = date.getFullYear()
@@ -10,6 +23,12 @@ function formatDate(date) {
 }
 
 const TODAY = new Date()
+
+function formatDateTime(date) {
+  const hh = String(date.getHours()).padStart(2, '0')
+  const mm = String(date.getMinutes()).padStart(2, '0')
+  return `${formatDate(date)} ${hh}:${mm}`
+}
 
 export default function DistanceReportTab({ token }) {
   const [fromDate, setFromDate] = useState(formatDate(TODAY))
@@ -21,6 +40,7 @@ export default function DistanceReportTab({ token }) {
   const [unitsError, setUnitsError] = useState('')
   const [loadingUnits, setLoadingUnits] = useState(true)
   const [generating, setGenerating] = useState(false)
+  const [downloading, setDownloading] = useState(false)
   const [rows, setRows] = useState(null)
 
   async function runReport(from, to, unitIds) {
@@ -111,6 +131,36 @@ export default function DistanceReportTab({ token }) {
   async function generate(e) {
     e.preventDefault()
     await runReport(fromDate, toDate, [...selected])
+  }
+
+  async function downloadPdf() {
+    if (downloading || !filteredRows || filteredRows.length === 0) return
+    setDownloading(true)
+    try {
+      const pdfRows = filteredRows.map((row, index) => ({
+        cells: [
+          { text: row.s_No ?? index + 1, align: 'center', color: PDF_MUTED },
+          { text: row.vehicleRegNumber, bold: true },
+          { text: row.vehType },
+          { text: row.town },
+          { text: row.mileage, align: 'right' },
+          { text: row.igONTime },
+          { text: row.fuelAllocated, align: 'right' },
+        ],
+      }))
+      buildTablePdf({
+        filename: `distance-report-${fromDate}-to-${toDate}.pdf`,
+        title: 'Distance Report',
+        subtitle: `${filteredRows.length} vehicle${filteredRows.length === 1 ? '' : 's'} · ${fromDate} to ${toDate} · Generated ${formatDateTime(new Date())}`,
+        accent: [234, 88, 12],
+        columns: PDF_COLUMNS,
+        rows: pdfRows,
+      })
+    } catch (err) {
+      setError(err.message || 'Could not download PDF')
+    } finally {
+      setDownloading(false)
+    }
   }
 
   const allVisibleSelected =
@@ -253,11 +303,23 @@ export default function DistanceReportTab({ token }) {
         <div className="mt-8">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold tracking-tight">Report results</h3>
-            <span className="text-sm text-neutral-500">
-              {search.trim()
-                ? `${filteredRows.length} of ${rows.length} vehicles (filtered)`
-                : `${rows.length} vehicles`}
-            </span>
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-neutral-500">
+                {search.trim()
+                  ? `${filteredRows.length} of ${rows.length} vehicles (filtered)`
+                  : `${rows.length} vehicles`}
+              </span>
+              {filteredRows.length > 0 && (
+                <button
+                  type="button"
+                  onClick={downloadPdf}
+                  disabled={downloading}
+                  className="rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  {downloading ? 'Preparing…' : 'Download PDF'}
+                </button>
+              )}
+            </div>
           </div>
 
           {filteredRows.length === 0 ? (

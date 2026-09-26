@@ -1,94 +1,33 @@
 npm notice run frontend@0.0.0 dev
 npm notice run vite
 
-  [32m[1mVITE[22m v8.3.1[39m  [2mready in [0m[1m3016[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v8.3.1[39m  [2mready in [0m[1m3145[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
 [2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
-[2m4:55:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m4:55:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m4:55:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m4:55:39 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:04:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
-[2m5:04:44 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
-[2m5:05:25 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m5:05:25 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m5:05:25 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m5:05:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m5:05:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
-[2m5:05:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
-[2m5:05:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
-[2m5:05:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
-[2m5:05:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
-[2m5:05:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
-[2m5:05:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
-[2m5:05:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
-[2m5:05:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ThresholdTab.jsx, /src/index.css[22m
-[2m5:05:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ThresholdTab.jsx, /src/index.css[22m
-[2m5:05:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:05:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:05:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:05:49 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:05:49 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:05:49 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:05:49 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:05:57 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:06:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:06:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
-[2m5:06:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:27 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:27 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:27 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:52 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:58 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:06:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:18:31 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:18:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:18:40 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:18:51 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:18:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:19:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:19:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:19:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:19:45 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:19:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:19:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:22:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
-[2m5:22:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:22:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:22:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:22:35 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:22:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:22:50 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:23:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:27:00 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:27:00 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:27:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:27:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:08 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:08 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:09 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:22 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:28:22 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:29:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:29:28 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:29:29 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:29:29 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:29:36 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:39:21 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:39:22 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:39:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:39:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:39:42 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m5:39:42 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m9:02:18 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m9:02:20 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mdependency optimized: [33mjspdf[32m[39m
+[2m9:02:20 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32moptimized dependencies changed. reloading[39m
+[2m9:02:28 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m9:02:35 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m9:02:45 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m9:03:00 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:03:29 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m9:03:36 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:03:49 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:03:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:04:14 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:04:22 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:04:35 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:11:57 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx[22m
+[2m9:21:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m9:21:32 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m9:21:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m9:22:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:22:35 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:22:39 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:22:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:23:05 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/exportPdf.js[22m
+[2m9:24:53 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m9:26:20 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
