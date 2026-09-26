@@ -4,6 +4,7 @@ import Login from './components/Login'
 import MileageUpdateTab from './components/MileageUpdateTab'
 import ThresholdTab from './components/ThresholdTab'
 import VehicleStatusTab from './components/VehicleStatusTab'
+import VaLogo from './components/VaLogo'
 
 const TABS = [
   { id: 'status', label: 'Vehicle Status' },
@@ -31,9 +32,7 @@ export default function App() {
       <header className="sticky top-0 z-10 border-b border-neutral-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-xs font-bold text-white">
-              VA
-            </span>
+            <VaLogo variant="brand" className="h-8 w-8" />
             <h1 className="text-base font-semibold tracking-tight">
               Vehicle Automation
             </h1>

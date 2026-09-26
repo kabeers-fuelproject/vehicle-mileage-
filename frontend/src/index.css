@@ -95,6 +95,16 @@ html {
   animation: va-zoom 24s ease-in-out infinite alternate;
 }
 
+.va-needle {
+  transform-box: view-box;
+  transform-origin: 20px 26.5px;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.va-logo:hover .va-needle {
+  transform: rotate(36deg);
+}
+
 .btn-shine::after {
   content: "";
   position: absolute;

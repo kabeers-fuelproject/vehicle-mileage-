@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { api } from '../api'
 import loginBg from '../assets/login-bg.jpg'
+import VaLogo from './VaLogo'
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('')
@@ -37,13 +38,11 @@ export default function Login({ onLogin }) {
       />
 
       <div className="anim-fade-up relative z-10 w-full max-w-md">
-        <div className="group overflow-hidden rounded-2xl border-2 border-neutral-400 bg-white shadow-2xl transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_28px_70px_-15px_rgba(5,46,22,0.65)]">
+        <div className="overflow-hidden rounded-3xl border-2 border-neutral-400 bg-white shadow-2xl">
           <div className="h-1.5 w-full bg-gradient-to-r from-green-800 via-green-500 to-green-800" />
 
-          <div className="flex items-center gap-4 border-b border-green-200 bg-green-50 px-6 py-5 transition-colors duration-300 group-hover:bg-green-100">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-green-700 text-sm font-bold text-white shadow-md shadow-green-700/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-              VA
-            </span>
+          <div className="flex items-center gap-4 border-b border-green-200 bg-green-50 px-6 py-5">
+            <VaLogo className="h-11 w-11" />
             <div>
               <p className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
                 Vehicle Automation
@@ -91,7 +90,7 @@ export default function Login({ onLogin }) {
             <button
               type="submit"
               disabled={loading}
-              className="btn-shine group/btn relative mt-6 flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-green-700 to-green-600 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-green-700/25 transition-all duration-200 hover:from-green-600 hover:to-green-500 hover:shadow-lg hover:shadow-green-700/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+              className="btn-shine group/btn relative mt-6 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-green-700 to-green-600 px-4 py-3.5 text-sm font-semibold text-white shadow-md shadow-green-700/25 transition-all duration-200 hover:from-green-600 hover:to-green-500 hover:shadow-lg hover:shadow-green-700/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
             >
               {loading ? (
                 <>
@@ -109,7 +108,7 @@ export default function Login({ onLogin }) {
             </button>
           </form>
 
-          <div className="border-t border-green-200 bg-green-50 px-6 py-3 transition-colors duration-300 group-hover:bg-green-100">
+          <div className="border-t border-green-200 bg-green-50 px-6 py-3">
             <p className="text-[11px] text-green-800">
               Secure access · Vehicle Automation Suite
             </p>
