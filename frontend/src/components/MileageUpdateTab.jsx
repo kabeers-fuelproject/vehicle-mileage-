@@ -306,10 +306,14 @@ export default function MileageUpdateTab({ token }) {
         align: PDF_ALIGN[col.align] ?? 'left',
         width: parseFloat(COLUMN_WIDTHS[i]) || 10,
       }))
+      let okCount = 0
+      let lowCount = 0
       const pdfRows = sortedVehicles.map((vehicle, index) => {
         const code = codeOf(vehicle)
         const status = displayValue(code, 'status', reportMap)
         const isLow = status === 'Low'
+        if (status === 'Ok') okCount += 1
+        if (isLow) lowCount += 1
         return {
           bg: index % 2 === 0 ? PDF_ZEBRA : [255, 255, 255],
           cells: COLUMNS.map((col) => {
@@ -349,7 +353,7 @@ export default function MileageUpdateTab({ token }) {
           if (col.key === 'mileage') return { text: totals.mileage.toFixed(2) }
           if (col.key === 'workingHours') return { text: formatDuration(totals.hours) }
           if (col.key === 'status') {
-            return { text: `${totals.ok} Ok / ${totals.low} Low`, align: 'center' }
+            return { text: `${okCount} Ok / ${lowCount} Low`, align: 'center' }
           }
           return { text: '—', color: PDF_MUTED }
         }),
@@ -357,7 +361,7 @@ export default function MileageUpdateTab({ token }) {
       buildTablePdf({
         filename: `mileage-update-${formatDate(new Date())}.pdf`,
         title: 'Mileage Update Report',
-        subtitle: `Daily mileage, working hours and assignment status · ${formatDay(stamp)} · Generated ${formatTime(stamp)} · Vehicles ${sortedVehicles.length} · Ok ${totals.ok} / Low ${totals.low}`,
+        subtitle: `Daily mileage, working hours and assignment status · ${formatDay(stamp)} · Generated ${formatTime(stamp)} · Vehicles ${sortedVehicles.length} · Ok ${statusCounts.Ok} / Low ${statusCounts.Low}`,
         note: 'Ok — meets mileage and working-hour threshold · Low — below threshold · Source: TrackingWorld',
         accent: [21, 128, 61],
         zebra: PDF_ZEBRA,
