@@ -10,7 +10,7 @@ import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
 
 const COLUMNS = [
-  { key: 'sr', label: 'Sr', align: 'text-center' },
+  { key: 'sr', label: 'Sr', align: 'text-center', noWrap: true },
   { key: 'vehicleCode', label: 'Vehicle Code', align: 'text-left' },
   { key: 'vehType', label: 'Veh Type', align: 'text-left' },
   { key: 'driverName', label: 'Driver Name', align: 'text-left' },
@@ -45,6 +45,21 @@ const PDF_ALIGN = {
   'text-left': 'left',
 }
 
+const PDF_LABELS = {
+  sr: 'Sr',
+  vehicleCode: 'Vehicle Code',
+  vehType: 'Veh Type',
+  driverName: 'Driver Name',
+  usedFor: 'Used For',
+  supervisor: 'Supervisor',
+  mileage: 'Mileage',
+  workingHours: 'Whours',
+  status: 'Status',
+  lastUpdated: 'Last Update Time',
+}
+
+const PDF_WIDTH_SAMPLE = { sr: '999' }
+
 const PDF_MUTED = [156, 163, 175]
 
 const primaryBtnClass =
@@ -52,7 +67,8 @@ const primaryBtnClass =
 
 const outlineBtnClass =
   'rounded-full border border-green-300 bg-white px-5 py-2 text-sm font-semibold text-green-700 transition-all duration-200 hover:border-green-600 hover:bg-green-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white'
-const PDF_LOW_TEXT = [120, 53, 15]
+const PDF_OK_TEXT = [120, 53, 15]
+const PDF_LOW_TEXT = [234, 88, 12]
 const PDF_ZEBRA = [240, 253, 244]
 
 const MONTHS = [
@@ -151,6 +167,11 @@ function computeStatus(code, reportMap) {
   const mileageOk = mileage >= threshold.mileage
   const hoursOk = requiredHours === null || hours >= requiredHours
   return mileageOk && hoursOk ? 'Ok' : 'Low'
+}
+
+function pdfStamp(value) {
+  const m = String(value ?? '').match(/^(\d{4})-(\d{2})-(\d{2})(.*)$/)
+  return m ? `${m[3]}-${m[2]}-${m[1]}${m[4]}` : String(value ?? '')
 }
 
 function displayValue(code, field, reportMap) {
@@ -300,33 +321,30 @@ export default function MileageUpdateTab({ token }) {
     setExporting('pdf')
     setExportMessage('')
     try {
-      const columns = COLUMNS.map((col, i) => ({
-        label: col.label,
+      const columns = COLUMNS.map((col) => ({
+        label: PDF_LABELS[col.key] ?? col.label,
         align: PDF_ALIGN[col.align] ?? 'left',
-        width: parseFloat(COLUMN_WIDTHS[i]) || 10,
+        widthSample: PDF_WIDTH_SAMPLE[col.key],
+        noWrap: col.noWrap,
       }))
       const pdfRows = sortedVehicles.map((vehicle, index) => {
         const code = codeOf(vehicle)
         const status = displayValue(code, 'status', reportMap)
-        const isLow = status === 'Low'
         return {
-          bg: index % 2 === 0 ? PDF_ZEBRA : [255, 255, 255],
+          bg: index % 2 === 1 ? PDF_ZEBRA : [255, 255, 255],
           cells: COLUMNS.map((col) => {
             if (col.key === 'sr') {
-              return { text: index + 1, align: 'center', color: PDF_MUTED }
+              return { text: index + 1, align: 'center', color: [0, 0, 0] }
             }
             if (col.key === 'status') {
-              if (status === 'Ok') {
-                return {
-                  badge: { text: 'Ok', bg: [254, 243, 199], color: PDF_LOW_TEXT },
-                }
-              }
-              if (isLow) {
-                return {
-                  badge: { text: 'Low', bg: [234, 88, 12], color: [255, 255, 255] },
-                }
-              }
+              if (status === 'Ok') return { text: 'Ok', color: PDF_OK_TEXT }
+              if (status === 'Low') return { text: 'Low', color: PDF_LOW_TEXT }
               return { text: '—', align: 'center', color: PDF_MUTED }
+            }
+            if (col.key === 'lastUpdated') {
+              const value = displayValue(code, 'lastUpdated', reportMap)
+              if (!value) return { text: '—', color: PDF_MUTED }
+              return { text: pdfStamp(value) }
             }
             const value =
               col.key === 'vehicleCode'
@@ -336,17 +354,12 @@ export default function MileageUpdateTab({ token }) {
             return {
               text: value,
               bold: col.key === 'vehicleCode',
-              color: isLow ? PDF_LOW_TEXT : undefined,
             }
           }),
         }
       })
       buildTablePdf({
         filename: `mileage-update-${formatDate(new Date())}.pdf`,
-        title: 'Mileage Update Report',
-        subtitle: `Daily mileage, working hours and assignment status · ${formatDay(stamp)} · Generated ${formatTime(stamp)} · Vehicles ${sortedVehicles.length} · Ok ${statusCounts.Ok} / Low ${statusCounts.Low}`,
-        note: 'Ok — meets mileage and working-hour threshold · Low — below threshold · Source: TrackingWorld',
-        accent: [21, 128, 61],
         zebra: PDF_ZEBRA,
         columns,
         rows: pdfRows,

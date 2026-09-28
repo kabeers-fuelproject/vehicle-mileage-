@@ -5,17 +5,14 @@ import { buildTablePdf } from '../reportPdf'
 import VaLogo from './VaLogo'
 
 const PDF_COLUMNS = [
-  { label: 'S #', align: 'center', width: 6 },
-  { label: 'Vehicle Reg Number', align: 'left', width: 18 },
-  { label: 'Vehicle type', align: 'left', width: 15 },
-  { label: 'Town', align: 'left', width: 15 },
-  { label: 'Mileage', align: 'right', width: 10 },
-  { label: 'IG Time', align: 'left', width: 16 },
-  { label: 'Fuel Allocated', align: 'right', width: 14 },
+  { label: 'S #', align: 'center', widthSample: '999', noWrap: true },
+  { label: 'Vehicle Reg Number', align: 'left' },
+  { label: 'Vehicle type', align: 'left' },
+  { label: 'Town', align: 'left' },
+  { label: 'Mileage', align: 'right' },
+  { label: 'IG Time', align: 'left' },
+  { label: 'Fuel Allocated', align: 'right' },
 ]
-
-const PDF_MUTED = [156, 163, 175]
-const PDF_GREEN = [21, 128, 61]
 
 function formatDate(date) {
   const y = date.getFullYear()
@@ -165,7 +162,7 @@ export default function DistanceReportTab({ token }) {
     try {
       const pdfRows = filteredRows.map((row, index) => ({
         cells: [
-          { text: row.s_No ?? index + 1, align: 'center', color: PDF_MUTED },
+          { text: row.s_No ?? index + 1, align: 'center', color: [0, 0, 0] },
           { text: row.vehicleRegNumber, bold: true },
           { text: row.vehType },
           { text: row.town },
@@ -176,9 +173,6 @@ export default function DistanceReportTab({ token }) {
       }))
       buildTablePdf({
         filename: `distance-report-${fromDate}-to-${toDate}.pdf`,
-        title: 'Distance Report',
-        subtitle: `${filteredRows.length} vehicle${filteredRows.length === 1 ? '' : 's'} · ${fromDate} to ${toDate} · Generated ${formatDateTime(new Date())}`,
-        accent: PDF_GREEN,
         columns: PDF_COLUMNS,
         rows: pdfRows,
       })

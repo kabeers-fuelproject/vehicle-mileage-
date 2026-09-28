@@ -3,12 +3,16 @@ import { jsPDF } from 'jspdf'
 const MARGIN = 18
 const TEXT = [28, 25, 23]
 const MUTED = [113, 113, 113]
-const LINE = [229, 229, 229]
+const LINE = [0, 0, 0]
 const WHITE = [255, 255, 255]
 
-const HEADER_FONT = 6.5
+const HEADER_FONT = 8
 const HEADER_LINE = HEADER_FONT * 1.3
-const MIN_FONT = 5
+const MIN_FONT = 6.5
+
+const CELL_PAD_X = 2
+const ROW_PAD = 3
+const GRID_WIDTH = 0.6
 
 function alignOf(value) {
   return value === 'right' || value === 'center' ? value : 'left'
@@ -38,30 +42,78 @@ export function buildTablePdf({
   const usableW = pageW - MARGIN * 2
   const bottomY = pageH - MARGIN
 
-  const totalWeight = columns.reduce((sum, c) => sum + (c.width ?? 1), 0)
-  const colXs = []
-  let cursor = MARGIN
-  for (const col of columns) {
-    const w = ((col.width ?? 1) / totalWeight) * usableW
-    colXs.push({ x: cursor, w })
-    cursor += w
+  const topH = title || subtitle ? 19 + (title ? 15 : 0) + (subtitle ? 12 : 0) + 6 : 0
+  const tableTop = MARGIN + topH
+
+  let size = 8.5
+  let colXs = []
+  let tableLeft = MARGIN
+  let tableRight = MARGIN
+
+  function layoutColumns(s) {
+    const natural = columns.map((col, colIndex) => {
+      let w = 0
+      pdf.setFont('helvetica', 'bold')
+      pdf.setFontSize(HEADER_FONT)
+      w = Math.max(w, pdf.getTextWidth(String(col.label ?? '')))
+      if (col.widthSample != null) {
+        pdf.setFont('helvetica', 'normal')
+        pdf.setFontSize(s)
+        w = Math.max(w, pdf.getTextWidth(String(col.widthSample)))
+      } else {
+        const scan = (cell) => {
+          if (!cell) return
+          if (cell.badge) {
+            pdf.setFont('helvetica', 'bold')
+            pdf.setFontSize(s - 0.5)
+            w = Math.max(w, pdf.getTextWidth(String(cell.badge.text)) + 8)
+            return
+          }
+          const text = String(cell.text ?? '')
+          if (!text) return
+          pdf.setFont('helvetica', cell.bold ? 'bold' : 'normal')
+          pdf.setFontSize(s)
+          w = Math.max(w, pdf.getTextWidth(text))
+        }
+        for (const row of rows) scan(row.cells[colIndex])
+        scan(footer?.cells[colIndex])
+      }
+      return w + CELL_PAD_X * 2
+    })
+    const sum = natural.reduce((total, w) => total + w, 0)
+    const shrink = sum > usableW ? usableW / sum : 1
+    const left = (pageW - sum * shrink) / 2
+    const xs = []
+    let cursor = left
+    for (const w of natural) {
+      xs.push({ x: cursor, w: w * shrink })
+      cursor += w * shrink
+    }
+    colXs = xs
+    tableLeft = left
+    tableRight = cursor
   }
 
-  const topH = 19 + (title ? 15 : 0) + (subtitle ? 12 : 0) + 6
-  const tableTop = MARGIN + topH
+  layoutColumns(size)
 
   function linesFor(text, colIndex, size, bold = false) {
     pdf.setFont('helvetica', bold ? 'bold' : 'normal')
     pdf.setFontSize(size)
-    const width = Math.max(6, colXs[colIndex].w - 6)
+    if (columns[colIndex].noWrap) return [String(text ?? '')]
+    const width = Math.max(6, colXs[colIndex].w - CELL_PAD_X * 2)
     return pdf.splitTextToSize(String(text ?? ''), width)
   }
 
-  let headerH = HEADER_LINE + 7
-  for (const [i, col] of columns.entries()) {
-    const count = linesFor(String(col.label ?? '').toUpperCase(), i, HEADER_FONT, true).length
-    headerH = Math.max(headerH, count * HEADER_LINE + 7)
+  function measureHeader() {
+    let h = HEADER_LINE + 5
+    for (const [i, col] of columns.entries()) {
+      const count = linesFor(String(col.label ?? ''), i, HEADER_FONT, true).length
+      h = Math.max(h, count * HEADER_LINE + 5)
+    }
+    return h
   }
+
+  let headerH = measureHeader()
 
   function measureRow(cells, size) {
     let lines = 1
@@ -69,7 +121,7 @@ export function buildTablePdf({
       if (cell.badge) continue
       lines = Math.max(lines, linesFor(cell.text, i, size, cell.bold).length)
     }
-    return Math.max(size * 1.6, lines * size * 1.3 + 5)
+    return Math.max(size * 1.45, lines * size * 1.25 + ROW_PAD)
   }
 
   function measure(size) {
@@ -84,16 +136,30 @@ export function buildTablePdf({
     }
   }
 
-  const perPage = pageH - MARGIN - topH - headerH
-  const capacity = perPage * 2
-  let size = 7
+  const capacity = () => (pageH - MARGIN - topH - headerH) * 2
   let plan = measure(size)
-  while (plan.total > capacity && size > MIN_FONT) {
+  while (plan.total > capacity() && size > MIN_FONT) {
     size -= 0.5
+    layoutColumns(size)
+    headerH = measureHeader()
     plan = measure(size)
   }
 
   const lh = size * 1.3
+
+  function drawGrid(y, h) {
+    const right = tableRight
+    pdf.setDrawColor(...LINE)
+    pdf.setLineWidth(GRID_WIDTH)
+    pdf.line(tableLeft, y, right, y)
+    pdf.line(tableLeft, y + h, right, y + h)
+    pdf.line(tableLeft, y, tableLeft, y + h)
+    pdf.line(right, y, right, y + h)
+    for (let i = 1; i < colXs.length; i++) {
+      const x = colXs[i].x
+      pdf.line(x, y, x, y + h)
+    }
+  }
 
   function drawCellLines(lines, colIndex, y, h, color, align, bold) {
     const col = colXs[colIndex]
@@ -104,10 +170,10 @@ export function buildTablePdf({
     let baseline = y + (h - blockH) / 2 + lh * 0.72
     const position =
       align === 'right'
-        ? col.x + col.w - 3
+        ? col.x + col.w - CELL_PAD_X
         : align === 'center'
           ? col.x + col.w / 2
-          : col.x + 3
+          : col.x + CELL_PAD_X
     for (const line of lines) {
       pdf.text(line, position, baseline, { align })
       baseline += lh
@@ -133,21 +199,22 @@ export function buildTablePdf({
   }
 
   function drawTop() {
+    if (!title && !subtitle) return MARGIN
     pdf.setFillColor(...accent)
-    pdf.rect(MARGIN, MARGIN, usableW, 5, 'F')
+    pdf.rect(tableLeft, MARGIN, tableRight - tableLeft, 5, 'F')
     let y = MARGIN + 19
     if (title) {
       pdf.setFont('helvetica', 'bold')
       pdf.setFontSize(13)
       pdf.setTextColor(...TEXT)
-      pdf.text(title, MARGIN, y)
+      pdf.text(title, tableLeft, y)
       y += 15
     }
     if (subtitle) {
       pdf.setFont('helvetica', 'normal')
       pdf.setFontSize(8.5)
       pdf.setTextColor(100, 100, 100)
-      pdf.text(subtitle, MARGIN, y)
+      pdf.text(subtitle, tableLeft, y)
       y += 12
     }
     return y + 6
@@ -155,11 +222,12 @@ export function buildTablePdf({
 
   function drawColumnHeader(y) {
     pdf.setFillColor(...accent)
-    pdf.rect(MARGIN, y, usableW, headerH, 'F')
+    pdf.rect(tableLeft, y, tableRight - tableLeft, headerH, 'F')
     columns.forEach((col, i) => {
-      const lines = linesFor(String(col.label ?? '').toUpperCase(), i, HEADER_FONT, true)
+      const lines = linesFor(String(col.label ?? ''), i, HEADER_FONT, true)
       drawCellLines(lines, i, y, headerH, WHITE, alignOf(col.align), true)
     })
+    drawGrid(y, headerH)
     return y + headerH
   }
 
@@ -176,7 +244,7 @@ export function buildTablePdf({
       if (y + h > bottomY) y = newPage()
       const bg = row.bg ?? (zebra && index % 2 === 0 ? zebra : WHITE)
       pdf.setFillColor(...bg)
-      pdf.rect(MARGIN, y, usableW, h, 'F')
+      pdf.rect(tableLeft, y, tableRight - tableLeft, h, 'F')
       row.cells.forEach((cell, i) => {
         const align = alignOf(cell.align ?? columns[i].align)
         if (cell.badge) drawBadge(cell, i, y, h)
@@ -192,9 +260,7 @@ export function buildTablePdf({
           )
         }
       })
-      pdf.setDrawColor(...LINE)
-      pdf.setLineWidth(0.4)
-      pdf.line(MARGIN, y + h, MARGIN + usableW, y + h)
+      drawGrid(y, h)
       y += h
     }
     return y
@@ -204,9 +270,9 @@ export function buildTablePdf({
     const h = plan.footerH
     if (y + h > bottomY) y = newPage()
     pdf.setFillColor(...footerBg)
-    pdf.rect(MARGIN, y, usableW, h, 'F')
+    pdf.rect(tableLeft, y, tableRight - tableLeft, h, 'F')
     pdf.setFillColor(...accent)
-    pdf.rect(MARGIN, y, usableW, 1.2, 'F')
+    pdf.rect(tableLeft, y, tableRight - tableLeft, 1.2, 'F')
     footer.cells.forEach((cell, i) => {
       const align = alignOf(cell.align ?? columns[i].align)
       if (String(cell.text ?? '') !== '') {
@@ -221,6 +287,7 @@ export function buildTablePdf({
         )
       }
     })
+    drawGrid(y, h)
     return y + h
   }
 
@@ -230,7 +297,7 @@ export function buildTablePdf({
     pdf.setFont('helvetica', 'normal')
     pdf.setFontSize(7)
     pdf.setTextColor(...MUTED)
-    pdf.text(note, MARGIN, y + 9)
+    pdf.text(note, tableLeft, y + 9)
     return y + plan.noteH
   }
 
