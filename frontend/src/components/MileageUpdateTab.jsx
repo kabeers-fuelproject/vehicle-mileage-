@@ -657,7 +657,7 @@ export default function MileageUpdateTab({ token }) {
           </div>
 
           <div className="no-scrollbar overflow-x-auto">
-            <table ref={visibleTableRef} className="w-full table-fixed border-collapse text-left text-xs">
+            <table ref={visibleTableRef} className="w-full table-fixed border-collapse text-left text-sm">
               <colgroup>
                 {COLUMN_WIDTHS.map((width, index) => (
                   <col key={`${width}-${index}`} style={{ width }} />
@@ -665,22 +665,22 @@ export default function MileageUpdateTab({ token }) {
               </colgroup>
               <thead>
                 <tr className="bg-green-700 tracking-wider text-white uppercase">
-                  <th className="border border-black px-3 py-2 text-[13px]" />
+                  <th className="border border-black px-3 py-2.5 text-[10px]" />
                   <th
                     colSpan={2}
-                    className="border border-l-2 border-l-black border-black px-3 py-2 text-center text-[13px] font-semibold"
+                    className="border border-l-2 border-l-black border-black px-3 py-2.5 text-center text-[10px] font-semibold"
                   >
                     Vehicle
                   </th>
                   <th
                     colSpan={3}
-                    className="border border-l-2 border-l-black border-black px-3 py-2 text-center text-[13px] font-semibold"
+                    className="border border-l-2 border-l-black border-black px-3 py-2.5 text-center text-[10px] font-semibold"
                   >
                     Assignment
                   </th>
                   <th
                     colSpan={4}
-                    className="border border-l-2 border-l-black border-black px-3 py-2 text-center text-[13px] font-semibold"
+                    className="border border-l-2 border-l-black border-black px-3 py-2.5 text-center text-[10px] font-semibold"
                   >
                     Today&apos;s Performance
                   </th>
@@ -689,7 +689,7 @@ export default function MileageUpdateTab({ token }) {
                   {COLUMNS.map((column) => (
                     <th
                       key={column.key}
-                      className={`border border-b-2 border-b-black border-black px-3 py-2.5 text-center align-middle text-[13px] font-semibold`}
+                      className={`border border-b-2 border-b-black border-black px-3 py-2.5 text-center align-middle text-[10px] font-semibold`}
                     >
                       {column.key === 'vehicleCode' ? (
                         <button
