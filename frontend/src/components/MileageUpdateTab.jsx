@@ -625,8 +625,8 @@ export default function MileageUpdateTab({ token }) {
           <div className="no-scrollbar overflow-x-auto">
             <table className="w-full table-fixed text-left text-xs">
               <colgroup>
-                {COLUMN_WIDTHS.map((width) => (
-                  <col key={width} style={{ width }} />
+                {COLUMN_WIDTHS.map((width, index) => (
+                  <col key={`${width}-${index}`} style={{ width }} />
                 ))}
               </colgroup>
               <thead>
