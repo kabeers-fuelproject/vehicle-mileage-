@@ -119,3 +119,127 @@ html {
 .btn-shine:hover::after {
   animation: va-shine 0.8s ease-out;
 }
+
+@keyframes va-road {
+  to {
+    transform: translateX(-40px);
+  }
+}
+
+@keyframes va-wheel {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes va-car-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes va-puff {
+  0% {
+    opacity: 0.55;
+    transform: translate(0, 0) scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-30px, -16px) scale(1.6);
+  }
+}
+
+@keyframes va-speed {
+  0% {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  35% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-34px);
+  }
+}
+
+@keyframes va-load-bar {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(340%);
+  }
+}
+
+.va-road-dashes {
+  animation: va-road 0.6s linear infinite;
+}
+
+.va-car {
+  animation: va-car-bob 0.45s ease-in-out infinite;
+}
+
+.va-wheel {
+  transform-box: view-box;
+  animation: va-wheel 0.5s linear infinite;
+}
+
+.va-wheel-rear {
+  transform-origin: 64px 63px;
+}
+
+.va-wheel-front {
+  transform-origin: 134px 63px;
+}
+
+.va-puff {
+  transform-box: view-box;
+  transform-origin: 34px 58px;
+}
+
+.va-puff-1 {
+  animation: va-puff 1.1s ease-out infinite;
+}
+
+.va-puff-2 {
+  animation: va-puff 1.1s ease-out 0.37s infinite;
+}
+
+.va-puff-3 {
+  animation: va-puff 1.1s ease-out 0.74s infinite;
+}
+
+.va-speed-1 {
+  animation: va-speed 0.7s linear infinite;
+}
+
+.va-speed-2 {
+  animation: va-speed 0.7s linear 0.23s infinite;
+}
+
+.va-speed-3 {
+  animation: va-speed 0.7s linear 0.46s infinite;
+}
+
+.va-load-bar {
+  animation: va-load-bar 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .va-road-dashes,
+  .va-car,
+  .va-wheel,
+  .va-puff,
+  .va-speed-1,
+  .va-speed-2,
+  .va-speed-3,
+  .va-load-bar {
+    animation-duration: 0s;
+    animation-iteration-count: 1;
+  }
+}

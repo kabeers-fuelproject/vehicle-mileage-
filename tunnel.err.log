@@ -41,3 +41,5 @@
 2026-09-28T07:15:49Z INF precheck component="Cloudflare API" details="API is reachable" run_id=0c09b10d-5f1a-4583-b5d2-5ea57b19f729 status=pass target=api.cloudflare.com:443
 2026-09-28T07:15:49Z INF precheck complete hard_fail=false run_id=0c09b10d-5f1a-4583-b5d2-5ea57b19f729 suggested_protocol=quic
 2026-09-28T07:15:50Z INF Registered tunnel connection connIndex=0 connection=3b72b82a-4d1d-4e41-93b5-80ef89146767 event=0 ip=198.41.200.53 location=sin13 protocol=quic
+2026-09-28T10:13:48Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:5173
+2026-09-28T10:13:48Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 dest=https://fog-applicable-received-excessive.trycloudflare.com/api/report/distance/preview event=0 ip=198.41.200.53 type=http
