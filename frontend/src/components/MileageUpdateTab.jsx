@@ -276,6 +276,7 @@ async function copyNodeAsImage(node, filename) {
       visibility: 'visible',
       opacity: '1',
     },
+    filter: (element) => !element.classList?.contains('copy-exclude'),
   }
   const [svgDataUrl, pngDataUrl] = await Promise.all([
     toSvg(node, renderOptions),
@@ -664,7 +665,7 @@ export default function MileageUpdateTab({ token }) {
                 ))}
               </colgroup>
               <thead>
-                <tr className="bg-green-700 tracking-wider text-white uppercase">
+                <tr className="copy-exclude bg-green-700 tracking-wider text-white uppercase">
                   <th className="border border-black px-3 py-2.5 text-[10px]" />
                   <th
                     colSpan={2}
