@@ -3,6 +3,7 @@ import { api } from '../api'
 import { dayRange } from '../reportRange'
 import { buildTablePdf } from '../reportPdf'
 import VaLogo from './VaLogo'
+import LoadingOverlay from './LoadingOverlay'
 
 const PDF_COLUMNS = [
   { label: 'S #', align: 'center', widthSample: '999', noWrap: true },
@@ -189,6 +190,9 @@ export default function DistanceReportTab({ token }) {
 
   return (
     <div className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
+      {(generating || downloading) && (
+        <LoadingOverlay label={downloading ? 'Preparing PDF…' : 'Generating report…'} />
+      )}
       <div className="h-1.5 w-full bg-green-700" />
 
       <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
@@ -361,7 +365,7 @@ export default function DistanceReportTab({ token }) {
                   disabled={downloading}
                   className={`${primaryBtnClass} px-4 py-2`}
                 >
-                  {downloading ? 'Preparing…' : 'Download PDF'}
+                  {downloading ? (<><span className="anim-spin inline-block h-3.5 w-3.5 rounded-full border-2 border-white/40 border-t-white" /> Preparing…</>) : 'Download PDF'}
                 </button>
               )}
             </div>

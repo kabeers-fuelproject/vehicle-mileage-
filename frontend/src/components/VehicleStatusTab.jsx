@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '../api'
 import VaLogo from './VaLogo'
+import LoadingOverlay from './LoadingOverlay'
 
 function StatCard({ label, value, invert = false }) {
   return (
@@ -124,6 +125,7 @@ export default function VehicleStatusTab({ token }) {
 
   return (
     <div className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
+      {loading && <LoadingOverlay label="Refreshing vehicle status…" />}
       <div className="h-1.5 w-full bg-green-700" />
 
       <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">

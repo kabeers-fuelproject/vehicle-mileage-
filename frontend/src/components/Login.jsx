@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { api } from '../api'
 import loginBg from '../assets/login-bg.jpg'
 import VaLogo from './VaLogo'
+import LoadingOverlay from './LoadingOverlay'
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('')
@@ -30,6 +31,7 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-neutral-950 px-4 py-10">
+      {loading && <LoadingOverlay label="Signing in…" />}
       <img
         src={loginBg}
         alt=""

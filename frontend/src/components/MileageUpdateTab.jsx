@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { toPng } from 'html-to-image'
+import { toPng, toSvg } from 'html-to-image'
 import { buildTablePdf } from '../reportPdf'
 import { api } from '../api'
 import { vehicleTypeOf } from '../vehicleTypes'
@@ -8,6 +8,7 @@ import { usedForOf } from '../usedFor'
 import { supervisorOf } from '../supervisors'
 import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
+import LoadingOverlay from './LoadingOverlay'
 
 const COLUMNS = [
   { key: 'sr', label: 'Sr', align: 'text-center', noWrap: true },
@@ -242,12 +243,12 @@ function Meta({ label, value }) {
 
 function cellClass(column) {
   const base =
-    'px-3 py-2.5 align-middle border border-neutral-300 font-semibold text-black'
+    'px-3 py-2.5 align-middle border border-black font-semibold text-black'
   if (column.key === 'sr') return `${base} text-center tabular-nums`
   if (column.key === 'vehicleCode') return base
   if (NUMERIC_KEYS.has(column.key)) return `${base} text-right tabular-nums`
   if (column.key === 'status')
-    return 'px-3 py-2.5 align-middle border border-neutral-300 text-center'
+    return 'px-3 py-2.5 align-middle border border-black text-center'
   if (column.key === 'lastUpdated')
     return `${base} tabular-nums whitespace-nowrap`
   return `${base} break-words`
@@ -264,18 +265,47 @@ const STATUS_FILTERS = [
 ]
 
 async function copyNodeAsImage(node, filename) {
-  const dataUrl = await toPng(node, {
-    pixelRatio: 2,
+  const renderOptions = {
+    pixelRatio: 4,
     backgroundColor: '#ffffff',
-  })
-  const blob = await (await fetch(dataUrl)).blob()
-  if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
-    await navigator.clipboard.write([
-      new ClipboardItem({ 'image/png': blob }),
-    ])
-    return 'Image copied to clipboard'
+    style: {
+      position: 'fixed',
+      left: '0px',
+      top: '0px',
+      zIndex: '9999',
+      visibility: 'visible',
+      opacity: '1',
+    },
   }
-  const url = URL.createObjectURL(blob)
+  const [svgDataUrl, pngDataUrl] = await Promise.all([
+    toSvg(node, renderOptions),
+    toPng(node, renderOptions),
+  ])
+  const [svgBlob, pngBlob] = await Promise.all([
+    fetch(svgDataUrl).then((response) => response.blob()),
+    fetch(pngDataUrl).then((response) => response.blob()),
+  ])
+  if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'image/svg+xml': svgBlob,
+          'image/png': pngBlob,
+        }),
+      ])
+      return 'Image copied to clipboard'
+    } catch {
+      try {
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': pngBlob }),
+        ])
+        return 'Image copied to clipboard'
+      } catch {
+        // Fall through to downloading the high-resolution PNG.
+      }
+    }
+  }
+  const url = URL.createObjectURL(pngBlob)
   const link = document.createElement('a')
   link.href = url
   link.download = filename
@@ -283,7 +313,6 @@ async function copyNodeAsImage(node, filename) {
   URL.revokeObjectURL(url)
   return 'Clipboard unavailable — image downloaded'
 }
-
 export default function MileageUpdateTab({ token }) {
   const [vehicles, setVehicles] = useState([])
   const [reportMap, setReportMap] = useState({})
@@ -293,13 +322,15 @@ export default function MileageUpdateTab({ token }) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [codeSort, setCodeSort] = useState('asc')
   const tableRef = useRef(null)
+  const copyImageRef = useRef(null)
+  const visibleTableRef = useRef(null)
   const [exporting, setExporting] = useState('')
   const [exportMessage, setExportMessage] = useState('')
   const [refreshing, setRefreshing] = useState(false)
   const runIdRef = useRef(0)
 
   async function copyAsImage() {
-    const node = tableRef.current
+    const node = visibleTableRef.current
     if (!node || exporting) return
     setExporting('copy')
     setExportMessage('')
@@ -477,6 +508,9 @@ export default function MileageUpdateTab({ token }) {
 
   return (
     <div>
+      {(loading || refreshing || Boolean(exporting)) && (
+        <LoadingOverlay label={exporting ? 'Preparing export…' : 'Refreshing mileage…'} />
+      )}
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <span className="mt-1.5 h-7 w-1.5 rounded-full bg-green-700" />
@@ -550,7 +584,7 @@ export default function MileageUpdateTab({ token }) {
             disabled={Boolean(exporting) || visibleVehicles.length === 0}
             className={primaryBtnClass}
           >
-            {exporting === 'pdf' ? 'Preparing…' : 'Download PDF'}
+            {exporting === 'pdf' ? (<><span className="anim-spin inline-block h-3.5 w-3.5 rounded-full border-2 border-white/40 border-t-white" /> Preparing…</>) : 'Download PDF'}
           </button>
           <button
             type="button"
@@ -558,7 +592,7 @@ export default function MileageUpdateTab({ token }) {
             disabled={Boolean(exporting) || visibleVehicles.length === 0}
             className={outlineBtnClass}
           >
-            {exporting === 'copy' ? 'Copying…' : 'Copy as Image'}
+            {exporting === 'copy' ? (<><span className="anim-spin inline-block h-3.5 w-3.5 rounded-full border-2 border-green-600/40 border-t-green-600" /> Copying…</>) : 'Copy as Image'}
           </button>
         </div>
       </div>
@@ -623,7 +657,7 @@ export default function MileageUpdateTab({ token }) {
           </div>
 
           <div className="no-scrollbar overflow-x-auto">
-            <table className="w-full table-fixed text-left text-xs">
+            <table ref={visibleTableRef} className="w-full table-fixed border-collapse text-left text-xs">
               <colgroup>
                 {COLUMN_WIDTHS.map((width, index) => (
                   <col key={`${width}-${index}`} style={{ width }} />
@@ -631,22 +665,22 @@ export default function MileageUpdateTab({ token }) {
               </colgroup>
               <thead>
                 <tr className="bg-green-700 tracking-wider text-white uppercase">
-                  <th className="border border-white/25 px-3 py-2" />
+                  <th className="border border-black px-3 py-2 text-[13px]" />
                   <th
                     colSpan={2}
-                    className="border border-l-2 border-l-white/70 border-white/25 px-3 py-2 text-center font-semibold"
+                    className="border border-l-2 border-l-black border-black px-3 py-2 text-center text-[13px] font-semibold"
                   >
                     Vehicle
                   </th>
                   <th
                     colSpan={3}
-                    className="border border-l-2 border-l-white/70 border-white/25 px-3 py-2 text-center font-semibold"
+                    className="border border-l-2 border-l-black border-black px-3 py-2 text-center text-[13px] font-semibold"
                   >
                     Assignment
                   </th>
                   <th
                     colSpan={4}
-                    className="border border-l-2 border-l-white/70 border-white/25 px-3 py-2 text-center font-semibold"
+                    className="border border-l-2 border-l-black border-black px-3 py-2 text-center text-[13px] font-semibold"
                   >
                     Today&apos;s Performance
                   </th>
@@ -655,7 +689,7 @@ export default function MileageUpdateTab({ token }) {
                   {COLUMNS.map((column) => (
                     <th
                       key={column.key}
-                      className={`border border-b-2 border-b-green-700 border-green-900/25 px-3 py-2.5 align-middle font-semibold ${column.align}`}
+                      className={`border border-b-2 border-b-black border-black px-3 py-2.5 text-center align-middle text-[13px] font-semibold`}
                     >
                       {column.key === 'vehicleCode' ? (
                         <button
@@ -690,12 +724,12 @@ export default function MileageUpdateTab({ token }) {
                       }`}
                     >
                       <td
-                        className="px-3 py-2.5 text-center align-middle tabular-nums border border-neutral-300 font-semibold text-black"
+                        className="px-3 py-2.5 text-center align-middle tabular-nums border border-black font-semibold text-black"
                       >
                         {index + 1}
                       </td>
                       <td
-                        className="px-3 py-2.5 align-middle font-semibold border border-neutral-300 text-black"
+                        className="px-3 py-2.5 align-middle font-semibold border border-black text-black"
                       >
                         {code}
                       </td>
@@ -744,6 +778,79 @@ export default function MileageUpdateTab({ token }) {
           <div className="h-1 w-full bg-green-700" />
         </div>
       )}
-    </div>
+
+      {visibleVehicles.length > 0 && (
+        <div
+          ref={copyImageRef}
+          className="pointer-events-none fixed top-0 left-0 bg-white p-4"
+          style={{ width: '1920px', opacity: 0.001 }}
+        >
+          <table className="w-full table-fixed border-collapse text-[24px] text-black">
+            <colgroup>
+              {COLUMN_WIDTHS.map((width, index) => (
+                <col key={`copy-${width}-${index}`} style={{ width }} />
+              ))}
+            </colgroup>
+            <thead>
+              <tr className="bg-green-700 text-white">
+                {COLUMNS.map((column) => (
+                  <th
+                    key={column.key}
+                    className="border border-black px-3 py-3 text-center align-middle text-[28px] font-semibold uppercase"
+                  >
+                    {PDF_LABELS[column.key] ?? column.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sortedVehicles.map((vehicle, index) => {
+                const code = codeOf(vehicle)
+                const status = displayValue(code, 'status', reportMap)
+                return (
+                  <tr
+                    key={`copy-${vehicle.unitID}`}
+                    className={index % 2 === 0 ? 'bg-green-50' : 'bg-white'}
+                  >
+                    {COLUMNS.map((column) => {
+                      let value = ''
+                      if (column.key === 'sr') value = index + 1
+                      else if (column.key === 'vehicleCode') value = code
+                      else if (column.key === 'status') value = status || '—'
+                      else if (column.key === 'lastUpdated') {
+                        const raw = displayValue(code, 'lastUpdated', reportMap)
+                        value = raw ? pdfStamp(raw) : '—'
+                      } else {
+                        value = displayValue(code, column.key, reportMap) || '—'
+                      }
+                      const color =
+                        column.key === 'status' && value === 'Ok'
+                          ? '#78350f'
+                          : column.key === 'status' && value === 'Low'
+                            ? '#ea580c'
+                            : '#000000'
+                      const align = PDF_ALIGN[column.align] ?? 'left'
+                      return (
+                        <td
+                          key={column.key}
+                          className="border border-black px-3 py-5 align-middle"
+                          style={{
+                            color,
+                            textAlign: column.key === 'sr' ? 'center' : align,
+                            fontWeight: column.key === 'vehicleCode' ? 700 : 400,
+                            whiteSpace: column.key === 'sr' ? 'nowrap' : 'normal',
+                          }}
+                        >
+                          {value}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}    </div>
   )
 }
