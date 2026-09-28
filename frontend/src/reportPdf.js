@@ -6,7 +6,7 @@ const MUTED = [113, 113, 113]
 const LINE = [0, 0, 0]
 const WHITE = [255, 255, 255]
 
-const HEADER_FONT = 8
+const HEADER_FONT = 9.5
 const HEADER_LINE = HEADER_FONT * 1.3
 const MIN_FONT = 6.5
 
@@ -161,13 +161,13 @@ export function buildTablePdf({
     }
   }
 
-  function drawCellLines(lines, colIndex, y, h, color, align, bold) {
+  function drawCellLines(lines, colIndex, y, h, color, align, bold, fontSize = size, lineHeight = lh) {
     const col = colXs[colIndex]
     pdf.setFont('helvetica', bold ? 'bold' : 'normal')
-    pdf.setFontSize(size)
+    pdf.setFontSize(fontSize)
     pdf.setTextColor(...color)
-    const blockH = lines.length * lh
-    let baseline = y + (h - blockH) / 2 + lh * 0.72
+    const blockH = lines.length * lineHeight
+    let baseline = y + (h - blockH) / 2 + lineHeight * 0.72
     const position =
       align === 'right'
         ? col.x + col.w - CELL_PAD_X
@@ -176,7 +176,7 @@ export function buildTablePdf({
           : col.x + CELL_PAD_X
     for (const line of lines) {
       pdf.text(line, position, baseline, { align })
-      baseline += lh
+      baseline += lineHeight
     }
   }
 
@@ -225,7 +225,7 @@ export function buildTablePdf({
     pdf.rect(tableLeft, y, tableRight - tableLeft, headerH, 'F')
     columns.forEach((col, i) => {
       const lines = linesFor(String(col.label ?? ''), i, HEADER_FONT, true)
-      drawCellLines(lines, i, y, headerH, WHITE, 'center', true)
+      drawCellLines(lines, i, y, headerH, WHITE, 'center', true, HEADER_FONT, HEADER_LINE)
     })
     drawGrid(y, headerH)
     return y + headerH
