@@ -225,7 +225,7 @@ export function buildTablePdf({
     pdf.rect(tableLeft, y, tableRight - tableLeft, headerH, 'F')
     columns.forEach((col, i) => {
       const lines = linesFor(String(col.label ?? ''), i, HEADER_FONT, true)
-      drawCellLines(lines, i, y, headerH, WHITE, alignOf(col.align), true)
+      drawCellLines(lines, i, y, headerH, WHITE, 'center', true)
     })
     drawGrid(y, headerH)
     return y + headerH
