@@ -4,6 +4,8 @@ import { usedForOf } from '../usedFor'
 import { supabase } from '../supabase'
 import VaLogo from './VaLogo'
 
+const TABLE = 'summary_vehicle_selection'
+
 function Meta({ label, value }) {
   return (
     <div>
@@ -20,7 +22,29 @@ function Meta({ label, value }) {
 const primaryBtnClass =
   'btn-shine relative overflow-hidden rounded-full bg-gradient-to-r from-green-700 to-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-green-700/25 transition-all duration-200 hover:from-green-600 hover:to-green-500 hover:shadow-lg hover:shadow-green-700/40 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
 
+const hireBtnClass =
+  'rounded-full border border-amber-400 bg-amber-50 px-5 py-2.5 text-sm font-semibold text-amber-700 transition-all duration-200 hover:border-amber-500 hover:bg-amber-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50'
+
+const assignBtnOff =
+  'rounded-full border border-green-200 bg-white px-3 py-1 text-[11px] font-semibold text-green-700 transition-colors hover:border-green-500 hover:bg-green-50 disabled:cursor-not-allowed disabled:opacity-40'
+
+const hireBtnOff =
+  'rounded-full border border-amber-300 bg-white px-3 py-1 text-[11px] font-semibold text-amber-700 transition-colors hover:border-amber-500 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40'
+
+const unassignBtnOff =
+  'rounded-full border border-red-200 bg-white px-3 py-1 text-[11px] font-semibold text-red-600 transition-colors hover:border-red-500 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40'
+
 const unitKey = (u) => String(u.unitID)
+
+function flagAssigned(sel) {
+  if (!sel) return false
+  return sel.is_assigned ?? sel.selection_type === 'assigned'
+}
+
+function flagHired(sel) {
+  if (!sel) return false
+  return sel.is_hired ?? sel.selection_type === 'hired'
+}
 
 export default function AssignedVehiclesTab({ token }) {
   const [vehicles, setVehicles] = useState([])
@@ -30,9 +54,9 @@ export default function AssignedVehiclesTab({ token }) {
   const [dbError, setDbError] = useState('')
   const [notice, setNotice] = useState('')
   const [search, setSearch] = useState('')
-  const [chosen, setChosen] = useState('')
-  const [saving, setSaving] = useState(false)
-  const [removingId, setRemovingId] = useState(null)
+  const [chosenAssign, setChosenAssign] = useState('')
+  const [chosenHire, setChosenHire] = useState('')
+  const [busyKey, setBusyKey] = useState(null)
   const [removeTarget, setRemoveTarget] = useState(null)
 
   useEffect(() => {
@@ -41,7 +65,7 @@ export default function AssignedVehiclesTab({ token }) {
       const results = await Promise.allSettled([
         api('/vehicle/getlist', { token }),
         supabase
-          .from('summary_vehicle_selection')
+          .from(TABLE)
           .select('*')
           .order('created_at', { ascending: true }),
       ])
@@ -70,110 +94,182 @@ export default function AssignedVehiclesTab({ token }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
-  const savedKeys = useMemo(
-    () => new Set(rows.map((r) => String(r.unit_id ?? ''))),
-    [rows],
-  )
+  const selMaps = useMemo(() => {
+    const byUnit = new Map()
+    const byCode = new Map()
+    for (const r of rows) {
+      if (r.unit_id) byUnit.set(String(r.unit_id), r)
+      if (r.vehicle_code) byCode.set(r.vehicle_code, r)
+    }
+    return { byUnit, byCode }
+  }, [rows])
 
-  const selectedVehicles = useMemo(() => {
-    const byUnit = new Map(vehicles.map((u) => [unitKey(u), u]))
-    const byCode = new Map(vehicles.map((u) => [u.alias, u]))
-    return rows.map((r) => {
-      const vehicle =
-        byUnit.get(String(r.unit_id ?? '')) ?? byCode.get(r.vehicle_code)
-      const code = vehicle?.alias ?? r.vehicle_code
-      return { ...r, vehicle, code, usedFor: usedForOf(code) }
+  const tableItems = useMemo(() => {
+    const matched = new Set()
+    const list = vehicles.map((u) => {
+      const sel =
+        selMaps.byUnit.get(unitKey(u)) ?? selMaps.byCode.get(u.alias) ?? null
+      if (sel) matched.add(sel.id)
+      return {
+        key: unitKey(u),
+        vehicle: u,
+        code: u.alias || unitKey(u),
+        usedFor: usedForOf(u.alias),
+        sel,
+      }
     })
-  }, [rows, vehicles])
+    for (const r of rows) {
+      if (matched.has(r.id)) continue
+      list.push({
+        key: `db-${r.id}`,
+        vehicle: null,
+        code: r.vehicle_code,
+        usedFor: usedForOf(r.vehicle_code),
+        sel: r,
+      })
+    }
+    return list
+  }, [vehicles, rows, selMaps])
 
-  const availableUnits = useMemo(() => {
+  const shownItems = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return vehicles.filter((u) => {
-      if (savedKeys.has(unitKey(u))) return false
-      if (!q) return true
-      const code = String(u.alias ?? '').toLowerCase()
-      const usedFor = String(usedForOf(u.alias) ?? '').toLowerCase()
-      return code.includes(q) || usedFor.includes(q)
-    })
-  }, [vehicles, savedKeys, search])
-
-  const filteredSelectedVehicles = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    if (!q) return selectedVehicles
-    return selectedVehicles.filter(
-      (r) =>
-        String(r.code ?? '').toLowerCase().includes(q) ||
-        String(r.usedFor ?? '').toLowerCase().includes(q),
+    if (!q) return tableItems
+    return tableItems.filter(
+      (t) =>
+        String(t.code ?? '').toLowerCase().includes(q) ||
+        String(t.usedFor ?? '').toLowerCase().includes(q),
     )
-  }, [selectedVehicles, search])
+  }, [tableItems, search])
 
-  const chosenUnit = chosen
-    ? availableUnits.find((u) => unitKey(u) === chosen) ?? null
+  const assignableItems = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return tableItems.filter((t) => {
+      if (!t.vehicle || flagAssigned(t.sel)) return false
+      if (!q) return true
+      return (
+        String(t.code ?? '').toLowerCase().includes(q) ||
+        String(t.usedFor ?? '').toLowerCase().includes(q)
+      )
+    })
+  }, [tableItems, search])
+
+  const hireableItems = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return tableItems.filter((t) => {
+      if (!t.vehicle || flagHired(t.sel)) return false
+      if (!q) return true
+      return (
+        String(t.code ?? '').toLowerCase().includes(q) ||
+        String(t.usedFor ?? '').toLowerCase().includes(q)
+      )
+    })
+  }, [tableItems, search])
+
+  const assignedCount = rows.filter((r) => flagAssigned(r)).length
+  const hiredCount = rows.filter((r) => flagHired(r)).length
+  const unassignedCount = tableItems.filter(
+    (t) => t.vehicle && !flagAssigned(t.sel),
+  ).length
+
+  const chosenAssignItem = chosenAssign
+    ? assignableItems.find((t) => t.key === chosenAssign) ?? null
     : null
 
-  async function addChosen() {
-    if (!chosenUnit || saving) return
-    setSaving(true)
-    setDbError('')
-    setNotice('')
+  const chosenHireItem = chosenHire
+    ? hireableItems.find((t) => t.key === chosenHire) ?? null
+    : null
 
-    const insert = {
-      vehicle_code:
-        String(chosenUnit.alias ?? '').trim() || unitKey(chosenUnit),
-      unit_id: unitKey(chosenUnit),
-    }
+  const actionsDisabled = busyKey !== null
 
-    const { data, error } = await supabase
-      .from('summary_vehicle_selection')
-      .upsert(insert, { onConflict: 'vehicle_code', ignoreDuplicates: true })
-      .select()
-
-    setSaving(false)
-    if (error) {
-      setDbError(error.message)
-      return
-    }
-    const added = data ?? []
-    setChosen('')
-    if (added.length === 0) {
-      setNotice(`${insert.vehicle_code} is already assigned.`)
-      return
-    }
-    setRows((prev) =>
-      [...prev, ...added].sort((a, b) =>
-        String(a.created_at).localeCompare(String(b.created_at)),
-      ),
-    )
-    setNotice(`${insert.vehicle_code} added to the assigned vehicles.`)
+  function nextFlags(sel, action) {
+    const curAssigned = flagAssigned(sel)
+    const curHired = flagHired(sel)
+    if (action === 'assign') return { is_assigned: true, is_hired: curHired }
+    if (action === 'unassign') return { is_assigned: false, is_hired: curHired }
+    if (action === 'hire') return { is_assigned: curAssigned, is_hired: true }
+    return { is_assigned: curAssigned, is_hired: false } // unhire
   }
 
-  async function removeRow(row) {
-    if (saving || removingId) return
-    setRemovingId(row.id)
+  async function applyState(item, next, action) {
+    if (busyKey || !item) return false
+    setBusyKey(item.key)
     setDbError('')
     setNotice('')
-    const { error } = await supabase
-      .from('summary_vehicle_selection')
-      .delete()
-      .eq('id', row.id)
-    setRemovingId(null)
-    if (error) {
-      setDbError(error.message)
-      return
+    try {
+      if (!next.is_assigned && !next.is_hired) {
+        if (!item.sel) return false
+        const { error } = await supabase
+          .from(TABLE)
+          .delete()
+          .eq('id', item.sel.id)
+        if (error) throw new Error(error.message)
+        setRows((prev) => prev.filter((r) => r.id !== item.sel.id))
+        setNotice(`${item.code} ${action === 'unhire' ? 'unhired' : 'unassigned'}.`)
+        if (item.key === chosenAssign && next.is_assigned) setChosenAssign('')
+        if (item.key === chosenHire && next.is_hired) setChosenHire('')
+        return true
+      }
+
+      const insert = {
+        vehicle_code: item.code,
+        unit_id: item.vehicle
+          ? unitKey(item.vehicle)
+          : (item.sel?.unit_id ?? null),
+        is_assigned: Boolean(next.is_assigned),
+        is_hired: Boolean(next.is_hired),
+      }
+
+      const { data, error } = await supabase
+        .from(TABLE)
+        .upsert(insert, { onConflict: 'vehicle_code' })
+        .select()
+      if (error) throw new Error(error.message)
+
+      const saved = data?.[0]
+      if (saved) {
+        setRows((prev) =>
+          [...prev.filter((r) => r.id !== saved.id), saved].sort((a, b) =>
+            String(a.created_at).localeCompare(String(b.created_at)),
+          ),
+        )
+      }
+      const messages = {
+        assign: `${item.code} assigned.`,
+        unassign: next.is_hired
+          ? `${item.code} unassigned — still hired.`
+          : `${item.code} unassigned.`,
+        hire: `${item.code} hired.`,
+        unhire: `${item.code} unhired.`,
+      }
+      setNotice(messages[action] ?? `${item.code} updated.`)
+      if (item.key === chosenAssign && next.is_assigned) setChosenAssign('')
+      if (item.key === chosenHire && next.is_hired) setChosenHire('')
+      return true
+    } catch (err) {
+      setDbError(err.message)
+      return false
+    } finally {
+      setBusyKey(null)
     }
-    setRows((prev) => prev.filter((r) => r.id !== row.id))
-    setRemoveTarget(null)
-    setNotice(`${row.code} removed from the assigned vehicles.`)
+  }
+
+  async function confirmUnassign() {
+    const ok = await applyState(
+      removeTarget,
+      nextFlags(removeTarget?.sel, 'unassign'),
+      'unassign',
+    )
+    if (ok) setRemoveTarget(null)
   }
 
   useEffect(() => {
     if (!removeTarget) return undefined
     function onKey(e) {
-      if (e.key === 'Escape' && !removingId) setRemoveTarget(null)
+      if (e.key === 'Escape' && !busyKey) setRemoveTarget(null)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [removeTarget, removingId])
+  }, [removeTarget, busyKey])
 
   return (
     <div className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
@@ -190,13 +286,14 @@ export default function AssignedVehiclesTab({ token }) {
               Assigned Vehicles
             </h3>
             <p className="mt-0.5 text-xs text-neutral-500">
-              Manage the vehicles assigned for the summary
+              Assign or hire vehicles for the summary — both at the same time
             </p>
           </div>
         </div>
-        <dl className="grid grid-cols-2 gap-x-8 gap-y-3 rounded-xl border border-green-200 bg-green-50 px-5 py-3.5">
-          <Meta label="Selected" value={`${rows.length} / ${vehicles.length}`} />
-          <Meta label="Unassigned" value={`${availableUnits.length}`} />
+        <dl className="grid grid-cols-3 gap-x-8 gap-y-3 rounded-xl border border-green-200 bg-green-50 px-5 py-3.5">
+          <Meta label="Assigned" value={`${assignedCount}`} />
+          <Meta label="Hired" value={`${hiredCount}`} />
+          <Meta label="Unassigned" value={`${unassignedCount}`} />
         </dl>
       </div>
 
@@ -239,37 +336,37 @@ export default function AssignedVehiclesTab({ token }) {
               </button>
             )}
             <span className="text-xs text-neutral-500">
-              {filteredSelectedVehicles.length} assigned · {availableUnits.length} unassigned
+              {assignedCount} assigned · {hiredCount} hired · {unassignedCount} unassigned
             </span>
 
-            <div className="ml-auto flex items-center gap-3">
-              {availableUnits.length === 0 ? (
+            <div className="ml-auto flex flex-wrap items-center gap-2">
+              {assignableItems.length === 0 ? (
                 <span className="text-xs text-neutral-500">
                   {vehicles.length === 0
                     ? 'No vehicles available.'
                     : search.trim()
-                      ? `No unassigned vehicles match "${search.trim()}"`
+                      ? `No vehicles to assign match "${search.trim()}"`
                       : 'All vehicles are already assigned.'}
                 </span>
               ) : (
                 <>
-                  <span className="relative inline-flex w-72">
+                  <span className="relative inline-flex w-64">
                     <select
-                      value={chosenUnit ? chosen : ''}
-                      onChange={(e) => setChosen(e.target.value)}
+                      value={chosenAssignItem ? chosenAssign : ''}
+                      onChange={(e) => setChosenAssign(e.target.value)}
                       className="w-full cursor-pointer appearance-none rounded-lg border border-green-200 bg-white py-2 pr-10 pl-3.5 text-sm text-ink shadow-sm transition-all duration-200 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
                     >
                       <option value="" className="bg-white text-neutral-400">
-                        Choose a vehicle...
+                        Vehicle to assign...
                       </option>
-                      {availableUnits.map((u) => (
+                      {assignableItems.map((t) => (
                         <option
-                          key={unitKey(u)}
-                          value={unitKey(u)}
+                          key={t.key}
+                          value={t.key}
                           className="bg-white text-black"
                         >
-                          {u.alias || u.unitID}
-                          {usedForOf(u.alias) ? ` — ${usedForOf(u.alias)}` : ''}
+                          {t.code}
+                          {t.usedFor ? ` — ${t.usedFor}` : ''}
                         </option>
                       ))}
                     </select>
@@ -288,11 +385,83 @@ export default function AssignedVehiclesTab({ token }) {
                   </span>
                   <button
                     type="button"
-                    onClick={addChosen}
-                    disabled={saving || !chosenUnit}
-                    className={primaryBtnClass}
+                    onClick={() =>
+                      applyState(
+                        chosenAssignItem,
+                        nextFlags(chosenAssignItem?.sel, 'assign'),
+                        'assign',
+                      )
+                    }
+                    disabled={actionsDisabled || !chosenAssignItem}
+                    className={`${primaryBtnClass} px-4 py-2`}
                   >
-                    {saving ? 'Saving...' : 'Add to Selection'}
+                    {busyKey && chosenAssignItem && busyKey === chosenAssignItem.key
+                      ? 'Saving...'
+                      : 'Assign'}
+                  </button>
+                </>
+              )}
+
+              <span className="mx-1 hidden h-6 w-px bg-neutral-200 xl:block" />
+
+              {hireableItems.length === 0 ? (
+                <span className="text-xs text-neutral-500">
+                  {vehicles.length === 0
+                    ? 'No vehicles available.'
+                    : search.trim()
+                      ? `No vehicles to hire match "${search.trim()}"`
+                      : 'All vehicles are already hired.'}
+                </span>
+              ) : (
+                <>
+                  <span className="relative inline-flex w-64">
+                    <select
+                      value={chosenHireItem ? chosenHire : ''}
+                      onChange={(e) => setChosenHire(e.target.value)}
+                      className="w-full cursor-pointer appearance-none rounded-lg border border-amber-300 bg-white py-2 pr-10 pl-3.5 text-sm text-ink shadow-sm transition-all duration-200 hover:border-amber-400 focus:border-amber-600 focus:ring-2 focus:ring-amber-600/20 focus:outline-none"
+                    >
+                      <option value="" className="bg-white text-neutral-400">
+                        Vehicle to hire...
+                      </option>
+                      {hireableItems.map((t) => (
+                        <option
+                          key={t.key}
+                          value={t.key}
+                          className="bg-white text-black"
+                        >
+                          {t.code}
+                          {t.usedFor ? ` — ${t.usedFor}` : ''}
+                        </option>
+                      ))}
+                    </select>
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-amber-600"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      applyState(
+                        chosenHireItem,
+                        nextFlags(chosenHireItem?.sel, 'hire'),
+                        'hire',
+                      )
+                    }
+                    disabled={actionsDisabled || !chosenHireItem}
+                    className={`${hireBtnClass} px-4 py-2`}
+                  >
+                    {busyKey && chosenHireItem && busyKey === chosenHireItem.key
+                      ? 'Saving...'
+                      : 'Hire'}
                   </button>
                 </>
               )}
@@ -302,78 +471,136 @@ export default function AssignedVehiclesTab({ token }) {
           <div className="px-6 py-5">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
               <h4 className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
-                Assigned Vehicles
+                All Vehicles
               </h4>
               <span className="text-sm text-neutral-500">
                 {search.trim()
-                  ? `${filteredSelectedVehicles.length} of ${rows.length} assigned (filtered)`
-                  : `${rows.length} of ${vehicles.length} vehicles assigned`}
+                  ? `${shownItems.length} of ${tableItems.length} shown (filtered)`
+                  : `${tableItems.length} vehicles`}
               </span>
             </div>
 
-            {rows.length === 0 ? (
+            {shownItems.length === 0 ? (
               <p className="mt-3 rounded-xl border border-dashed border-green-200 bg-green-50/60 px-4 py-6 text-center text-sm text-green-800/80">
-                No vehicles assigned yet. Choose a vehicle from the dropdown
-                above and click Add to Selection.
-              </p>
-            ) : filteredSelectedVehicles.length === 0 ? (
-              <p className="mt-3 rounded-xl border border-dashed border-green-200 bg-green-50/60 px-4 py-6 text-center text-sm text-green-800/80">
-                No assigned vehicles match "{search.trim()}"
+                {tableItems.length === 0
+                  ? 'No vehicles available.'
+                  : `No vehicles match "${search.trim()}"`}
               </p>
             ) : (
-              <div className="mt-3 -mx-6 overflow-x-auto">
+              <div className="mt-3 max-h-[32rem] overflow-auto rounded-xl border border-green-200">
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="bg-green-700 text-[10px] tracking-wider text-white uppercase">
-                      <th className="px-6 py-2.5 font-semibold">S #</th>
-                      <th className="border-l border-white/25 px-4 py-2.5 font-semibold">
+                    <tr className="text-[10px] tracking-wider text-white uppercase">
+                      <th className="sticky top-0 z-10 bg-green-700 px-4 py-2.5 font-semibold">
                         Vehicle Code
                       </th>
-                      <th className="border-l border-white/25 px-4 py-2.5 font-semibold">
+                      <th className="sticky top-0 z-10 border-l border-white/25 bg-green-700 px-4 py-2.5 font-semibold">
                         Used For
                       </th>
-                      <th className="border-l border-white/25 px-4 py-2.5 text-right font-semibold">
-                        Action
+                      <th className="sticky top-0 z-10 border-l border-white/25 bg-green-700 px-4 py-2.5 text-right font-semibold">
+                        Actions
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredSelectedVehicles.map((row, i) => (
-                      <tr
-                        key={row.id}
-                        className={`border-b border-neutral-100 transition-colors last:border-0 hover:bg-green-100 ${
-                          i % 2 === 1 ? 'bg-green-50' : ''
-                        }`}
-                      >
-                        <td className="px-6 py-3 text-neutral-400">{i + 1}</td>
-                        <td className="border-l border-neutral-300 px-4 py-3 font-semibold text-ink">
-                          {row.code}
-                          {!row.vehicle && (
-                            <span className="ml-2 text-xs font-normal text-amber-600">
-                              (not in current vehicle list)
+                    {shownItems.map((item, i) => {
+                      const isAssigned = flagAssigned(item.sel)
+                      const isHired = flagHired(item.sel)
+                      const isBusy = busyKey === item.key
+                      const rowBg = i % 2 === 1 ? 'bg-green-50/40' : ''
+                      return (
+                        <tr
+                          key={item.key}
+                          className={`border-b border-neutral-100 transition-colors last:border-0 hover:bg-green-100/60 ${rowBg}`}
+                        >
+                          <td className="px-4 py-2.5">
+                            <span className="font-semibold text-ink">
+                              {item.code}
                             </span>
-                          )}
-                        </td>
-                        <td className="border-l border-neutral-300 px-4 py-3 text-neutral-600">
-                          {row.usedFor || '—'}
-                        </td>
-                        <td className="border-l border-neutral-300 px-4 py-3 text-right">
-                          <button
-                            type="button"
-                            onClick={() => setRemoveTarget(row)}
-                            className="rounded-full border border-red-200 bg-white px-3 py-1 text-xs font-semibold text-red-600 transition-colors hover:border-red-500 hover:bg-red-50"
-                          >
-                            Remove
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                            {(isAssigned || isHired) && (
+                              <span className="ml-2 inline-flex gap-1 align-middle">
+                                {isAssigned && (
+                                  <span className="rounded-full bg-green-100 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-green-700 uppercase">
+                                    Assigned
+                                  </span>
+                                )}
+                                {isHired && (
+                                  <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-amber-700 uppercase">
+                                    Hired
+                                  </span>
+                                )}
+                              </span>
+                            )}
+                            {!item.vehicle && (
+                              <span className="ml-2 text-xs font-normal text-amber-600">
+                                (not in vehicle list)
+                              </span>
+                            )}
+                          </td>
+                          <td className="border-l border-neutral-200 px-4 py-2.5 text-neutral-600">
+                            {item.usedFor || '—'}
+                          </td>
+                          <td className="border-l border-neutral-200 px-4 py-2.5">
+                            <div className="flex items-center justify-end gap-1.5">
+                              {isAssigned ? (
+                                <button
+                                  type="button"
+                                  title="Remove the assignment (hiring is not affected)"
+                                  onClick={() => setRemoveTarget(item)}
+                                  disabled={actionsDisabled}
+                                  className={unassignBtnOff}
+                                >
+                                  Unassign
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  title="Assign for the summary"
+                                  onClick={() =>
+                                    applyState(
+                                      item,
+                                      nextFlags(item.sel, 'assign'),
+                                      'assign',
+                                    )
+                                  }
+                                  disabled={actionsDisabled}
+                                  className={assignBtnOff}
+                                >
+                                  Assign
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                title={
+                                  isHired
+                                    ? 'Hired — click to unhire (assignment is not affected)'
+                                    : 'Hire for the summary'
+                                }
+                                onClick={() =>
+                                  applyState(
+                                    item,
+                                    nextFlags(item.sel, isHired ? 'unhire' : 'hire'),
+                                    isHired ? 'unhire' : 'hire',
+                                  )
+                                }
+                                disabled={actionsDisabled}
+                                className={hireBtnOff}
+                              >
+                                {isHired ? 'Unhire' : 'Hire'}
+                              </button>
+                              {isBusy && (
+                                <span className="ml-1 inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>
             )}
           </div>
-
         </>
       )}
 
@@ -383,7 +610,7 @@ export default function AssignedVehiclesTab({ token }) {
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
           onClick={() => {
-            if (!removingId) setRemoveTarget(null)
+            if (!busyKey) setRemoveTarget(null)
           }}
         >
           <div
@@ -395,32 +622,38 @@ export default function AssignedVehiclesTab({ token }) {
             <div className="h-1.5 w-full bg-red-600" />
             <div className="px-6 py-5">
               <h4 className="text-base font-bold tracking-tight text-ink">
-                Remove vehicle?
+                Unassign vehicle?
               </h4>
               <p className="mt-2 text-sm text-neutral-600">
-                <span className="font-semibold text-ink">{removeTarget.code}</span>
+                <span className="font-semibold text-ink">
+                  {removeTarget.code}
+                </span>
                 {removeTarget.usedFor ? (
-                  <span className="text-neutral-500"> — {removeTarget.usedFor}</span>
+                  <span className="text-neutral-500">
+                    {' '}
+                    — {removeTarget.usedFor}
+                  </span>
                 ) : null}{' '}
-                will be removed from the assigned vehicles. You can add it back
-                at any time.
+                will be unassigned from the summary
+                {flagHired(removeTarget.sel) ? ' — it will remain hired' : ''}.
+                You can assign it again at any time.
               </p>
               <div className="mt-5 flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setRemoveTarget(null)}
-                  disabled={Boolean(removingId)}
+                  disabled={Boolean(busyKey)}
                   className="rounded-full border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  onClick={() => removeRow(removeTarget)}
-                  disabled={Boolean(removingId)}
+                  onClick={confirmUnassign}
+                  disabled={Boolean(busyKey)}
                   className="rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-red-600/25 transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {removingId ? 'Removing…' : 'Remove'}
+                  {busyKey === removeTarget.key ? 'Unassigning…' : 'Unassign'}
                 </button>
               </div>
             </div>
