@@ -10,7 +10,7 @@ export const DRIVER_BY_CODE = {
   'HND-CT005': 'Faisal Muneer',
   'HND-CT006': 'Waseem Saleem',
   'HND-DR001': 'Muhammad Irfan',
-  'HND-DT003': '0',
+  'HND-DT003': 'Maqsood',
   'HND-DT005': 'Muhammad Nawaz',
   'HND-DT1002': 'Khalid Razzaq',
   'HND-DT1003': 'Asif Hussain',

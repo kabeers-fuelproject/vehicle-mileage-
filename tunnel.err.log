@@ -45,3 +45,5 @@
 2026-10-05T08:15:01Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:5173
 2026-10-05T08:15:01Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 dest=https://phentermine-cigarettes-sql-audience.trycloudflare.com/api/vehicle/getstatus event=0 ip=198.41.192.107 type=http
 2026-10-05T08:15:01Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 dest=https://phentermine-cigarettes-sql-audience.trycloudflare.com/api/vehicle/getstatus event=0 ip=198.41.192.107 type=http
+2026-10-05T09:50:03Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:5173
+2026-10-05T09:50:03Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 dest=https://phentermine-cigarettes-sql-audience.trycloudflare.com/src/components/MileageUpdateTab.jsx event=0 ip=198.41.192.107 type=http
