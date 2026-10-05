@@ -950,3 +950,7 @@ NameError: name 'GUEST_USERNAME' is not defined
 127.0.0.1 - - [05/Oct/2026 14:53:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
 127.0.0.1 - - [05/Oct/2026 14:53:35] "POST /api/vehicle/getlist HTTP/1.1" 200 -
 127.0.0.1 - - [05/Oct/2026 14:53:38] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 14:53:58] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 14:53:58] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 14:54:00] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 14:54:01] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
