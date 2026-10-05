@@ -2,6 +2,7 @@ import { useState } from 'react'
 import DistanceReportTab from './components/DistanceReportTab'
 import Login from './components/Login'
 import MileageUpdateTab from './components/MileageUpdateTab'
+import AssignedVehiclesTab from './components/AssignedVehiclesTab'
 import ThresholdTab from './components/ThresholdTab'
 import VehicleStatusTab from './components/VehicleStatusTab'
 import VaLogo from './components/VaLogo'
@@ -11,6 +12,7 @@ const TABS = [
   { id: 'distance', label: 'Distance Report' },
   { id: 'mileage', label: 'Mileage Update' },
   { id: 'threshold', label: 'Threshold' },
+  { id: 'assigned-vehicles', label: 'Assigned Vehicles' },
 ]
 
 export default function App() {
@@ -90,6 +92,7 @@ export default function App() {
         {tab === 'distance' && <DistanceReportTab token={token} />}
         {tab === 'mileage' && <MileageUpdateTab token={token} />}
         {tab === 'threshold' && <ThresholdTab />}
+        {tab === 'assigned-vehicles' && <AssignedVehiclesTab token={token} />}
       </main>
     </div>
   )
