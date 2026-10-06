@@ -1,27 +1,11 @@
 npm notice run frontend@0.0.0 dev
 npm notice run vite
 
-  [32m[1mVITE[22m v8.3.1[39m  [2mready in [0m[1m4365[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v8.3.1[39m  [2mready in [0m[1m3165[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.25:[1m5173[22m/[39m  [2mWi-Fi[22m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.26:[1m5173[22m/[39m  [2mWi-Fi[22m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
-[2m9:52:53 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m9:52:54 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m9:53:05 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m9:53:07 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m9:53:18 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m9:53:27 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m9:53:29 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m9:53:44 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m9:53:46 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m10:13:28 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m10:13:28 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m10:34:40 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m10:34:40 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m10:35:01 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m10:36:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m10:36:35 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m10:37:10 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
-[2m11:30:18 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
-[2m11:47:28 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/Login.jsx, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx, /src/components/AssignedVehiclesTab.jsx, /src/components/VehicleStatusTab.jsx[22m
+[2m4:59:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx[22m
+[2m4:59:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx[22m
+[2m4:59:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/MileageUpdateTab.jsx[22m
