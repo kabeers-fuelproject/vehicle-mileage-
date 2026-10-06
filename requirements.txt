@@ -1,1 +1,5 @@
--r backend/requirements.txt
+# Railpack only copies the root requirements.txt into the install step,
+# so the backend dependencies must be listed here (keep in sync with backend/requirements.txt).
+Flask>=3.0,<4.0
+requests>=2.31,<3.0
+gunicorn>=22.0,<24.0
