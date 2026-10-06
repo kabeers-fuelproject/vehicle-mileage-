@@ -1,0 +1,13 @@
+# Production equivalent of the local Vite dev proxy (vite.config.js):
+# the browser calls same-origin /api/*, Netlify forwards to the Railway backend.
+#
+# Where this file must live: the directory set as Netlify's "Base directory"
+# (Site configuration -> Build & deploy -> Base directory).
+#   Base directory = "frontend"  -> keep it here (frontend/netlify.toml)
+#   Base directory = "" (empty)  -> move it to the repo root (netlify.toml)
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://vehicle-mileage-production.up.railway.app/api/*"
+  status = 200
+  force = true

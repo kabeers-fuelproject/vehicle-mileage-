@@ -45,3 +45,7 @@
 2026-10-06T05:36:32Z INF Retrying connection in up to 2s connIndex=0 event=0 ip=198.41.192.67
 2026-10-06T05:36:33Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.53
 2026-10-06T05:36:35Z INF Registered tunnel connection connIndex=0 connection=2e1f6c0b-b284-4d10-9b97-cd0b1f339633 event=0 ip=198.41.200.53 location=sin15 protocol=quic
+2026-10-06T06:04:53Z ERR Serve tunnel error error="accept stream listener error: failed to accept QUIC stream: timeout: no recent network activity" connIndex=0 event=0 ip=198.41.200.53
+2026-10-06T06:04:53Z INF Retrying connection in up to 2s connIndex=0 event=0 ip=198.41.200.53
+2026-10-06T06:04:55Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.43
+2026-10-06T06:05:01Z INF Registered tunnel connection connIndex=0 connection=42458b51-5126-44ee-b0c5-2f47b18dd1d0 event=0 ip=198.41.200.43 location=sin22 protocol=quic
