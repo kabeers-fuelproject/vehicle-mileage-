@@ -404,13 +404,14 @@ export default function AssignedVehiclesTab({ token }) {
 
   const jobAction = confirmJob?.action ?? 'unassign'
   const jobCount = confirmJob?.items.length ?? 0
-  const jobPrimary =
-    {
-      assign: 'Assign',
-      unassign: 'Unassign',
-      hire: 'Hire',
-      unhire: 'Unhire',
-    }[jobAction] ?? 'Unassign'
+  const jobLabels = {
+    assign: { verb: 'Assign', busy: 'Assigning…' },
+    unassign: { verb: 'Unassign', busy: 'Unassigning…' },
+    hire: { verb: 'Hire', busy: 'Hiring…' },
+    unhire: { verb: 'Unhire', busy: 'Unhiring…' },
+  }
+  const jobPrimary = jobLabels[jobAction]?.verb ?? 'Unassign'
+  const jobBusyLabel = jobLabels[jobAction]?.busy ?? 'Unassigning…'
   const jobBusy =
     busyKey === 'bulk' ||
     (jobCount === 1 && busyKey === confirmJob?.items[0].key)
@@ -990,7 +991,7 @@ export default function AssignedVehiclesTab({ token }) {
                         : 'bg-amber-500 shadow-amber-500/25 hover:bg-amber-600'
                   }`}
                 >
-                  {jobBusy ? `${jobPrimary}ing…` : jobPrimary}
+                  {jobBusy ? jobBusyLabel : jobPrimary}
                 </button>
               </div>
             </div>
