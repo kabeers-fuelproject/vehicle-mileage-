@@ -23,3 +23,5 @@ npm notice run vite
 [2m10:36:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
 [2m10:36:35 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
 [2m10:37:10 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
+[2m11:30:18 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
+[2m11:47:28 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/Login.jsx, /src/components/MileageUpdateTab.jsx, /src/components/DistanceReportTab.jsx, /src/components/AssignedVehiclesTab.jsx, /src/components/VehicleStatusTab.jsx[22m

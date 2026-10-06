@@ -1,3 +1,3 @@
-# Netlify proxy — same-origin /api/* forwarded to the Railway backend
+# Netlify proxy: same-origin /api/* forwarded to the Railway backend
 # (production equivalent of the Vite dev proxy in vite.config.js)
 /api/*    https://vehicle-mileage-production.up.railway.app/api/*    200

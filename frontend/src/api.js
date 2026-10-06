@@ -1,4 +1,4 @@
-const API_BASE = '/api'
+const API_BASE = import.meta.env.VITE_API_BASE ?? '/api'
 
 export async function api(path, { method = 'POST', body, token } = {}) {
   const headers = { 'Content-Type': 'application/json' }

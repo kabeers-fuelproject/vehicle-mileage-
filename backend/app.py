@@ -5,6 +5,29 @@ import json
 
 app = Flask(__name__)
 
+ALLOWED_ORIGINS = {
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://vehicle-mileage.netlify.app',
+}
+
+
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get('Origin')
+    if origin in ALLOWED_ORIGINS:
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Vary'] = 'Origin'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
+        response.headers['Access-Control-Max-Age'] = '600'
+    return response
+
+
+@app.route('/api/<path:path>', methods=['OPTIONS'])
+def cors_preflight(path):
+    return ('', 204)
+
 TOKEN_URL = 'http://wmc.trackingworld.com.pk/api/generate-token'
 STATUS_URL = 'http://wmc.trackingworld.com.pk/api/vehicle/getstatuscount'
 VEHICLE_LIST_URL = 'http://wmc.trackingworld.com.pk/api/vehicle/getstatus'
