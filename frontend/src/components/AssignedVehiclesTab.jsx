@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../api'
 import { usedForOf } from '../usedFor'
 import { supabase } from '../supabase'
@@ -57,7 +57,10 @@ export default function AssignedVehiclesTab({ token }) {
   const [chosenAssign, setChosenAssign] = useState('')
   const [chosenHire, setChosenHire] = useState('')
   const [busyKey, setBusyKey] = useState(null)
-  const [removeTarget, setRemoveTarget] = useState(null)
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [selectedKeys, setSelectedKeys] = useState(() => new Set())
+  const [confirmJob, setConfirmJob] = useState(null)
+  const selectAllRef = useRef(null)
 
   useEffect(() => {
     let cancelled = false
@@ -133,13 +136,28 @@ export default function AssignedVehiclesTab({ token }) {
 
   const shownItems = useMemo(() => {
     const q = search.trim().toLowerCase()
-    if (!q) return tableItems
-    return tableItems.filter(
-      (t) =>
-        String(t.code ?? '').toLowerCase().includes(q) ||
-        String(t.usedFor ?? '').toLowerCase().includes(q),
-    )
-  }, [tableItems, search])
+    let list = tableItems
+    if (q) {
+      list = list.filter(
+        (t) =>
+          String(t.code ?? '').toLowerCase().includes(q) ||
+          String(t.usedFor ?? '').toLowerCase().includes(q),
+      )
+    }
+    if (statusFilter !== 'all') {
+      list = list.filter((t) => {
+        const a = flagAssigned(t.sel)
+        const h = flagHired(t.sel)
+        if (statusFilter === 'assigned') return a
+        if (statusFilter === 'unassigned') return !a
+        if (statusFilter === 'hired') return h
+        if (statusFilter === 'unhired') return !h
+        if (statusFilter === 'both') return a && h
+        return true
+      })
+    }
+    return list
+  }, [tableItems, search, statusFilter])
 
   const assignableItems = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -178,6 +196,40 @@ export default function AssignedVehiclesTab({ token }) {
   const chosenHireItem = chosenHire
     ? hireableItems.find((t) => t.key === chosenHire) ?? null
     : null
+
+  const selectedItems = shownItems.filter((t) => selectedKeys.has(t.key))
+  const bulkUnassignable = selectedItems.filter((t) => flagAssigned(t.sel))
+  const bulkHirable = selectedItems.filter((t) => flagHired(t.sel))
+  const allVisibleSelected =
+    shownItems.length > 0 && shownItems.every((t) => selectedKeys.has(t.key))
+
+  useEffect(() => {
+    const el = selectAllRef.current
+    if (!el) return
+    const sel = shownItems.filter((t) => selectedKeys.has(t.key)).length
+    el.indeterminate = sel > 0 && sel < shownItems.length
+  }, [shownItems, selectedKeys])
+
+  function toggleKey(key) {
+    setSelectedKeys((prev) => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
+  }
+
+  function toggleAllVisible() {
+    setSelectedKeys((prev) => {
+      const next = new Set(prev)
+      if (allVisibleSelected) {
+        for (const t of shownItems) next.delete(t.key)
+      } else {
+        for (const t of shownItems) next.add(t.key)
+      }
+      return next
+    })
+  }
 
   const actionsDisabled = busyKey !== null
 
@@ -253,23 +305,91 @@ export default function AssignedVehiclesTab({ token }) {
     }
   }
 
-  async function confirmUnassign() {
-    const ok = await applyState(
-      removeTarget,
-      nextFlags(removeTarget?.sel, 'unassign'),
-      'unassign',
-    )
-    if (ok) setRemoveTarget(null)
+  async function bulkApply(action, items) {
+    if (busyKey || items.length === 0) return false
+    setBusyKey('bulk')
+    setDbError('')
+    setNotice('')
+    let done = 0
+    try {
+      for (const item of items) {
+        const next = nextFlags(item.sel, action)
+        if (!next.is_assigned && !next.is_hired) {
+          if (!item.sel) continue
+          const { error } = await supabase
+            .from(TABLE)
+            .delete()
+            .eq('id', item.sel.id)
+          if (error) throw new Error(error.message)
+          const id = item.sel.id
+          setRows((prev) => prev.filter((r) => r.id !== id))
+        } else {
+          const insert = {
+            vehicle_code: item.code,
+            unit_id: item.vehicle
+              ? unitKey(item.vehicle)
+              : (item.sel?.unit_id ?? null),
+            is_assigned: Boolean(next.is_assigned),
+            is_hired: Boolean(next.is_hired),
+          }
+          const { data, error } = await supabase
+            .from(TABLE)
+            .upsert(insert, { onConflict: 'vehicle_code' })
+            .select()
+          if (error) throw new Error(error.message)
+          const saved = data?.[0]
+          if (saved) {
+            setRows((prev) =>
+              [...prev.filter((r) => r.id !== saved.id), saved].sort((a, b) =>
+                String(a.created_at).localeCompare(String(b.created_at)),
+              ),
+            )
+          }
+        }
+        done++
+      }
+      setNotice(
+        `${done} vehicle${done === 1 ? '' : 's'} ${action === 'unassign' ? 'unassigned' : 'unhired'}.`,
+      )
+      setSelectedKeys(new Set())
+      return true
+    } catch (err) {
+      setDbError(
+        `Stopped after ${done} of ${items.length}: ${err.message}`,
+      )
+      return false
+    } finally {
+      setBusyKey(null)
+    }
+  }
+
+  async function runConfirmJob() {
+    if (!confirmJob) return
+    const { action, items } = confirmJob
+    let ok = false
+    if (items.length === 1) {
+      ok = await applyState(items[0], nextFlags(items[0].sel, action), action)
+    } else if (items.length > 1) {
+      ok = await bulkApply(action, items)
+    }
+    if (ok) setConfirmJob(null)
   }
 
   useEffect(() => {
-    if (!removeTarget) return undefined
+    if (!confirmJob) return undefined
     function onKey(e) {
-      if (e.key === 'Escape' && !busyKey) setRemoveTarget(null)
+      if (e.key === 'Escape' && !busyKey) setConfirmJob(null)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [removeTarget, busyKey])
+  }, [confirmJob, busyKey])
+
+  const jobAction = confirmJob?.action ?? 'unassign'
+  const jobCount = confirmJob?.items.length ?? 0
+  const jobPrimary = jobAction === 'unassign' ? 'Unassign' : 'Unhire'
+  const jobBusy =
+    busyKey === 'bulk' ||
+    (jobCount === 1 && busyKey === confirmJob?.items[0].key)
 
   return (
     <div className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
@@ -322,14 +442,20 @@ export default function AssignedVehiclesTab({ token }) {
             <input
               type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value)
+                setSelectedKeys(new Set())
+              }}
               placeholder="Search by vehicle code or Used For..."
               className="w-80 rounded-lg border border-green-200 bg-white px-3.5 py-2.5 text-sm text-ink transition-all duration-200 placeholder:text-neutral-400 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
             />
             {search.trim() && (
               <button
                 type="button"
-                onClick={() => setSearch('')}
+                onClick={() => {
+                  setSearch('')
+                  setSelectedKeys(new Set())
+                }}
                 className="rounded-full border border-neutral-300 px-3 py-1.5 text-xs font-semibold text-neutral-500 transition-colors hover:border-neutral-400 hover:bg-neutral-50"
               >
                 Clear
@@ -469,22 +595,91 @@ export default function AssignedVehiclesTab({ token }) {
           </div>
 
           <div className="px-6 py-5">
-            <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <h4 className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
                 All Vehicles
               </h4>
-              <span className="text-sm text-neutral-500">
-                {search.trim()
-                  ? `${shownItems.length} of ${tableItems.length} shown (filtered)`
-                  : `${tableItems.length} vehicles`}
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <label
+                  htmlFor="av-status-filter"
+                  className="text-xs font-semibold text-neutral-500"
+                >
+                  Show
+                </label>
+                <select
+                  id="av-status-filter"
+                  value={statusFilter}
+                  onChange={(e) => {
+                    setStatusFilter(e.target.value)
+                    setSelectedKeys(new Set())
+                  }}
+                  className="cursor-pointer rounded-lg border border-neutral-300 bg-white px-2.5 py-1.5 text-xs font-semibold text-neutral-600 transition-colors hover:border-neutral-400 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
+                >
+                  <option value="all">All vehicles</option>
+                  <option value="assigned">Assigned</option>
+                  <option value="unassigned">Unassigned</option>
+                  <option value="hired">Hired</option>
+                  <option value="unhired">Not hired</option>
+                  <option value="both">Assigned &amp; hired</option>
+                </select>
+                <span className="text-sm text-neutral-500">
+                  {search.trim() || statusFilter !== 'all'
+                    ? `${shownItems.length} of ${tableItems.length} shown (filtered)`
+                    : `${tableItems.length} vehicles`}
+                </span>
+              </div>
             </div>
+
+            {selectedItems.length > 0 && (
+              <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-3.5 py-2.5">
+                <span className="text-xs font-semibold text-green-800">
+                  {selectedItems.length} vehicle
+                  {selectedItems.length === 1 ? '' : 's'} selected
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedKeys(new Set())}
+                  className="rounded-full border border-neutral-300 px-3 py-1 text-xs font-semibold text-neutral-500 transition-colors hover:border-neutral-400 hover:bg-white"
+                >
+                  Clear selection
+                </button>
+                <span className="ml-auto flex items-center gap-2">
+                  <button
+                    type="button"
+                    title="Unassign every selected vehicle that is assigned (hiring is not affected)"
+                    onClick={() =>
+                      setConfirmJob({
+                        action: 'unassign',
+                        items: bulkUnassignable,
+                      })
+                    }
+                    disabled={actionsDisabled || bulkUnassignable.length === 0}
+                    className={`${unassignBtnOff} px-3.5 py-1.5 text-xs`}
+                  >
+                    Unassign ({bulkUnassignable.length})
+                  </button>
+                  <button
+                    type="button"
+                    title="Unhire every selected vehicle that is hired (assignment is not affected)"
+                    onClick={() =>
+                      setConfirmJob({ action: 'unhire', items: bulkHirable })
+                    }
+                    disabled={actionsDisabled || bulkHirable.length === 0}
+                    className={`${hireBtnOff} px-3.5 py-1.5 text-xs`}
+                  >
+                    Unhire ({bulkHirable.length})
+                  </button>
+                </span>
+              </div>
+            )}
 
             {shownItems.length === 0 ? (
               <p className="mt-3 rounded-xl border border-dashed border-green-200 bg-green-50/60 px-4 py-6 text-center text-sm text-green-800/80">
                 {tableItems.length === 0
                   ? 'No vehicles available.'
-                  : `No vehicles match "${search.trim()}"`}
+                  : search.trim()
+                    ? `No vehicles match "${search.trim()}"`
+                    : 'No vehicles match the current filter.'}
               </p>
             ) : (
               <div className="mt-3 max-h-[32rem] overflow-auto rounded-xl border border-green-200">
@@ -492,7 +687,17 @@ export default function AssignedVehiclesTab({ token }) {
                   <thead>
                     <tr className="text-[10px] tracking-wider text-white uppercase">
                       <th className="sticky top-0 z-10 bg-green-700 px-4 py-2.5 font-semibold">
-                        Vehicle Code
+                        <span className="flex items-center gap-2.5">
+                          <input
+                            ref={selectAllRef}
+                            type="checkbox"
+                            checked={allVisibleSelected}
+                            onChange={toggleAllVisible}
+                            aria-label="Select all shown vehicles"
+                            className="h-4 w-4 cursor-pointer accent-green-700"
+                          />
+                          Vehicle Code
+                        </span>
                       </th>
                       <th className="sticky top-0 z-10 border-l border-white/25 bg-green-700 px-4 py-2.5 font-semibold">
                         Used For
@@ -507,35 +712,45 @@ export default function AssignedVehiclesTab({ token }) {
                       const isAssigned = flagAssigned(item.sel)
                       const isHired = flagHired(item.sel)
                       const isBusy = busyKey === item.key
-                      const rowBg = i % 2 === 1 ? 'bg-green-50/40' : ''
+                      const isSelected = selectedKeys.has(item.key)
+                      const rowBg = isSelected
+                        ? 'bg-green-100/70'
+                        : i % 2 === 1
+                          ? 'bg-green-50/40'
+                          : ''
                       return (
                         <tr
                           key={item.key}
                           className={`border-b border-neutral-100 transition-colors last:border-0 hover:bg-green-100/60 ${rowBg}`}
                         >
                           <td className="px-4 py-2.5">
-                            <span className="font-semibold text-ink">
-                              {item.code}
+                            <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => toggleKey(item.key)}
+                                aria-label={`Select ${item.code}`}
+                                className="h-4 w-4 shrink-0 cursor-pointer accent-green-700"
+                              />
+                              <span className="font-semibold text-ink">
+                                {item.code}
+                              </span>
+                              {isAssigned && (
+                                <span className="rounded-full bg-green-100 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-green-700 uppercase">
+                                  Assigned
+                                </span>
+                              )}
+                              {isHired && (
+                                <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-amber-700 uppercase">
+                                  Hired
+                                </span>
+                              )}
+                              {!item.vehicle && (
+                                <span className="text-xs font-normal text-amber-600">
+                                  (not in vehicle list)
+                                </span>
+                              )}
                             </span>
-                            {(isAssigned || isHired) && (
-                              <span className="ml-2 inline-flex gap-1 align-middle">
-                                {isAssigned && (
-                                  <span className="rounded-full bg-green-100 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-green-700 uppercase">
-                                    Assigned
-                                  </span>
-                                )}
-                                {isHired && (
-                                  <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-amber-700 uppercase">
-                                    Hired
-                                  </span>
-                                )}
-                              </span>
-                            )}
-                            {!item.vehicle && (
-                              <span className="ml-2 text-xs font-normal text-amber-600">
-                                (not in vehicle list)
-                              </span>
-                            )}
                           </td>
                           <td className="border-l border-neutral-200 px-4 py-2.5 text-neutral-600">
                             {item.usedFor || '—'}
@@ -546,7 +761,12 @@ export default function AssignedVehiclesTab({ token }) {
                                 <button
                                   type="button"
                                   title="Remove the assignment (hiring is not affected)"
-                                  onClick={() => setRemoveTarget(item)}
+                                  onClick={() =>
+                                    setConfirmJob({
+                                      action: 'unassign',
+                                      items: [item],
+                                    })
+                                  }
                                   disabled={actionsDisabled}
                                   className={unassignBtnOff}
                                 >
@@ -606,11 +826,11 @@ export default function AssignedVehiclesTab({ token }) {
 
       <div className="h-1 w-full bg-green-700" />
 
-      {removeTarget && (
+      {confirmJob && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
           onClick={() => {
-            if (!busyKey) setRemoveTarget(null)
+            if (!busyKey) setConfirmJob(null)
           }}
         >
           <div
@@ -619,29 +839,65 @@ export default function AssignedVehiclesTab({ token }) {
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-sm overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-xl"
           >
-            <div className="h-1.5 w-full bg-red-600" />
+            <div
+              className={`h-1.5 w-full ${jobAction === 'unassign' ? 'bg-red-600' : 'bg-amber-500'}`}
+            />
             <div className="px-6 py-5">
               <h4 className="text-base font-bold tracking-tight text-ink">
-                Unassign vehicle?
+                {jobCount === 1
+                  ? `${jobPrimary} vehicle?`
+                  : `${jobPrimary} ${jobCount} vehicles?`}
               </h4>
               <p className="mt-2 text-sm text-neutral-600">
-                <span className="font-semibold text-ink">
-                  {removeTarget.code}
-                </span>
-                {removeTarget.usedFor ? (
-                  <span className="text-neutral-500">
-                    {' '}
-                    — {removeTarget.usedFor}
-                  </span>
-                ) : null}{' '}
-                will be unassigned from the summary
-                {flagHired(removeTarget.sel) ? ' — it will remain hired' : ''}.
-                You can assign it again at any time.
+                {jobCount === 1 ? (
+                  <>
+                    <span className="font-semibold text-ink">
+                      {confirmJob.items[0].code}
+                    </span>
+                    {confirmJob.items[0].usedFor ? (
+                      <span className="text-neutral-500">
+                        {' '}
+                        — {confirmJob.items[0].usedFor}
+                      </span>
+                    ) : null}{' '}
+                    {jobAction === 'unassign' ? (
+                      <>
+                        will be unassigned from the summary
+                        {flagHired(confirmJob.items[0].sel)
+                          ? ' — it will remain hired'
+                          : ''}
+                        . You can assign it again at any time.
+                      </>
+                    ) : (
+                      <>
+                        will be unhired from the summary — its assignment is
+                        not affected.
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <span className="font-semibold text-ink">
+                      {jobCount} vehicles
+                    </span>{' '}
+                    {jobAction === 'unassign'
+                      ? 'will be unassigned from the summary — hired vehicles keep their hiring.'
+                      : 'will be unhired from the summary — assignments are not affected.'}{' '}
+                    You can reverse this at any time.
+                    <span className="mt-1.5 block text-xs text-neutral-500">
+                      {confirmJob.items
+                        .slice(0, 8)
+                        .map((t) => t.code)
+                        .join(', ')}
+                      {jobCount > 8 ? ` …and ${jobCount - 8} more` : ''}
+                    </span>
+                  </>
+                )}
               </p>
               <div className="mt-5 flex justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => setRemoveTarget(null)}
+                  onClick={() => setConfirmJob(null)}
                   disabled={Boolean(busyKey)}
                   className="rounded-full border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-600 transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
@@ -649,11 +905,15 @@ export default function AssignedVehiclesTab({ token }) {
                 </button>
                 <button
                   type="button"
-                  onClick={confirmUnassign}
+                  onClick={runConfirmJob}
                   disabled={Boolean(busyKey)}
-                  className="rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-red-600/25 transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className={`rounded-full px-4 py-2 text-sm font-semibold text-white shadow-md transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+                    jobAction === 'unassign'
+                      ? 'bg-red-600 shadow-red-600/25 hover:bg-red-700'
+                      : 'bg-amber-500 shadow-amber-500/25 hover:bg-amber-600'
+                  }`}
                 >
-                  {busyKey === removeTarget.key ? 'Unassigning…' : 'Unassign'}
+                  {jobBusy ? `${jobPrimary}ing…` : jobPrimary}
                 </button>
               </div>
             </div>
