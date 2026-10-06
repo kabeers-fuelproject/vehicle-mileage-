@@ -34,6 +34,12 @@ const hireBtnOff =
 const unassignBtnOff =
   'rounded-full border border-red-200 bg-white px-3 py-1 text-[11px] font-semibold text-red-600 transition-colors hover:border-red-500 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40'
 
+const assignFillBtn =
+  'rounded-full bg-green-700 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-green-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40'
+
+const hireFillBtn =
+  'rounded-full bg-amber-500 px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-amber-600 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40'
+
 const unitKey = (u) => String(u.unitID)
 
 function flagAssigned(sel) {
@@ -198,6 +204,12 @@ export default function AssignedVehiclesTab({ token }) {
     : null
 
   const selectedItems = shownItems.filter((t) => selectedKeys.has(t.key))
+  const bulkAssignable = selectedItems.filter(
+    (t) => t.vehicle && !flagAssigned(t.sel),
+  )
+  const bulkHireable = selectedItems.filter(
+    (t) => t.vehicle && !flagHired(t.sel),
+  )
   const bulkUnassignable = selectedItems.filter((t) => flagAssigned(t.sel))
   const bulkHirable = selectedItems.filter((t) => flagHired(t.sel))
   const allVisibleSelected =
@@ -348,8 +360,14 @@ export default function AssignedVehiclesTab({ token }) {
         }
         done++
       }
+      const pastTense = {
+        assign: 'assigned',
+        unassign: 'unassigned',
+        hire: 'hired',
+        unhire: 'unhired',
+      }
       setNotice(
-        `${done} vehicle${done === 1 ? '' : 's'} ${action === 'unassign' ? 'unassigned' : 'unhired'}.`,
+        `${done} vehicle${done === 1 ? '' : 's'} ${pastTense[action] ?? 'updated'}.`,
       )
       setSelectedKeys(new Set())
       return true
@@ -386,7 +404,13 @@ export default function AssignedVehiclesTab({ token }) {
 
   const jobAction = confirmJob?.action ?? 'unassign'
   const jobCount = confirmJob?.items.length ?? 0
-  const jobPrimary = jobAction === 'unassign' ? 'Unassign' : 'Unhire'
+  const jobPrimary =
+    {
+      assign: 'Assign',
+      unassign: 'Unassign',
+      hire: 'Hire',
+      unhire: 'Unhire',
+    }[jobAction] ?? 'Unassign'
   const jobBusy =
     busyKey === 'bulk' ||
     (jobCount === 1 && busyKey === confirmJob?.items[0].key)
@@ -646,6 +670,31 @@ export default function AssignedVehiclesTab({ token }) {
                 <span className="ml-auto flex items-center gap-2">
                   <button
                     type="button"
+                    title="Assign every selected vehicle that is not assigned (hiring is not affected)"
+                    onClick={() =>
+                      setConfirmJob({
+                        action: 'assign',
+                        items: bulkAssignable,
+                      })
+                    }
+                    disabled={actionsDisabled || bulkAssignable.length === 0}
+                    className={assignFillBtn}
+                  >
+                    Assign ({bulkAssignable.length})
+                  </button>
+                  <button
+                    type="button"
+                    title="Hire every selected vehicle that is not hired (assignment is not affected)"
+                    onClick={() =>
+                      setConfirmJob({ action: 'hire', items: bulkHireable })
+                    }
+                    disabled={actionsDisabled || bulkHireable.length === 0}
+                    className={hireFillBtn}
+                  >
+                    Hire ({bulkHireable.length})
+                  </button>
+                  <button
+                    type="button"
                     title="Unassign every selected vehicle that is assigned (hiring is not affected)"
                     onClick={() =>
                       setConfirmJob({
@@ -840,7 +889,13 @@ export default function AssignedVehiclesTab({ token }) {
             className="w-full max-w-sm overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-xl"
           >
             <div
-              className={`h-1.5 w-full ${jobAction === 'unassign' ? 'bg-red-600' : 'bg-amber-500'}`}
+              className={`h-1.5 w-full ${
+                jobAction === 'unassign'
+                  ? 'bg-red-600'
+                  : jobAction === 'assign'
+                    ? 'bg-green-600'
+                    : 'bg-amber-500'
+              }`}
             />
             <div className="px-6 py-5">
               <h4 className="text-base font-bold tracking-tight text-ink">
@@ -860,13 +915,29 @@ export default function AssignedVehiclesTab({ token }) {
                         — {confirmJob.items[0].usedFor}
                       </span>
                     ) : null}{' '}
-                    {jobAction === 'unassign' ? (
+                    {jobAction === 'assign' ? (
+                      <>
+                        will be assigned to the summary
+                        {flagHired(confirmJob.items[0].sel)
+                          ? ' — it will remain hired'
+                          : ''}
+                        . You can unassign it at any time.
+                      </>
+                    ) : jobAction === 'unassign' ? (
                       <>
                         will be unassigned from the summary
                         {flagHired(confirmJob.items[0].sel)
                           ? ' — it will remain hired'
                           : ''}
                         . You can assign it again at any time.
+                      </>
+                    ) : jobAction === 'hire' ? (
+                      <>
+                        will be hired for the summary
+                        {flagAssigned(confirmJob.items[0].sel)
+                          ? ' — it will remain assigned'
+                          : ''}
+                        . You can unhire it at any time.
                       </>
                     ) : (
                       <>
@@ -880,9 +951,13 @@ export default function AssignedVehiclesTab({ token }) {
                     <span className="font-semibold text-ink">
                       {jobCount} vehicles
                     </span>{' '}
-                    {jobAction === 'unassign'
-                      ? 'will be unassigned from the summary — hired vehicles keep their hiring.'
-                      : 'will be unhired from the summary — assignments are not affected.'}{' '}
+                    {jobAction === 'assign'
+                      ? 'will be assigned to the summary — already-hired vehicles keep their hiring.'
+                      : jobAction === 'unassign'
+                        ? 'will be unassigned from the summary — hired vehicles keep their hiring.'
+                        : jobAction === 'hire'
+                          ? 'will be hired for the summary — assignments are not affected.'
+                          : 'will be unhired from the summary — assignments are not affected.'}{' '}
                     You can reverse this at any time.
                     <span className="mt-1.5 block text-xs text-neutral-500">
                       {confirmJob.items
@@ -910,7 +985,9 @@ export default function AssignedVehiclesTab({ token }) {
                   className={`rounded-full px-4 py-2 text-sm font-semibold text-white shadow-md transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
                     jobAction === 'unassign'
                       ? 'bg-red-600 shadow-red-600/25 hover:bg-red-700'
-                      : 'bg-amber-500 shadow-amber-500/25 hover:bg-amber-600'
+                      : jobAction === 'assign'
+                        ? 'bg-green-600 shadow-green-600/25 hover:bg-green-700'
+                        : 'bg-amber-500 shadow-amber-500/25 hover:bg-amber-600'
                   }`}
                 >
                   {jobBusy ? `${jobPrimary}ing…` : jobPrimary}
