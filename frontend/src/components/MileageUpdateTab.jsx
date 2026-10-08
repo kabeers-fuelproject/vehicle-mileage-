@@ -262,7 +262,13 @@ const STATUS_FILTERS = [
   { key: 'all', label: 'All' },
   { key: 'Ok', label: 'Ok' },
   { key: 'Low', label: 'Low' },
+  { key: 'zero', label: '0 Mileage' },
 ]
+
+function hasZeroMileage(vehicle, reportMap) {
+  const mileage = parseNumber(displayValue(codeOf(vehicle), 'mileage', reportMap))
+  return mileage === null || mileage === 0
+}
 
 async function copyNodeAsImage(node, filename) {
   const renderOptions = {
@@ -408,15 +414,18 @@ export default function MileageUpdateTab({ token }) {
     return displayValue(codeOf(vehicle), 'status', reportMap)
   }
 
-  const statusCounts = { all: vehicles.length, Ok: 0, Low: 0 }
+  const statusCounts = { all: vehicles.length, Ok: 0, Low: 0, zero: 0 }
   for (const vehicle of vehicles) {
     const value = statusOf(vehicle)
     if (statusCounts[value] !== undefined) statusCounts[value] += 1
+    if (hasZeroMileage(vehicle, reportMap)) statusCounts.zero += 1
   }
   const visibleVehicles =
     statusFilter === 'all'
       ? vehicles
-      : vehicles.filter((vehicle) => statusOf(vehicle) === statusFilter)
+      : statusFilter === 'zero'
+        ? vehicles.filter((vehicle) => hasZeroMileage(vehicle, reportMap))
+        : vehicles.filter((vehicle) => statusOf(vehicle) === statusFilter)
 
   const sortedVehicles =
     codeSort === 'none'
@@ -619,7 +628,9 @@ export default function MileageUpdateTab({ token }) {
         vehicles.length > 0 &&
         visibleVehicles.length === 0 && (
           <p className="text-sm text-neutral-500">
-            No vehicles with status {statusFilter}.
+            {statusFilter === 'zero'
+              ? 'No vehicles with 0 mileage.'
+              : `No vehicles with status ${statusFilter}.`}
           </p>
         )}
 
