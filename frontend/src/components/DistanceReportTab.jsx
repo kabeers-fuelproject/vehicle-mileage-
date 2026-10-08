@@ -195,7 +195,7 @@ export default function DistanceReportTab({ token }) {
       )}
       <div className="h-1.5 w-full bg-green-700" />
 
-      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
+      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-4 py-5 sm:px-6">
         <div className="flex items-center gap-4">
           <VaLogo className="h-11 w-11" />
           <div>
@@ -221,7 +221,7 @@ export default function DistanceReportTab({ token }) {
 
       <form
         onSubmit={generate}
-        className="border-b border-neutral-200 px-6 py-5"
+        className="border-b border-neutral-200 px-4 py-5 sm:px-6"
       >
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="flex flex-wrap items-end gap-4">
@@ -261,13 +261,13 @@ export default function DistanceReportTab({ token }) {
         </div>
 
         <div className="mt-5">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Type to search vehicle codes..."
-              className="w-72 rounded-lg border border-green-200 bg-white px-3.5 py-2.5 text-sm text-ink transition-all duration-200 placeholder:text-neutral-400 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
+              className="w-full max-w-xs rounded-lg border border-green-200 sm:w-72 bg-white px-3.5 py-2.5 text-sm text-ink transition-all duration-200 placeholder:text-neutral-400 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
             />
             {search.trim() && (
               <label className="flex cursor-pointer items-center gap-2 text-sm text-neutral-600">
@@ -337,7 +337,7 @@ export default function DistanceReportTab({ token }) {
         )}
       </form>
 
-      <div className="px-6 py-5">
+      <div className="px-4 py-5 sm:px-6">
         {generating && (
           <div className="flex items-center gap-3 text-sm text-neutral-500">
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
@@ -377,8 +377,8 @@ export default function DistanceReportTab({ token }) {
                   : `No report rows match "${search.trim()}"`}
               </p>
             ) : (
-              <div className="mt-4 -mx-6 overflow-x-auto">
-                <table className="w-full text-left text-sm">
+              <div className="mt-4 -mx-4 overflow-x-auto sm:-mx-6">
+                <table className="w-full min-w-[720px] text-left text-sm">
                   <thead>
                     <tr className="bg-green-700 text-[10px] tracking-wider text-white uppercase">
                       <th className="px-6 py-2.5 font-semibold">S #</th>
@@ -441,7 +441,7 @@ export default function DistanceReportTab({ token }) {
         )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-6 py-3.5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-4 py-3.5 sm:px-6">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium text-green-900/80">
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-green-700" />

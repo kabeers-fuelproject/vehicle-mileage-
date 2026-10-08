@@ -8,7 +8,7 @@ export default function ThresholdTab() {
     <div className="max-w-3xl overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
       <div className="h-1.5 w-full bg-green-700" />
 
-      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
+      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-4 py-5 sm:px-6">
         <div className="flex items-center gap-4">
           <VaLogo className="h-11 w-11" />
           <div>
@@ -83,7 +83,7 @@ export default function ThresholdTab() {
         </table>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-6 py-3.5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-4 py-3.5 sm:px-6">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium text-green-900/80">
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-green-700" />

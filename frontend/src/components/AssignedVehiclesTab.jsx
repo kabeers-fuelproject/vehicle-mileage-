@@ -420,7 +420,7 @@ export default function AssignedVehiclesTab({ token }) {
     <div className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
       <div className="h-1.5 w-full bg-green-700" />
 
-      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
+      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-4 py-5 sm:px-6">
         <div className="flex items-center gap-4">
           <VaLogo className="h-11 w-11" />
           <div>
@@ -435,7 +435,7 @@ export default function AssignedVehiclesTab({ token }) {
             </p>
           </div>
         </div>
-        <dl className="grid grid-cols-3 gap-x-8 gap-y-3 rounded-xl border border-green-200 bg-green-50 px-5 py-3.5">
+        <dl className="grid grid-cols-3 gap-x-4 gap-y-3 rounded-xl sm:gap-x-8 border border-green-200 bg-green-50 px-5 py-3.5">
           <Meta label="Assigned" value={`${assignedCount}`} />
           <Meta label="Hired" value={`${hiredCount}`} />
           <Meta label="Unassigned" value={`${unassignedCount}`} />
@@ -443,27 +443,27 @@ export default function AssignedVehiclesTab({ token }) {
       </div>
 
       {loading && (
-        <div className="flex items-center gap-2.5 px-6 py-5 text-sm text-neutral-500">
+        <div className="flex items-center gap-2.5 px-4 py-5 text-sm sm:px-6 text-neutral-500">
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
           Loading vehicles and saved selection...
         </div>
       )}
 
       {!loading && (vehiclesError || dbError) && (
-        <p className="mx-6 mt-5 border-l-4 border-red-600 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">
+        <p className="mx-4 mt-5 sm:mx-6 border-l-4 border-red-600 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">
           {vehiclesError || dbError}
         </p>
       )}
 
       {!loading && notice && (
-        <p className="mx-6 mt-5 border-l-4 border-green-700 bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
+        <p className="mx-4 mt-5 sm:mx-6 border-l-4 border-green-700 bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
           {notice}
         </p>
       )}
 
       {!loading && !vehiclesError && !dbError && (
         <>
-          <div className="flex flex-wrap items-center gap-3 border-b border-neutral-200 px-6 py-4">
+          <div className="flex flex-wrap items-center gap-3 border-b border-neutral-200 px-4 py-4 sm:px-6">
             <input
               type="text"
               value={search}
@@ -472,7 +472,7 @@ export default function AssignedVehiclesTab({ token }) {
                 setSelectedKeys(new Set())
               }}
               placeholder="Search by vehicle code or Used For..."
-              className="w-80 rounded-lg border border-green-200 bg-white px-3.5 py-2.5 text-sm text-ink transition-all duration-200 placeholder:text-neutral-400 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
+              className="w-full rounded-lg sm:w-80 border border-green-200 bg-white px-3.5 py-2.5 text-sm text-ink transition-all duration-200 placeholder:text-neutral-400 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
             />
             {search.trim() && (
               <button
@@ -501,7 +501,7 @@ export default function AssignedVehiclesTab({ token }) {
                 </span>
               ) : (
                 <>
-                  <span className="relative inline-flex w-64">
+                  <span className="relative inline-flex w-full sm:w-64">
                     <select
                       value={chosenAssignItem ? chosenAssign : ''}
                       onChange={(e) => setChosenAssign(e.target.value)}
@@ -565,7 +565,7 @@ export default function AssignedVehiclesTab({ token }) {
                 </span>
               ) : (
                 <>
-                  <span className="relative inline-flex w-64">
+                  <span className="relative inline-flex w-full sm:w-64">
                     <select
                       value={chosenHireItem ? chosenHire : ''}
                       onChange={(e) => setChosenHire(e.target.value)}
@@ -619,7 +619,7 @@ export default function AssignedVehiclesTab({ token }) {
             </div>
           </div>
 
-          <div className="px-6 py-5">
+          <div className="px-4 py-5 sm:px-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h4 className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
                 All Vehicles
@@ -668,7 +668,7 @@ export default function AssignedVehiclesTab({ token }) {
                 >
                   Clear selection
                 </button>
-                <span className="ml-auto flex items-center gap-2">
+                <span className="ml-auto flex flex-wrap items-center justify-end gap-2">
                   <button
                     type="button"
                     title="Assign every selected vehicle that is not assigned (hiring is not affected)"
@@ -733,7 +733,7 @@ export default function AssignedVehiclesTab({ token }) {
               </p>
             ) : (
               <div className="mt-3 max-h-[32rem] overflow-auto rounded-xl border border-green-200">
-                <table className="w-full text-left text-sm">
+                <table className="w-full min-w-[560px] text-left text-sm">
                   <thead>
                     <tr className="text-[10px] tracking-wider text-white uppercase">
                       <th className="sticky top-0 z-10 bg-green-700 px-4 py-2.5 font-semibold">
@@ -898,7 +898,7 @@ export default function AssignedVehiclesTab({ token }) {
                     : 'bg-amber-500'
               }`}
             />
-            <div className="px-6 py-5">
+            <div className="px-4 py-5 sm:px-6">
               <h4 className="text-base font-bold tracking-tight text-ink">
                 {jobCount === 1
                   ? `${jobPrimary} vehicle?`

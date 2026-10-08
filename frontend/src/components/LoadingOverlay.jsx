@@ -1,4 +1,6 @@
+/* Old loader helper (commented out - replaced by the .loader element below)
 const ROAD_DASHES = [-40, 0, 40, 80, 120, 160, 200, 240]
+*/
 
 export default function LoadingOverlay({ label = 'Working…' }) {
   return (
@@ -9,6 +11,7 @@ export default function LoadingOverlay({ label = 'Working…' }) {
       aria-label={label}
     >
       <div className="flex w-72 flex-col items-center gap-4 overflow-hidden rounded-2xl border border-white/70 bg-white/90 px-6 pt-5 pb-5 shadow-2xl shadow-black/20">
+        {/* Old SVG car loader (commented out)
         <svg viewBox="0 0 200 96" className="h-24 w-full" aria-hidden="true">
           <ellipse cx="100" cy="73" rx="66" ry="5" fill="#000" opacity="0.08" />
 
@@ -66,12 +69,19 @@ export default function LoadingOverlay({ label = 'Working…' }) {
             </g>
           </g>
         </svg>
+        */}
 
-        <span className="text-sm font-semibold tracking-wide text-green-900">{label}</span>
+        <div className="loader" />
 
+        <span className="text-sm font-semibold tracking-wide text-green-900">
+          {label}
+        </span>
+
+        {/* Old loading progress bar (commented out)
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-green-100">
           <div className="va-load-bar h-full w-1/3 rounded-full bg-gradient-to-r from-green-600 via-green-400 to-green-600" />
         </div>
+        */}
       </div>
     </div>
   )

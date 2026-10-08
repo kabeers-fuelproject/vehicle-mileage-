@@ -128,7 +128,7 @@ export default function VehicleStatusTab({ token }) {
       {loading && <LoadingOverlay label="Refreshing vehicle status…" />}
       <div className="h-1.5 w-full bg-green-700" />
 
-      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
+      <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-4 py-5 sm:px-6">
         <div className="flex items-center gap-4">
           <VaLogo className="h-11 w-11" />
           <div>
@@ -187,13 +187,13 @@ export default function VehicleStatusTab({ token }) {
       </div>
 
       {error && (
-        <p className="mx-6 mt-5 border-l-4 border-green-700 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+        <p className="mx-4 mt-5 border-l-4 sm:mx-6 border-green-700 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
           {error}
         </p>
       )}
 
       {hasCounts && (
-        <div className="grid grid-cols-2 gap-3 border-b border-neutral-200 px-6 py-5 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 border-b border-neutral-200 px-4 py-5 sm:grid-cols-3 sm:px-6 lg:grid-cols-6">
           <StatCard label="Total" value={counts.totalCount} invert />
           <StatCard label="Reporting" value={counts.reportingCount} />
           <StatCard label="Not Reporting" value={counts.notReportingCount} />
@@ -204,19 +204,19 @@ export default function VehicleStatusTab({ token }) {
       )}
 
       {loading && !data && (
-        <div className="flex items-center gap-3 px-6 py-8 text-sm text-neutral-500">
+        <div className="flex items-center gap-3 px-4 py-8 text-sm sm:px-6 text-neutral-500">
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
           Loading vehicle status...
         </div>
       )}
 
       {!loading && !error && vehicles.length === 0 && (
-        <p className="px-6 py-8 text-sm text-neutral-500">No vehicles found.</p>
+        <p className="px-4 py-8 text-sm text-neutral-500 sm:px-6">No vehicles found.</p>
       )}
 
       {vehicles.length > 0 && (
-        <div className="no-scrollbar overflow-x-auto">
-          <table className="w-full text-left text-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[1000px] text-left text-sm">
             <thead>
               <tr className="bg-green-700 text-[10px] tracking-wider text-white uppercase">
                 <th className="px-4 py-2.5 font-semibold">Vehicle Reg No.</th>
@@ -285,7 +285,7 @@ export default function VehicleStatusTab({ token }) {
         </div>
       )}
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-6 py-3.5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-4 py-3.5 sm:px-6">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium text-green-900/80">
           <span className="inline-flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-green-700" />

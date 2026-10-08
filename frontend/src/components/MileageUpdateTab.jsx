@@ -40,6 +40,33 @@ const COLUMN_WIDTHS = [
   '12%',
 ]
 
+const MOBILE_COLUMN_WIDTHS = [
+  '7%',
+  '13%',
+  '10%',
+  '11%',
+  '10%',
+  '10%',
+  '8%',
+  '9%',
+  '10%',
+  '12%',
+]
+
+function useIsNarrow() {
+  const query = '(max-width: 639px)'
+  const [narrow, setNarrow] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(query).matches,
+  )
+  useEffect(() => {
+    const mq = window.matchMedia(query)
+    const onChange = (event) => setNarrow(event.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return narrow
+}
+
 const PDF_ALIGN = {
   'text-center': 'center',
   'text-right': 'right',
@@ -213,16 +240,18 @@ function StatusCell({ value }) {
   const style = STATUS_BADGE_STYLES[value]
   if (!style) {
     return (
-      <span className="inline-block rounded-full border border-neutral-200 bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold tracking-wide whitespace-nowrap text-neutral-600">
+      <span className="inline-block rounded-full border border-neutral-200 bg-neutral-100 px-1 py-0.5 text-[10px] font-semibold tracking-wide whitespace-nowrap text-neutral-600 sm:px-2">
         {value}
       </span>
     )
   }
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wide whitespace-nowrap uppercase ${style}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-1 py-0.5 text-[10px] font-semibold tracking-wide whitespace-nowrap uppercase sm:px-2 ${style}`}
     >
-      <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT_STYLES[value]}`} />
+      <span
+        className={`hidden h-1.5 w-1.5 rounded-full sm:inline-block ${STATUS_DOT_STYLES[value]}`}
+      />
       {value}
     </span>
   )
@@ -243,14 +272,15 @@ function Meta({ label, value }) {
 
 function cellClass(column) {
   const base =
-    'px-3 py-2.5 align-middle border border-black font-semibold text-black'
+    'px-1 py-2 sm:px-3 sm:py-2.5 align-middle border border-black font-semibold text-black'
   if (column.key === 'sr') return `${base} text-center tabular-nums`
-  if (column.key === 'vehicleCode') return base
-  if (NUMERIC_KEYS.has(column.key)) return `${base} text-right tabular-nums`
+  if (column.key === 'vehicleCode') return `${base} break-all`
+  if (NUMERIC_KEYS.has(column.key))
+    return `${base} text-right tabular-nums break-all`
   if (column.key === 'status')
-    return 'px-3 py-2.5 align-middle border border-black text-center'
+    return 'px-1 py-2 sm:px-3 sm:py-2.5 align-middle border border-black text-center'
   if (column.key === 'lastUpdated')
-    return `${base} tabular-nums whitespace-nowrap`
+    return `${base} tabular-nums break-all sm:whitespace-nowrap`
   return `${base} break-words`
 }
 
@@ -335,6 +365,7 @@ export default function MileageUpdateTab({ token }) {
   const [exportMessage, setExportMessage] = useState('')
   const [refreshing, setRefreshing] = useState(false)
   const runIdRef = useRef(0)
+  const isNarrow = useIsNarrow()
 
   async function copyAsImage() {
     const node = visibleTableRef.current
@@ -640,7 +671,7 @@ export default function MileageUpdateTab({ token }) {
           className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm"
         >
           <div className="h-1.5 w-full bg-green-700" />
-          <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
+          <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-4 py-5 sm:px-6">
             <div className="flex items-center gap-4">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-green-700 text-sm font-bold text-white">
                 VA
@@ -668,31 +699,39 @@ export default function MileageUpdateTab({ token }) {
             </dl>
           </div>
 
-          <div className="no-scrollbar overflow-x-auto">
-            <table ref={visibleTableRef} className="w-full table-fixed border-collapse text-left text-sm">
+          <div className="overflow-x-auto">
+            <table
+              ref={visibleTableRef}
+              className="w-full table-fixed border-collapse text-left text-[10px] sm:text-sm"
+            >
               <colgroup>
-                {COLUMN_WIDTHS.map((width, index) => (
-                  <col key={`${width}-${index}`} style={{ width }} />
-                ))}
+                {(isNarrow ? MOBILE_COLUMN_WIDTHS : COLUMN_WIDTHS).map(
+                  (width, index) => (
+                    <col
+                      key={`${isNarrow ? 'm' : 'd'}-${width}-${index}`}
+                      style={{ width }}
+                    />
+                  ),
+                )}
               </colgroup>
               <thead>
                 <tr className="copy-exclude bg-green-700 tracking-wider text-white uppercase">
-                  <th className="border border-black px-3 py-2.5 text-[10px]" />
+                  <th className="border border-black px-1 py-2 text-[10px] sm:px-3 sm:py-2.5" />
                   <th
                     colSpan={2}
-                    className="border border-l-2 border-l-black border-black px-3 py-2.5 text-center text-[10px] font-semibold"
+                    className="border border-l-2 border-l-black border-black px-1 py-2 text-center text-[10px] font-semibold sm:px-3 sm:py-2.5"
                   >
                     Vehicle
                   </th>
                   <th
                     colSpan={3}
-                    className="border border-l-2 border-l-black border-black px-3 py-2.5 text-center text-[10px] font-semibold"
+                    className="border border-l-2 border-l-black border-black px-1 py-2 text-center text-[10px] font-semibold sm:px-3 sm:py-2.5"
                   >
                     Assignment
                   </th>
                   <th
                     colSpan={4}
-                    className="border border-l-2 border-l-black border-black px-3 py-2.5 text-center text-[10px] font-semibold"
+                    className="border border-l-2 border-l-black border-black px-1 py-2 text-center text-[10px] font-semibold sm:px-3 sm:py-2.5"
                   >
                     Today&apos;s Performance
                   </th>
@@ -701,7 +740,7 @@ export default function MileageUpdateTab({ token }) {
                   {COLUMNS.map((column) => (
                     <th
                       key={column.key}
-                      className={`border border-b-2 border-b-black border-black px-3 py-2.5 text-center align-middle text-[10px] font-semibold`}
+                      className={`border border-b-2 border-b-black border-black px-1 py-2 text-center align-middle text-[10px] font-semibold sm:px-3 sm:py-2.5`}
                     >
                       {column.key === 'vehicleCode' ? (
                         <button
@@ -736,12 +775,12 @@ export default function MileageUpdateTab({ token }) {
                       }`}
                     >
                       <td
-                        className="px-3 py-2.5 text-center align-middle tabular-nums border border-black font-semibold text-black"
+                        className="px-1 py-2 text-center align-middle tabular-nums border border-black font-semibold text-black sm:px-3 sm:py-2.5"
                       >
                         {index + 1}
                       </td>
                       <td
-                        className="px-3 py-2.5 align-middle font-semibold border border-black text-black"
+                        className="px-1 py-2 sm:px-3 sm:py-2.5 align-middle font-semibold border border-black text-black break-all"
                       >
                         {code}
                       </td>
@@ -772,7 +811,7 @@ export default function MileageUpdateTab({ token }) {
             </table>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-6 py-3.5">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-green-200 bg-green-50 px-4 py-3.5 sm:px-6">
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium text-green-900/80">
               <span className="inline-flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-amber-500" />
