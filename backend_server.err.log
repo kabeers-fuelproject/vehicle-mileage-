@@ -340,3 +340,6 @@ Press CTRL+C to quit
 127.0.0.1 - - [08/Oct/2026 11:12:20] "POST /api/vehicle/getlist HTTP/1.1" 200 -
 127.0.0.1 - - [08/Oct/2026 11:12:21] "POST /api/report/distance/preview HTTP/1.1" 200 -
 127.0.0.1 - - [08/Oct/2026 11:12:21] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
+127.0.0.1 - - [08/Oct/2026 11:14:10] "POST /api/vehicle/getlist HTTP/1.1" 200 -
+127.0.0.1 - - [08/Oct/2026 11:14:13] "POST /api/report/distance/preview HTTP/1.1" 200 -
+127.0.0.1 - - [08/Oct/2026 11:14:14] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
