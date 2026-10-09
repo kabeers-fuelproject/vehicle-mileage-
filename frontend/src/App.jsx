@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import DistanceReportTab from './components/DistanceReportTab'
 import Login from './components/Login'
 import MileageUpdateTab from './components/MileageUpdateTab'
@@ -6,6 +6,8 @@ import AssignedVehiclesTab from './components/AssignedVehiclesTab'
 import ThresholdTab from './components/ThresholdTab'
 import VehicleStatusTab from './components/VehicleStatusTab'
 import VaLogo from './components/VaLogo'
+import NotificationBell from './components/NotificationBell'
+import { NotificationProvider, useNotifications } from './NotificationContext'
 
 const TABS = [
   { id: 'status', label: 'Vehicle Status' },
@@ -15,13 +17,48 @@ const TABS = [
   { id: 'assigned-vehicles', label: 'Assigned Vehicles' },
 ]
 
-export default function App() {
+const POLL_INTERVAL_MS = 60 * 1000
+
+function useMileagePolling(token) {
+  const { refreshFingerprint } = useNotifications()
+  const refreshRef = useRef(refreshFingerprint)
+  useEffect(() => { refreshRef.current = refreshFingerprint }, [refreshFingerprint])
+
+  useEffect(() => {
+    if (!token) return
+    refreshRef.current(token)
+    const interval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        refreshRef.current(token)
+      }
+    }, POLL_INTERVAL_MS)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') refreshRef.current(token)
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [token])
+}
+
+function AppContent() {
   const [token, setToken] = useState(() => localStorage.getItem('token'))
   const [menuOpen, setMenuOpen] = useState(false)
   const [tab, setTab] = useState(() => {
     const requested = new URLSearchParams(window.location.search).get('tab')
     return TABS.some((t) => t.id === requested) ? requested : 'status'
   })
+  const { markMileageViewed } = useNotifications()
+
+  useMileagePolling(token)
+
+  useEffect(() => {
+    if (tab === 'mileage') {
+      markMileageViewed()
+    }
+  }, [tab, markMileageViewed])
 
   if (!token) return <Login onLogin={setToken} />
 
@@ -91,6 +128,10 @@ export default function App() {
               ))}
             </nav>
 
+            <div className="hidden items-center gap-2 lg:flex">
+              <NotificationBell />
+            </div>
+
             <button
               onClick={handleLogout}
               className="group hidden items-center gap-2 rounded-full border border-green-600 bg-green-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm shadow-green-600/30 transition-all duration-200 hover:bg-green-700 hover:border-green-700 active:scale-95 lg:flex"
@@ -136,6 +177,9 @@ export default function App() {
                   </button>
                 ))}
                 <div className="mt-2 flex flex-col gap-1 border-t border-green-100 pt-3">
+                  <div className="flex justify-center pb-2">
+                    <NotificationBell />
+                  </div>
                   <button
                     onClick={() => {
                       setMenuOpen(false)
@@ -174,5 +218,13 @@ export default function App() {
         {tab === 'assigned-vehicles' && <AssignedVehiclesTab token={token} />}
       </main>
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <NotificationProvider>
+      <AppContent />
+    </NotificationProvider>
   )
 }

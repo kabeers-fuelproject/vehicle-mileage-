@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import os
 import requests
 import json
+import hashlib
 
 app = Flask(__name__)
 
@@ -204,6 +205,60 @@ def report_distance_preview():
         'succeeded': payload.get('succeeded'),
         'summary': extracted,
     }), resp.status_code
+
+@app.route('/api/mileage/fingerprint', methods=['POST'])
+def mileage_fingerprint():
+    token = bearer_token()
+    if token is None:
+        return jsonify({'error': 'Missing or invalid Authorization header'}), 401
+
+    body = request.get_json(silent=True) or {}
+
+    unit_ids = body.get('UnitIDs')
+    if not isinstance(unit_ids, list) or not unit_ids:
+        return jsonify({'error': 'UnitIDs is required and must be a non-empty list'}), 400
+    unit_ids = [str(unit_id) for unit_id in unit_ids]
+
+    if not body.get('FromDate') or not body.get('ToDate'):
+        return jsonify({'error': 'FromDate and ToDate are required'}), 400
+
+    status_headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {token}'
+    }
+
+    resp = requests.post(DISTANCE_PREVIEW_URL, json=body, headers=status_headers)
+    if resp.status_code != 200:
+        return jsonify({'error': 'External API error'}), resp.status_code
+
+    try:
+        payload = resp.json()
+    except ValueError:
+        return jsonify({'error': 'External API returned an invalid response'}), resp.status_code
+
+    summary = (payload.get('data') or {}).get('summary') or []
+    parts = sorted(
+        f"{row.get('vehicleRegNumber', '')}:{row.get('mileage', '')}:{row.get('igONTime', '')}"
+        for row in summary
+    )
+    raw = '|'.join(parts)
+    fingerprint = hashlib.sha256(raw.encode()).hexdigest()[:16]
+
+    trimmed = [
+        {
+            'vehicleRegNumber': row.get('vehicleRegNumber'),
+            'mileage': row.get('mileage'),
+            'igONTime': row.get('igONTime'),
+            'vehType': row.get('vehType'),
+        }
+        for row in summary
+    ]
+
+    return jsonify({
+        'fingerprint': fingerprint,
+        'count': len(summary),
+        'summary': trimmed,
+    })
 
 if __name__ == '__main__':
     app.run(

@@ -9,6 +9,7 @@ import { supervisorOf } from '../supervisors'
 import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
 import LoadingOverlay from './LoadingOverlay'
+import { useNotifications } from '../NotificationContext'
 
 const COLUMNS = [
   { key: 'sr', label: 'Sr', align: 'text-center', noWrap: true },
@@ -351,6 +352,7 @@ async function copyNodeAsImage(node, filename) {
   return 'Clipboard unavailable — image downloaded'
 }
 export default function MileageUpdateTab({ token }) {
+  const { refreshFingerprint, markMileageViewed } = useNotifications()
   const [vehicles, setVehicles] = useState([])
   const [reportMap, setReportMap] = useState({})
   const [generatedAt, setGeneratedAt] = useState(null)
@@ -528,6 +530,7 @@ export default function MileageUpdateTab({ token }) {
         if (!isCurrent()) return
         setReportMap(map)
         setGeneratedAt(new Date())
+        refreshFingerprint(token).then(() => markMileageViewed())
       }
     } catch (err) {
       if (isCurrent()) setError(err.message)
