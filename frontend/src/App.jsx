@@ -3,11 +3,13 @@ import DistanceReportTab from './components/DistanceReportTab'
 import Login from './components/Login'
 import MileageUpdateTab from './components/MileageUpdateTab'
 import AssignedVehiclesTab from './components/AssignedVehiclesTab'
+import SummaryTab from './components/SummaryTab'
 import ThresholdTab from './components/ThresholdTab'
 import VehicleStatusTab from './components/VehicleStatusTab'
 import VaLogo from './components/VaLogo'
 import NotificationBell from './components/NotificationBell'
 import { NotificationProvider, useNotifications } from './NotificationContext'
+import { SelectionProvider } from './SelectionContext'
 
 const TABS = [
   { id: 'status', label: 'Vehicle Status' },
@@ -15,6 +17,7 @@ const TABS = [
   { id: 'mileage', label: 'Mileage Update' },
   { id: 'threshold', label: 'Threshold' },
   { id: 'assigned-vehicles', label: 'Assigned Vehicles' },
+  { id: 'summary', label: 'Summary' },
 ]
 
 const POLL_INTERVAL_MS = 60 * 1000
@@ -134,20 +137,20 @@ function AppContent() {
 
             <button
               onClick={handleLogout}
-              className="group hidden items-center gap-2 rounded-full border border-green-600 bg-green-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm shadow-green-600/30 transition-all duration-200 hover:bg-green-700 hover:border-green-700 active:scale-95 lg:flex"
+              className="group hidden items-center gap-2 rounded-full bg-green-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm shadow-green-600/30 transition-all duration-200 hover:bg-green-700 hover:shadow-green-600/40 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-green-500/20 lg:flex"
             >
               <svg
                 viewBox="0 0 24 24"
-                className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-90"
+                className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.2"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 aria-hidden="true"
               >
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <path d="m16 17 5-5-5-5" />
+                <path d="M16 17l5-5-5-5" />
                 <path d="M21 12H9" />
               </svg>
               Logout
@@ -185,20 +188,20 @@ function AppContent() {
                       setMenuOpen(false)
                       handleLogout()
                     }}
-                    className="group flex items-center justify-center gap-2 rounded-full border border-green-600 bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-green-600/30 transition-all duration-200 hover:border-green-700 hover:bg-green-700 active:scale-95"
+                    className="group flex items-center justify-center gap-2 rounded-full bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-green-600/30 transition-all duration-200 hover:bg-green-700 hover:shadow-green-600/40 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-green-500/20"
                   >
                     <svg
                       viewBox="0 0 24 24"
-                      className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-90"
+                      className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2.2"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       aria-hidden="true"
                     >
                       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                      <path d="m16 17 5-5-5-5" />
+                      <path d="M16 17l5-5-5-5" />
                       <path d="M21 12H9" />
                     </svg>
                     Logout
@@ -216,6 +219,7 @@ function AppContent() {
         {tab === 'mileage' && <MileageUpdateTab token={token} />}
         {tab === 'threshold' && <ThresholdTab />}
         {tab === 'assigned-vehicles' && <AssignedVehiclesTab token={token} />}
+        {tab === 'summary' && <SummaryTab token={token} />}
       </main>
     </div>
   )
@@ -224,7 +228,9 @@ function AppContent() {
 export default function App() {
   return (
     <NotificationProvider>
-      <AppContent />
+      <SelectionProvider>
+        <AppContent />
+      </SelectionProvider>
     </NotificationProvider>
   )
 }

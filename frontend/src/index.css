@@ -110,6 +110,30 @@ html {
   animation: va-zoom 24s ease-in-out infinite alternate;
 }
 
+@keyframes va-threshold-blink {
+  0%,
+  100% {
+    background-color: #fef2f2;
+    box-shadow: inset 0 0 0 1px #fca5a5;
+  }
+  50% {
+    background-color: #fecaca;
+    box-shadow: inset 0 0 0 1px #ef4444;
+  }
+}
+
+.anim-threshold-blink {
+  animation: va-threshold-blink 1.1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-threshold-blink {
+    animation: none;
+    background-color: #fef2f2;
+    box-shadow: inset 0 0 0 1px #fca5a5;
+  }
+}
+
 .va-needle {
   transform-box: view-box;
   transform-origin: 20px 26.5px;
