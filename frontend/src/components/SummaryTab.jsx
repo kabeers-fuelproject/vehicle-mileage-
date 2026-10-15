@@ -156,7 +156,8 @@ export default function SummaryTab({ token }) {
     // Total (the 100% baseline) = assigned vehicles; Hired = hired
     // vehicles (can exceed Total); Threshold Met counts every working
     // vehicle — assigned or hired — that completed its threshold, so the
-    // Threshold % can go above 100%.
+    // Threshold % can go above 100%. Hired % = hired / Total is also
+    // uncapped — when hired exceeds the assigned count it shows >100%.
     for (const r of rows) {
       const code = String(r.vehicle_code ?? '').trim()
       if (!code) continue
@@ -180,6 +181,8 @@ export default function SummaryTab({ token }) {
           g.total > 0
             ? Math.round((g.thresholdMet / g.total) * 100)
             : 0,
+        hiredPercentage:
+          g.total > 0 ? Math.round((g.hired / g.total) * 100) : null,
       }))
       .sort((a, b) => a.usedFor.localeCompare(b.usedFor))
   }, [rows, distanceData, flagAssigned, flagHired])
@@ -252,6 +255,9 @@ export default function SummaryTab({ token }) {
                     Hired
                   </th>
                   <th className="border-l border-white/25 px-4 py-3 text-right font-semibold">
+                    Hired %
+                  </th>
+                  <th className="border-l border-white/25 px-4 py-3 text-right font-semibold">
                     Threshold
                   </th>
                   <th className="border-l border-white/25 px-4 py-3 text-right font-semibold">
@@ -262,7 +268,7 @@ export default function SummaryTab({ token }) {
               <tbody>
                 {summaryData.length === 0 ? (
                   <tr>
-                    <td className="px-6 py-8 text-center text-neutral-500" colSpan={5}>
+                    <td className="px-6 py-8 text-center text-neutral-500" colSpan={6}>
                       No data available
                     </td>
                   </tr>
@@ -286,6 +292,15 @@ export default function SummaryTab({ token }) {
                       <td className="border-l border-neutral-200 px-4 py-3 text-right tabular-nums text-green-800 font-semibold">
                         {group.hired}
                       </td>
+                      <td className="border-l border-neutral-200 px-4 py-3 text-right tabular-nums">
+                        <span className={`font-semibold ${
+                          group.hiredPercentage === null ? 'text-neutral-400' :
+                          group.hiredPercentage >= 80 ? 'text-green-700' :
+                          group.hiredPercentage >= 50 ? 'text-amber-700' : 'text-red-700'
+                        }`}>
+                          {group.hiredPercentage === null ? '—' : `${group.hiredPercentage}%`}
+                        </span>
+                      </td>
                       <td className="border-l border-neutral-200 px-4 py-3 text-right tabular-nums text-green-800 font-semibold">
                         {group.thresholdMet}
                       </td>
@@ -307,6 +322,14 @@ export default function SummaryTab({ token }) {
                   </td>
                   <td className="border-l border-neutral-200 px-4 py-3 text-right tabular-nums text-green-800">
                     {totals.hired}
+                  </td>
+                  <td className="border-l border-neutral-200 px-4 py-3 text-right tabular-nums">
+                    <span className={`font-semibold ${
+                      overallPercentage >= 80 ? 'text-green-700' :
+                      overallPercentage >= 50 ? 'text-amber-700' : 'text-red-700'
+                    }`}>
+                      {overallPercentage}%
+                    </span>
                   </td>
                   <td className="border-l border-neutral-200 px-4 py-3 text-right tabular-nums text-green-800">
                     {totals.thresholdMet}
