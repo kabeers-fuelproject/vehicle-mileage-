@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { api } from '../api'
 import { useSelection } from '../SelectionContext'
 import { usedForOf } from '../usedFor'
+import { driverOf } from '../drivers'
+import { supervisorOf } from '../supervisors'
 import { vehicleTypeOf } from '../vehicleTypes'
 import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
@@ -46,6 +48,7 @@ export default function SummaryTab({ token }) {
   const [distanceData, setDistanceData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [openCategory, setOpenCategory] = useState('')
   const {
     rows,
     loading: selectionLoading,
@@ -94,16 +97,14 @@ export default function SummaryTab({ token }) {
     }
   }, [token])
 
-  const summaryData = useMemo(() => {
-    const byUsedFor = new Map()
-
-    // Aggregate distance rows per vehicle (a vehicle can appear multiple
-    // times), summing mileage and ig-on hours like MileageUpdateTab does.
-    const distanceMap = new Map()
+  // Aggregate distance rows per vehicle (a vehicle can appear multiple
+  // times), summing mileage and ig-on hours like MileageUpdateTab does.
+  const distanceMap = useMemo(() => {
+    const map = new Map()
     for (const d of distanceData) {
       const key = normalizeKey(d.vehicleRegNumber)
       if (!key) continue
-      let entry = distanceMap.get(key)
+      let entry = map.get(key)
       if (!entry) {
         entry = {
           mileage: 0,
@@ -112,7 +113,7 @@ export default function SummaryTab({ token }) {
           hasHours: false,
           vehType: d.vehType ?? null,
         }
-        distanceMap.set(key, entry)
+        map.set(key, entry)
       }
       const m = parseNumber(d.mileage)
       if (m !== null) {
@@ -126,22 +127,15 @@ export default function SummaryTab({ token }) {
       }
       if (!entry.vehType && d.vehType) entry.vehType = d.vehType
     }
+    return map
+  }, [distanceData])
 
-    const groupFor = (code) => {
-      const usedFor = usedForOf(code) || 'Uncategorized'
-      let group = byUsedFor.get(usedFor)
-      if (!group) {
-        group = { usedFor, total: 0, hired: 0, thresholdMet: 0 }
-        byUsedFor.set(usedFor, group)
-      }
-      return group
-    }
-
-    // A vehicle meets its threshold only when BOTH the daily mileage
-    // allowance AND the required working hours are covered — same rules
-    // as the Ok/Low status in MileageUpdateTab (local vehType mapping,
-    // report data only for mileage/hours).
-    const hasMetThreshold = (code) => {
+  // A vehicle meets its threshold only when BOTH the daily mileage
+  // allowance AND the required working hours are covered — same rules
+  // as the Ok/Low status in MileageUpdateTab (local vehType mapping,
+  // report data only for mileage/hours).
+  const hasMetThreshold = useCallback(
+    (code) => {
       const entry = distanceMap.get(normalizeKey(code))
       const threshold = findThreshold(vehicleTypeOf(code) || entry?.vehType)
       if (!threshold) return false
@@ -151,6 +145,21 @@ export default function SummaryTab({ token }) {
       const mileageOk = entry.mileage >= threshold.mileage
       const hoursOk = requiredHours === null || entry.seconds >= requiredHours
       return mileageOk && hoursOk
+    },
+    [distanceMap],
+  )
+
+  const summaryData = useMemo(() => {
+    const byUsedFor = new Map()
+
+    const groupFor = (code) => {
+      const usedFor = usedForOf(code) || 'Uncategorized'
+      let group = byUsedFor.get(usedFor)
+      if (!group) {
+        group = { usedFor, total: 0, hired: 0, thresholdMet: 0 }
+        byUsedFor.set(usedFor, group)
+      }
+      return group
     }
 
     // Total (the 100% baseline) = assigned vehicles; Hired = hired
@@ -185,7 +194,32 @@ export default function SummaryTab({ token }) {
           g.total > 0 ? Math.round((g.hired / g.total) * 100) : null,
       }))
       .sort((a, b) => a.usedFor.localeCompare(b.usedFor))
-  }, [rows, distanceData, flagAssigned, flagHired])
+  }, [rows, hasMetThreshold, flagAssigned, flagHired])
+
+  // Assigned vehicles per category with details, shown in the popup
+  // when a category name in the Used For column is clicked.
+  const vehiclesByCategory = useMemo(() => {
+    const map = new Map()
+    for (const r of rows) {
+      const code = String(r.vehicle_code ?? '').trim()
+      if (!code || !flagAssigned(r)) continue
+      const usedFor = usedForOf(code) || 'Uncategorized'
+      let list = map.get(usedFor)
+      if (!list) {
+        list = []
+        map.set(usedFor, list)
+      }
+      list.push({
+        code,
+        driver: driverOf(code),
+        supervisor: supervisorOf(code),
+      })
+    }
+    for (const list of map.values()) {
+      list.sort((a, b) => a.code.localeCompare(b.code, undefined, { numeric: true }))
+    }
+    return map
+  }, [rows, flagAssigned])
 
   const totals = useMemo(() => ({
     totalMachinery: summaryData.reduce((sum, g) => sum + g.totalMachinery, 0),
@@ -200,6 +234,19 @@ export default function SummaryTab({ token }) {
   const overallThresholdPercentage = totals.totalMachinery > 0
     ? Math.round((totals.thresholdMet / totals.totalMachinery) * 100)
     : 0
+
+  const openVehicles = openCategory
+    ? vehiclesByCategory.get(openCategory) ?? []
+    : []
+
+  useEffect(() => {
+    if (!openCategory) return undefined
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setOpenCategory('')
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [openCategory])
 
   const isLoading = loading || selectionLoading
   const loadError = error || selectionError
@@ -283,8 +330,15 @@ export default function SummaryTab({ token }) {
                             (i % 2 === 1 ? ' bg-green-50/40' : '')
                       }`}
                     >
-                      <td className="px-6 py-3 font-semibold text-ink">
-                        {group.usedFor}
+                      <td className="px-6 py-3">
+                        <button
+                          type="button"
+                          onClick={() => setOpenCategory(group.usedFor)}
+                          title="View details of assigned vehicles in this category"
+                          className="cursor-pointer rounded text-left font-semibold text-ink underline decoration-dotted decoration-neutral-300 underline-offset-4 transition-colors hover:text-green-700 hover:decoration-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40"
+                        >
+                          {group.usedFor}
+                        </button>
                       </td>
                       <td className="border-l border-neutral-200 px-4 py-3 text-right tabular-nums text-green-800 font-semibold">
                         {group.totalMachinery}
@@ -350,6 +404,100 @@ export default function SummaryTab({ token }) {
       )}
 
       <div className="h-1 w-full bg-green-700" />
+
+      {openCategory && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => setOpenCategory('')}
+          role="presentation"
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${openCategory} assigned vehicles`}
+            onClick={(event) => event.stopPropagation()}
+            className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-xl"
+          >
+            <div className="h-1.5 w-full shrink-0 bg-green-700" />
+
+            <div className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4">
+              <div>
+                <p className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
+                  Vehicle Automation
+                </p>
+                <h4 className="mt-0.5 text-base font-bold tracking-tight text-ink">
+                  {openCategory}
+                </h4>
+                <p className="mt-0.5 text-xs text-neutral-500">
+                  Assigned vehicles in this category
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOpenCategory('')}
+                aria-label="Close details"
+                className="shrink-0 cursor-pointer rounded-lg border border-neutral-300 px-2.5 py-1.5 text-sm font-semibold text-neutral-600 transition-colors hover:border-neutral-400 hover:bg-neutral-50 hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                >
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="overflow-auto px-5 py-4">
+              {openVehicles.length === 0 ? (
+                <p className="py-8 text-center text-sm text-neutral-500">
+                  No assigned vehicles in this category.
+                </p>
+              ) : (
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="bg-green-700 text-[10px] tracking-wider text-white uppercase">
+                      <th className="px-3 py-2.5 font-semibold">Vehicle Code</th>
+                      <th className="border-l border-white/25 px-3 py-2.5 font-semibold">
+                        Driver
+                      </th>
+                      <th className="border-l border-white/25 px-3 py-2.5 font-semibold">
+                        Supervisor
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {openVehicles.map((vehicle, i) => (
+                      <tr
+                        key={vehicle.code}
+                        className={`border-b border-neutral-100 transition-colors last:border-0 hover:bg-green-50 ${
+                          i % 2 === 1 ? 'bg-green-50/40' : ''
+                        }`}
+                      >
+                        <td className="px-3 py-2.5 font-semibold text-ink">
+                          {vehicle.code}
+                        </td>
+                        <td className="border-l border-neutral-200 px-3 py-2.5 text-neutral-700">
+                          {vehicle.driver || '—'}
+                        </td>
+                        <td className="border-l border-neutral-200 px-3 py-2.5 text-neutral-700">
+                          {vehicle.supervisor || '—'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+
+            <div className="h-1 w-full shrink-0 bg-green-700" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
