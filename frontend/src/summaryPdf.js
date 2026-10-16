@@ -107,9 +107,11 @@ export function buildSummaryPdf({
     if (!withTotals) return tableTop + HEADER_H
 
     const y = tableTop + HEADER_H
+    // values[i] must line up with header column i: 1 = name (blank
+    // here), 2 = Total, 3 = Hired, 4 = Threshold, 5 = %.
     const values = totals
-      ? [null, totals.totalMachinery, totals.hired, totals.thresholdMet, totals.thresholdPercentage ?? 0]
-      : [null, 0, 0, 0, 0]
+      ? [null, null, totals.totalMachinery, totals.hired, totals.thresholdMet, totals.thresholdPercentage ?? 0]
+      : [null, null, 0, 0, 0, 0]
     for (let i = 1; i <= 5; i++) {
       const isPct = i === 5
       const value = values[i]
