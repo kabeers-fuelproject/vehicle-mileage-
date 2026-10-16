@@ -7,27 +7,9 @@ import { supervisorOf } from '../supervisors'
 import { vehicleTypeOf } from '../vehicleTypes'
 import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
-import { buildTablePdf } from '../reportPdf'
+import { buildSummaryPdf } from '../summaryPdf'
 import VaLogo from './VaLogo'
 import LoadingOverlay from './LoadingOverlay'
-
-const PDF_COLUMNS = [
-  { label: 'Used For', align: 'left' },
-  { label: 'Total', align: 'right', widthSample: '999' },
-  { label: 'Hired', align: 'right', widthSample: '999' },
-  { label: 'Threshold', align: 'right', widthSample: '999' },
-  { label: 'Threshold %', align: 'right', widthSample: '100%' },
-]
-
-const GREEN = [21, 128, 61]
-const AMBER = [180, 83, 9]
-const RED = [185, 28, 28]
-
-function percentColor(value) {
-  if (value >= 80) return GREEN
-  if (value >= 50) return AMBER
-  return RED
-}
 
 function formatDate(date) {
   const y = date.getFullYear()
@@ -270,40 +252,22 @@ export default function SummaryTab({ token }) {
     if (downloading || summaryData.length === 0) return
     setDownloading(true)
     try {
-      const pdfRows = summaryData.map((group) => ({
-        cells: [
-          { text: group.usedFor, bold: true },
-          { text: group.totalMachinery, align: 'right' },
-          { text: group.hired, align: 'right' },
-          { text: group.thresholdMet, align: 'right' },
-          {
-            text: `${group.percentage}%`,
-            align: 'right',
-            color: percentColor(group.percentage),
-            bold: true,
-          },
-        ],
-      }))
-      buildTablePdf({
+      buildSummaryPdf({
         filename: `summary-${formatDate(new Date())}.pdf`,
-        title: 'Summary',
-        subtitle: 'Assigned and hired vehicles grouped by purpose',
-        columns: PDF_COLUMNS,
-        rows: pdfRows,
-        footer: {
-          cells: [
-            { text: 'Total' },
-            { text: totals.totalMachinery, align: 'right' },
-            { text: totals.hired, align: 'right' },
-            { text: totals.thresholdMet, align: 'right' },
-            {
-              text: `${overallThresholdPercentage}%`,
-              align: 'right',
-              color: percentColor(overallThresholdPercentage),
-            },
-          ],
+        rows: summaryData.map((group) => ({
+          usedFor: group.usedFor,
+          total: group.totalMachinery,
+          hired: group.hired,
+          threshold: group.thresholdMet,
+          thresholdPct: group.percentage,
+        })),
+        totals: {
+          totalMachinery: totals.totalMachinery,
+          hired: totals.hired,
+          thresholdMet: totals.thresholdMet,
+          hiredPercentage: overallPercentage,
+          thresholdPercentage: overallThresholdPercentage,
         },
-        zebra: [240, 253, 244],
       })
     } finally {
       setDownloading(false)
