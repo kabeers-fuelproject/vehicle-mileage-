@@ -7,8 +7,34 @@ import { supervisorOf } from '../supervisors'
 import { vehicleTypeOf } from '../vehicleTypes'
 import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
+import { buildTablePdf } from '../reportPdf'
 import VaLogo from './VaLogo'
 import LoadingOverlay from './LoadingOverlay'
+
+const PDF_COLUMNS = [
+  { label: 'Used For', align: 'left' },
+  { label: 'Total', align: 'right', widthSample: '999' },
+  { label: 'Hired', align: 'right', widthSample: '999' },
+  { label: 'Threshold', align: 'right', widthSample: '999' },
+  { label: 'Threshold %', align: 'right', widthSample: '100%' },
+]
+
+const GREEN = [21, 128, 61]
+const AMBER = [180, 83, 9]
+const RED = [185, 28, 28]
+
+function percentColor(value) {
+  if (value >= 80) return GREEN
+  if (value >= 50) return AMBER
+  return RED
+}
+
+function formatDate(date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
 
 function Meta({ label, value }) {
   return (
@@ -49,6 +75,7 @@ export default function SummaryTab({ token }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [openCategory, setOpenCategory] = useState('')
+  const [downloading, setDownloading] = useState(false)
   const {
     rows,
     loading: selectionLoading,
@@ -239,6 +266,50 @@ export default function SummaryTab({ token }) {
     ? vehiclesByCategory.get(openCategory) ?? []
     : []
 
+  function downloadPdf() {
+    if (downloading || summaryData.length === 0) return
+    setDownloading(true)
+    try {
+      const pdfRows = summaryData.map((group) => ({
+        cells: [
+          { text: group.usedFor, bold: true },
+          { text: group.totalMachinery, align: 'right' },
+          { text: group.hired, align: 'right' },
+          { text: group.thresholdMet, align: 'right' },
+          {
+            text: `${group.percentage}%`,
+            align: 'right',
+            color: percentColor(group.percentage),
+            bold: true,
+          },
+        ],
+      }))
+      buildTablePdf({
+        filename: `summary-${formatDate(new Date())}.pdf`,
+        title: 'Summary',
+        subtitle: 'Assigned and hired vehicles grouped by purpose',
+        columns: PDF_COLUMNS,
+        rows: pdfRows,
+        footer: {
+          cells: [
+            { text: 'Total' },
+            { text: totals.totalMachinery, align: 'right' },
+            { text: totals.hired, align: 'right' },
+            { text: totals.thresholdMet, align: 'right' },
+            {
+              text: `${overallThresholdPercentage}%`,
+              align: 'right',
+              color: percentColor(overallThresholdPercentage),
+            },
+          ],
+        },
+        zebra: [240, 253, 244],
+      })
+    } finally {
+      setDownloading(false)
+    }
+  }
+
   useEffect(() => {
     if (!openCategory) return undefined
     const onKeyDown = (event) => {
@@ -253,8 +324,8 @@ export default function SummaryTab({ token }) {
 
   return (
     <div className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
-      {isLoading && (
-        <LoadingOverlay label="Loading summary..." />
+      {(isLoading || downloading) && (
+        <LoadingOverlay label={downloading ? 'Preparing PDF…' : 'Loading summary...'} />
       )}
       <div className="h-1.5 w-full bg-green-700" />
 
@@ -266,20 +337,29 @@ export default function SummaryTab({ token }) {
               Vehicle Automation
             </p>
             <h3 className="text-lg font-bold tracking-tight text-ink">
-              Summary
+              <button
+                type="button"
+                onClick={downloadPdf}
+                disabled={downloading || isLoading || summaryData.length === 0}
+                aria-label="Download summary as PDF"
+                className="group cursor-pointer rounded transition-colors hover:text-green-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <span className="group-hover:hidden">Summary</span>
+                <span className="hidden group-hover:inline">Download Summary</span>
+              </button>
             </h3>
             <p className="mt-0.5 text-xs text-neutral-500">
               Assigned and hired vehicles grouped by purpose
             </p>
           </div>
         </div>
-        <dl className="grid grid-cols-5 gap-x-8 gap-y-3 rounded-xl border border-green-200 bg-green-50 px-5 py-3.5">
-          <Meta label="Total Machinery" value={totals.totalMachinery} />
-          <Meta label="Total Hired" value={totals.hired} />
-          <Meta label="Threshold Met" value={totals.thresholdMet} />
-          <Meta label="Hired %" value={`${overallPercentage}%`} />
-          <Meta label="Threshold %" value={`${overallThresholdPercentage}%`} />
-        </dl>
+          <dl className="grid grid-cols-5 gap-x-8 gap-y-3 rounded-xl border border-green-200 bg-green-50 px-5 py-3.5">
+            <Meta label="Total Machinery" value={totals.totalMachinery} />
+            <Meta label="Total Hired" value={totals.hired} />
+            <Meta label="Threshold Met" value={totals.thresholdMet} />
+            <Meta label="Hired %" value={`${overallPercentage}%`} />
+            <Meta label="Threshold %" value={`${overallThresholdPercentage}%`} />
+          </dl>
       </div>
 
       {loadError && (
