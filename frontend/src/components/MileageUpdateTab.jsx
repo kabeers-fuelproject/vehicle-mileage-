@@ -26,6 +26,8 @@ const COLUMNS = [
 
 const NUMERIC_KEYS = new Set(['mileage', 'workingHours'])
 
+const AUTO_REFRESH_MS = 60 * 1000
+
 const DATA_COLUMNS = COLUMNS.slice(2)
 
 const COLUMN_WIDTHS = [
@@ -366,6 +368,7 @@ export default function MileageUpdateTab({ token }) {
   const [exporting, setExporting] = useState('')
   const [exportMessage, setExportMessage] = useState('')
   const [refreshing, setRefreshing] = useState(false)
+  const [autoRefresh, setAutoRefresh] = useState(false)
   const runIdRef = useRef(0)
   const isNarrow = useIsNarrow()
 
@@ -550,6 +553,22 @@ export default function MileageUpdateTab({ token }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
+  useEffect(() => {
+    if (!autoRefresh) return
+    const interval = setInterval(() => {
+      if (document.visibilityState === 'visible') loadMileage(false)
+    }, AUTO_REFRESH_MS)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') loadMileage(false)
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRefresh, token])
+
   return (
     <div>
       {(loading || refreshing || Boolean(exporting)) && (
@@ -620,6 +639,37 @@ export default function MileageUpdateTab({ token }) {
               </span>
             ) : (
               'Refresh Mileage'
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={() => setAutoRefresh((on) => !on)}
+            title={autoRefresh ? 'Disable auto refresh' : 'Enable auto refresh'}
+            aria-label={
+              autoRefresh ? 'Disable auto refresh' : 'Enable auto refresh'
+            }
+            aria-pressed={autoRefresh}
+            className={
+              autoRefresh
+                ? 'btn-shine relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-green-700 to-green-600 text-white shadow-md shadow-green-700/25 transition-all duration-200 hover:from-green-600 hover:to-green-500 hover:shadow-lg hover:shadow-green-700/40 active:scale-95'
+                : 'relative grid h-10 w-10 shrink-0 place-items-center rounded-full border border-green-300 bg-white text-green-700 transition-all duration-200 hover:border-green-600 hover:bg-green-50 active:scale-95'
+            }
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className={`h-5 w-5 ${refreshing ? 'anim-spin' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+              <path d="M21 3v6h-6" />
+            </svg>
+            {autoRefresh && (
+              <span className="absolute top-1 right-1 h-1.5 w-1.5 rounded-full bg-white" />
             )}
           </button>
           <button
