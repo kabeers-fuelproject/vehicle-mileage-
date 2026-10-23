@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { api } from '../api'
 import VaLogo from './VaLogo'
 import LoadingOverlay from './LoadingOverlay'
@@ -100,6 +100,7 @@ export default function VehicleStatusTab({ token }) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [stamp, setStamp] = useState(null)
+  const [search, setSearch] = useState('')
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -122,6 +123,22 @@ export default function VehicleStatusTab({ token }) {
   const vehicles = data?.vehicles ?? []
   const counts = data?.counts ?? {}
   const hasCounts = counts.totalCount !== undefined
+
+  const filteredVehicles = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    const list = data?.vehicles ?? []
+    if (!q) return list
+    return list.filter((v) =>
+      [
+        v.regNo,
+        v.region,
+        v.location,
+        v.reportingStatus,
+        v.statusText,
+        v.wirringStatus,
+      ].some((field) => String(field ?? '').toLowerCase().includes(q)),
+    )
+  }, [data, search])
 
   return (
     <div className="overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
@@ -210,11 +227,47 @@ export default function VehicleStatusTab({ token }) {
         </div>
       )}
 
+      {vehicles.length > 0 && (
+        <div className="flex flex-wrap items-center justify-end gap-3 border-b border-neutral-200 px-4 py-3 sm:px-6">
+          {search.trim() && (
+            <p className="text-xs font-medium text-neutral-500">
+              Showing {filteredVehicles.length} of {vehicles.length} vehicles
+            </p>
+          )}
+          <div className="relative w-full max-w-xs sm:w-72">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search vehicle, region, status..."
+              aria-label="Search vehicles"
+              className="w-full rounded-lg border border-green-200 bg-white px-3.5 py-2.5 pr-9 text-sm text-ink transition-all duration-200 placeholder:text-neutral-400 hover:border-green-300 focus:border-green-700 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch('')}
+                aria-label="Clear search"
+                className="absolute top-1/2 right-2.5 grid h-5 w-5 -translate-y-1/2 place-items-center rounded-full text-sm leading-none text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-green-700"
+              >
+                ×
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       {!loading && !error && vehicles.length === 0 && (
         <p className="px-4 py-8 text-sm text-neutral-500 sm:px-6">No vehicles found.</p>
       )}
 
-      {vehicles.length > 0 && (
+      {!error && vehicles.length > 0 && filteredVehicles.length === 0 && (
+          <p className="px-4 py-8 text-sm text-neutral-500 sm:px-6">
+            No vehicles match “{search.trim()}”.
+          </p>
+        )}
+
+      {filteredVehicles.length > 0 && (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1000px] text-left text-sm">
             <thead>
@@ -244,7 +297,7 @@ export default function VehicleStatusTab({ token }) {
               </tr>
             </thead>
             <tbody>
-              {vehicles.map((v, i) => (
+              {filteredVehicles.map((v, i) => (
                 <tr
                   key={v.regNo + i}
                   className={`border-b border-neutral-100 transition-colors last:border-0 hover:bg-green-100 ${
