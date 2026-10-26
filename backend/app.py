@@ -34,6 +34,7 @@ STATUS_URL = 'http://wmc.trackingworld.com.pk/api/vehicle/getstatuscount'
 VEHICLE_LIST_URL = 'http://wmc.trackingworld.com.pk/api/vehicle/getstatus'
 VEHICLE_UNIT_LIST_URL = 'http://wmc.trackingworld.com.pk/api/vehicle/getlist'
 VEHICLE_TYPE_LIST_URL = 'http://wmc.trackingworld.com.pk/api/vehicletype/getlist'
+VEHICLE_HISTORY_URL = 'http://wmc.trackingworld.com.pk/api/vehicle/gethistory'
 DISTANCE_PREVIEW_URL = 'http://wmc.trackingworld.com.pk/api/report/distance/preview'
 
 VEHICLE_STATUS_COLUMNS = (
@@ -151,6 +152,59 @@ def vehicle_getlist():
 
     resp = requests.post(VEHICLE_UNIT_LIST_URL, json=body, headers=status_headers)
     return external_response(resp)
+
+@app.route('/api/vehicle/gethistory', methods=['POST'])
+def vehicle_gethistory():
+    token = bearer_token()
+    if token is None:
+        return jsonify({'error': 'Missing or invalid Authorization header'}), 401
+
+    body = request.get_json(silent=True) or {}
+
+    unit_id = body.get('unitID')
+    if unit_id is None or str(unit_id).strip() == '':
+        return jsonify({'error': 'unitID is required'}), 400
+    if not body.get('fromDateTime') or not body.get('toDateTime'):
+        return jsonify({'error': 'fromDateTime and toDateTime are required'}), 400
+
+    forwarded = dict(body, unitID=str(unit_id))
+
+    status_headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {token}'
+    }
+
+    resp = requests.post(VEHICLE_HISTORY_URL, json=forwarded, headers=status_headers)
+    if resp.status_code != 200:
+        return external_response(resp)
+
+    try:
+        payload = resp.json()
+    except ValueError:
+        return jsonify({'error': 'External API returned an invalid response'}), resp.status_code
+
+    succeeded = None
+    points = payload if isinstance(payload, list) else payload.get('data')
+
+    if isinstance(points, dict):
+        for key in ('vehicleHistory', 'history', 'points', 'items'):
+            if isinstance(points.get(key), list):
+                points = points[key]
+                break
+        else:
+            points = []
+
+    if not isinstance(payload, list):
+        succeeded = payload.get('succeeded')
+
+    if not isinstance(points, list):
+        points = []
+
+    return jsonify({
+        'succeeded': succeeded,
+        'count': len(points),
+        'points': points,
+    }), resp.status_code
 
 @app.route('/api/vehicletype/getlist', methods=['GET'])
 def vehicle_type_getlist():

@@ -6,6 +6,7 @@ import AssignedVehiclesTab from './components/AssignedVehiclesTab'
 import SummaryTab from './components/SummaryTab'
 import ThresholdTab from './components/ThresholdTab'
 import VehicleStatusTab from './components/VehicleStatusTab'
+import TripHistoryTab from './components/TripHistoryTab'
 import VaLogo from './components/VaLogo'
 import NotificationBell from './components/NotificationBell'
 import { NotificationProvider, useNotifications } from './NotificationContext'
@@ -13,6 +14,7 @@ import { SelectionProvider } from './SelectionContext'
 
 const TABS = [
   { id: 'status', label: 'Vehicle Status' },
+  { id: 'trip-history', label: 'Trip History' },
   { id: 'distance', label: 'Distance Report' },
   { id: 'mileage', label: 'Mileage Update' },
   { id: 'threshold', label: 'Threshold' },
@@ -215,6 +217,7 @@ function AppContent() {
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         {tab === 'status' && <VehicleStatusTab token={token} />}
+        {tab === 'trip-history' && <TripHistoryTab token={token} />}
         {tab === 'distance' && <DistanceReportTab token={token} />}
         {tab === 'mileage' && <MileageUpdateTab token={token} />}
         {tab === 'threshold' && <ThresholdTab />}
