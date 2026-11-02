@@ -360,7 +360,8 @@ export default function MileageUpdateTab({ token }) {
   const [generatedAt, setGeneratedAt] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
+  const [statusFilters, setStatusFilters] = useState(['all'])
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false)
   const [codeSort, setCodeSort] = useState('asc')
   const tableRef = useRef(null)
   const copyImageRef = useRef(null)
@@ -370,6 +371,7 @@ export default function MileageUpdateTab({ token }) {
   const [refreshing, setRefreshing] = useState(false)
   const [autoRefresh, setAutoRefresh] = useState(false)
   const runIdRef = useRef(0)
+  const statusDropdownRef = useRef(null)
   const isNarrow = useIsNarrow()
 
   async function copyAsImage() {
@@ -456,12 +458,36 @@ export default function MileageUpdateTab({ token }) {
     if (statusCounts[value] !== undefined) statusCounts[value] += 1
     if (hasZeroMileage(vehicle, reportMap)) statusCounts.zero += 1
   }
-  const visibleVehicles =
-    statusFilter === 'all'
-      ? vehicles
-      : statusFilter === 'zero'
-        ? vehicles.filter((vehicle) => hasZeroMileage(vehicle, reportMap))
-        : vehicles.filter((vehicle) => statusOf(vehicle) === statusFilter)
+  const showAllStatuses =
+    statusFilters.length === 0 || statusFilters.includes('all')
+  const visibleVehicles = showAllStatuses
+    ? vehicles
+    : vehicles.filter((vehicle) => {
+        const status = statusOf(vehicle)
+        return statusFilters.some(
+          (key) =>
+            key === 'zero'
+              ? hasZeroMileage(vehicle, reportMap)
+              : key === status,
+        )
+      })
+  const statusFilterLabel = showAllStatuses
+    ? 'All'
+    : STATUS_FILTERS.filter((filter) => statusFilters.includes(filter.key))
+        .map((filter) => filter.label)
+        .join(', ')
+
+  function toggleStatusFilter(key) {
+    setStatusFilters((prev) => {
+      if (key === 'all') return ['all']
+      const next = prev.filter((k) => k !== 'all')
+      return next.includes(key)
+        ? next.length > 1
+          ? next.filter((k) => k !== key)
+          : ['all']
+        : [...next, key]
+    })
+  }
 
   const sortedVehicles =
     codeSort === 'none'
@@ -569,6 +595,24 @@ export default function MileageUpdateTab({ token }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRefresh, token])
 
+  useEffect(() => {
+    if (!statusDropdownOpen) return
+    const onPointerDown = (event) => {
+      if (!statusDropdownRef.current?.contains(event.target)) {
+        setStatusDropdownOpen(false)
+      }
+    }
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setStatusDropdownOpen(false)
+    }
+    document.addEventListener('mousedown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [statusDropdownOpen])
+
   return (
     <div>
       {(loading || refreshing || Boolean(exporting)) && (
@@ -596,25 +640,19 @@ export default function MileageUpdateTab({ token }) {
             <span className="text-sm font-semibold text-black">
               Status
             </span>
-            <span className="relative inline-flex">
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+            <span className="relative inline-flex" ref={statusDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setStatusDropdownOpen((open) => !open)}
+                aria-haspopup="listbox"
+                aria-expanded={statusDropdownOpen}
                 className="cursor-pointer appearance-none rounded-full border border-green-300 bg-white py-2 pr-10 pl-4 text-sm font-semibold text-black shadow-sm transition-all duration-200 hover:border-green-600 focus:border-green-600 focus:ring-2 focus:ring-green-700/20 focus:outline-none"
               >
-                {STATUS_FILTERS.map((filter) => (
-                  <option
-                    key={filter.key}
-                    value={filter.key}
-                    className="bg-white text-black"
-                  >
-                    {filter.label} ({statusCounts[filter.key] ?? 0})
-                  </option>
-                ))}
-              </select>
+                {statusFilterLabel}
+              </button>
               <svg
                 viewBox="0 0 24 24"
-                className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-green-700"
+                className={`pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-green-700 transition-transform duration-200 ${statusDropdownOpen ? 'scale-y-[-1]' : ''}`}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.4"
@@ -624,6 +662,50 @@ export default function MileageUpdateTab({ token }) {
               >
                 <path d="m6 9 6 6 6-6" />
               </svg>
+              {statusDropdownOpen && (
+                <div
+                  role="listbox"
+                  aria-multiselectable="true"
+                  className="absolute top-full left-0 z-20 mt-2 w-52 rounded-xl border border-green-200 bg-white p-1.5 shadow-lg"
+                >
+                  {STATUS_FILTERS.map((filter) => {
+                    const selected = statusFilters.includes(filter.key)
+                    return (
+                      <button
+                        key={filter.key}
+                        type="button"
+                        role="option"
+                        aria-selected={selected}
+                        onClick={() => toggleStatusFilter(filter.key)}
+                        title={selected ? 'Deselect' : 'Select'}
+                        className="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-semibold text-black transition-colors hover:bg-green-50"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className={`grid h-4.5 w-4.5 shrink-0 place-items-center rounded-[5px] border transition-colors duration-150 ${selected ? 'border-green-700 bg-green-700' : 'border-neutral-300 bg-white'}`}
+                        >
+                          {selected && (
+                            <svg
+                              viewBox="0 0 24 24"
+                              className="h-3 w-3 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3.2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="m5 13 4 4L19 7" />
+                            </svg>
+                          )}
+                        </span>
+                        <span className="flex-1">
+                          {filter.label} ({statusCounts[filter.key] ?? 0})
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
             </span>
           </label>
           <button
@@ -712,9 +794,11 @@ export default function MileageUpdateTab({ token }) {
         vehicles.length > 0 &&
         visibleVehicles.length === 0 && (
           <p className="text-sm text-neutral-500">
-            {statusFilter === 'zero'
+            {statusFilters.length === 1 && statusFilters[0] === 'zero'
               ? 'No vehicles with 0 mileage.'
-              : `No vehicles with status ${statusFilter}.`}
+              : statusFilters.length === 1 && statusFilters[0] !== 'all'
+                ? `No vehicles with status ${statusFilters[0]}.`
+                : 'No vehicles match the selected status filters.'}
           </p>
         )}
 
