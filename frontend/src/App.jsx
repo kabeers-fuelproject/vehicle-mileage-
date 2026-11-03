@@ -7,6 +7,7 @@ import SummaryTab from './components/SummaryTab'
 import ThresholdTab from './components/ThresholdTab'
 import VehicleStatusTab from './components/VehicleStatusTab'
 import VehicleDataTab from './components/VehicleDataTab'
+import CodeDiscrepancyTab from './components/CodeDiscrepancyTab'
 import TripHistoryTab from './components/TripHistoryTab'
 import VaLogo from './components/VaLogo'
 import NotificationBell from './components/NotificationBell'
@@ -22,6 +23,7 @@ const TABS = [
   { id: 'threshold', label: 'Threshold' },
   { id: 'assigned-vehicles', label: 'Assigned Vehicles' },
   { id: 'summary', label: 'Summary' },
+  { id: 'code-discrepancy', label: 'Code Discrepancy' },
 ]
 
 const TAB_ICONS = {
@@ -75,6 +77,13 @@ const TAB_ICONS = {
       <path d="M18 17V9" />
       <path d="M13 17V5" />
       <path d="M8 17v-3" />
+    </>
+  ),
+  'code-discrepancy': (
+    <>
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+      <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
     </>
   ),
 }
@@ -406,6 +415,7 @@ function AppContent() {
           {tab === 'threshold' && <ThresholdTab />}
           {tab === 'assigned-vehicles' && <AssignedVehiclesTab token={token} />}
           {tab === 'summary' && <SummaryTab token={token} />}
+          {tab === 'code-discrepancy' && <CodeDiscrepancyTab token={token} />}
         </main>
       </div>
     </div>

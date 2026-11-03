@@ -877,7 +877,7 @@ export default function MileageUpdateTab({ token }) {
                   {COLUMNS.map((column) => (
                     <th
                       key={column.key}
-                      className={`border border-b-2 border-b-black border-black px-1 py-2 text-center align-middle text-[10px] font-semibold sm:px-3 sm:py-2.5`}
+                      className={`border border-b-2 border-b-black border-black px-1 py-2 text-center align-middle text-[12px] font-semibold sm:px-3 sm:py-2.5`}
                     >
                       {column.key === 'vehicleCode' ? (
                         <button
