@@ -3,6 +3,8 @@ import { api } from '../api'
 import loginBg from '../assets/login-bg.jpg'
 import VaLogo from './VaLogo'
 import LoadingOverlay from './LoadingOverlay'
+import { logActivity } from '../activityLogger'
+import { getDeviceDisplayName } from '../deviceInfo'
 
 export default function Login({ onLogin }) {
   const [username, setUsername] = useState('')
@@ -21,6 +23,10 @@ export default function Login({ onLogin }) {
       const token = data?.data?.[1]
       if (!token) throw new Error('No token received from server')
       localStorage.setItem('token', token)
+      await logActivity('login', `Signed in from ${getDeviceDisplayName()}`, {
+        username,
+        device: getDeviceDisplayName(),
+      })
       onLogin(token)
     } catch (err) {
       setError(err.message)

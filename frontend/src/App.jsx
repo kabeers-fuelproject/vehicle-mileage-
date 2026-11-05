@@ -9,6 +9,7 @@ import VehicleStatusTab from './components/VehicleStatusTab'
 import VehicleDataTab from './components/VehicleDataTab'
 import CodeDiscrepancyTab from './components/CodeDiscrepancyTab'
 import TripHistoryTab from './components/TripHistoryTab'
+import HistoryTab from './components/HistoryTab'
 import VaLogo from './components/VaLogo'
 import NotificationBell from './components/NotificationBell'
 import { NotificationProvider, useNotifications } from './NotificationContext'
@@ -24,6 +25,7 @@ const TABS = [
   { id: 'assigned-vehicles', label: 'Assigned Vehicles' },
   { id: 'summary', label: 'Summary' },
   { id: 'code-discrepancy', label: 'Code Discrepancy' },
+  { id: 'history', label: 'History' },
 ]
 
 const TAB_ICONS = {
@@ -84,6 +86,12 @@ const TAB_ICONS = {
       <path d="M12 9v4" />
       <path d="M12 17h.01" />
       <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+    </>
+  ),
+  history: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
     </>
   ),
 }
@@ -178,6 +186,13 @@ function AppContent() {
   if (!token) return <Login onLogin={setToken} />
 
   function handleLogout() {
+    try {
+      import('./activityLogger').then(({ logActivity }) => {
+        import('./deviceInfo').then(({ getDeviceDisplayName }) => {
+          logActivity('logout', `Signed out from ${getDeviceDisplayName()}`)
+        })
+      })
+    } catch {}
     localStorage.removeItem('token')
     setToken(null)
   }
@@ -416,6 +431,7 @@ function AppContent() {
           {tab === 'assigned-vehicles' && <AssignedVehiclesTab token={token} />}
           {tab === 'summary' && <SummaryTab token={token} />}
           {tab === 'code-discrepancy' && <CodeDiscrepancyTab token={token} />}
+          {tab === 'history' && <HistoryTab />}
         </main>
       </div>
     </div>

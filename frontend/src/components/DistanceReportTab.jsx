@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { api } from '../api'
 import { dayRange } from '../reportRange'
 import { buildTablePdf } from '../reportPdf'
+import { logActivity } from '../activityLogger'
 import VaLogo from './VaLogo'
 import LoadingOverlay from './LoadingOverlay'
 
@@ -177,6 +178,7 @@ export default function DistanceReportTab({ token }) {
         columns: PDF_COLUMNS,
         rows: pdfRows,
       })
+      await logActivity('distance_report_pdf', `Downloaded Distance Report for ${fromDate} to ${toDate} (${filteredRows.length} vehicles)`)
     } catch (err) {
       setError(err.message || 'Could not download PDF')
     } finally {

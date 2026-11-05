@@ -8,6 +8,7 @@ import { usedForOf } from '../usedFor'
 import { supervisorOf } from '../supervisors'
 import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
+import { logActivity } from '../activityLogger'
 import LoadingOverlay from './LoadingOverlay'
 import { useNotifications } from '../NotificationContext'
 
@@ -440,6 +441,7 @@ export default function MileageUpdateTab({ token }) {
         columns,
         rows: pdfRows,
       })
+      logActivity('mileage_update_pdf', `Downloaded Mileage Update for ${formatDate(new Date())} (${sortedVehicles.length} vehicles)`)
       setExportMessage('PDF downloaded')
     } catch (err) {
       setExportMessage(err?.message || 'Could not download PDF')

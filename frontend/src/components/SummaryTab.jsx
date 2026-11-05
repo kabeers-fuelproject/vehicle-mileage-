@@ -8,6 +8,7 @@ import { vehicleTypeOf } from '../vehicleTypes'
 import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
 import { buildSummaryPdf } from '../summaryPdf'
+import { logActivity } from '../activityLogger'
 import VaLogo from './VaLogo'
 import LoadingOverlay from './LoadingOverlay'
 
@@ -269,6 +270,9 @@ export default function SummaryTab({ token }) {
           thresholdPercentage: overallThresholdPercentage,
         },
       })
+      logActivity('summary_pdf', `Downloaded Summary Report for ${formatDate(new Date())} (${summaryData.length} categories)`)
+    } catch (err) {
+      setError(err.message || 'Could not download PDF')
     } finally {
       setDownloading(false)
     }
