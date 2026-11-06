@@ -8,6 +8,6 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://vehicle-mileage-production.up.railway.app/api/*"
+  to = "https://vehicle-mileage-production-e186.up.railway.app/api/*"
   status = 200
   force = true
