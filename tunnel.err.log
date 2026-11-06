@@ -41,3 +41,33 @@
 2026-11-06T06:14:30Z INF precheck component="Cloudflare API" details="API is reachable" run_id=78ae4bc8-253d-4a06-93d3-43ee26ce7191 status=pass target=api.cloudflare.com:443
 2026-11-06T06:14:30Z INF precheck complete hard_fail=false run_id=78ae4bc8-253d-4a06-93d3-43ee26ce7191 suggested_protocol=quic
 2026-11-06T06:14:30Z INF Registered tunnel connection connIndex=0 connection=40fd8e1f-6027-48dd-b1ca-2a182d73512e event=0 ip=198.41.192.227 location=khi02 protocol=quic
+2026-11-06T06:26:10Z ERR Serve tunnel error error="accept stream listener error: failed to accept QUIC stream: timeout: no recent network activity" connIndex=0 event=0 ip=198.41.192.227
+2026-11-06T06:26:10Z INF Retrying connection in up to 2s connIndex=0 event=0 ip=198.41.192.227
+2026-11-06T06:26:12Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.63
+2026-11-06T06:26:13Z ERR Failed to dial a quic connection error="failed to dial to edge with quic: write udp [::]:58579->198.41.200.63:7844: wsasendto: A socket operation was attempted to an unreachable network." connIndex=0 event=0 ip=198.41.200.63
+2026-11-06T06:26:14Z INF Retrying connection in up to 4s connIndex=0 event=0 ip=198.41.200.63
+2026-11-06T06:26:17Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.47
+2026-11-06T06:26:17Z ERR Failed to dial a quic connection error="failed to dial to edge with quic: write udp [::]:58579->198.41.192.47:7844: wsasendto: A socket operation was attempted to an unreachable network." connIndex=0 event=0 ip=198.41.192.47
+2026-11-06T06:26:17Z INF Retrying connection in up to 8s connIndex=0 event=0 ip=198.41.192.47
+2026-11-06T06:26:24Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:26Z INF Registered tunnel connection connIndex=0 connection=9bb8fe29-4ab1-44c5-938f-367018bb22dc event=0 ip=198.41.200.53 location=sin22 protocol=quic
+2026-11-06T06:26:44Z ERR Serve tunnel error error="accept stream listener error: failed to accept QUIC stream: write udp [::]:58579->198.41.200.53:7844: wsasendto: A socket operation was attempted to an unreachable network." connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:44Z INF Retrying connection in up to 2s connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:45Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:45Z ERR Failed to dial a quic connection error="failed to dial to edge with quic: write udp [::]:58579->198.41.200.53:7844: wsasendto: A socket operation was attempted to an unreachable network." connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:45Z INF Retrying connection in up to 4s connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:45Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-11-06T06:26:45Z ERR Failed to dial a quic connection error="failed to dial to edge with quic: write udp [::]:58579->198.41.192.7:7844: wsasendto: A socket operation was attempted to an unreachable network." connIndex=0 event=0 ip=198.41.192.7
+2026-11-06T06:26:45Z INF Retrying connection in up to 8s connIndex=0 event=0 ip=198.41.192.7
+2026-11-06T06:26:45Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:46Z ERR Failed to dial a quic connection error="failed to dial to edge with quic: write udp [::]:58579->198.41.200.53:7844: wsasendto: A socket operation was attempted to an unreachable network." connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:46Z INF Retrying connection in up to 16s connIndex=0 event=0 ip=198.41.200.53
+2026-11-06T06:26:58Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.107
+2026-11-06T06:26:58Z ERR Failed to dial a quic connection error="failed to dial to edge with quic: write udp [::]:58579->198.41.192.107:7844: wsasendto: A socket operation was attempted to an unreachable network." connIndex=0 event=0 ip=198.41.192.107
+2026-11-06T06:26:58Z INF Retrying connection in up to 32s connIndex=0 event=0 ip=198.41.192.107
+2026-11-06T06:27:14Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.23
+2026-11-06T06:27:14Z INF Registered tunnel connection connIndex=0 connection=e91b5511-5f1f-4b06-9dff-051b4f72f24f event=0 ip=198.41.200.23 location=sin02 protocol=quic
+2026-11-06T06:27:18Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:5173
+2026-11-06T06:27:18Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:5173
+2026-11-06T06:27:18Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 dest=https://licence-ports-sunshine-pleased.trycloudflare.com/api/vehicle/getstatus event=0 ip=198.41.200.23 type=http
+2026-11-06T06:27:18Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 dest=https://licence-ports-sunshine-pleased.trycloudflare.com/api/vehicle/getlist event=0 ip=198.41.200.23 type=http
