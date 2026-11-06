@@ -71,3 +71,4 @@
 2026-11-06T06:27:18Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:5173
 2026-11-06T06:27:18Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 dest=https://licence-ports-sunshine-pleased.trycloudflare.com/api/vehicle/getstatus event=0 ip=198.41.200.23 type=http
 2026-11-06T06:27:18Z ERR Request failed error="Incoming request ended abruptly: context canceled" connIndex=0 dest=https://licence-ports-sunshine-pleased.trycloudflare.com/api/vehicle/getlist event=0 ip=198.41.200.23 type=http
+2026-11-06T06:34:35Z ERR Failed to refresh DNS local resolver error="lookup region1.v2.argotunnel.com: i/o timeout"
