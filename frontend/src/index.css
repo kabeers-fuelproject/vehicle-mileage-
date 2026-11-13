@@ -396,17 +396,19 @@ html {
 
    ------------------------------------------------------- */
 
-/* HTML: <div class="loader"></div> */
+/* -------------------------------------------------------
+   Previous .loader (commented out - replaced by the scan-line loader below)
+
 .loader {
   --c:no-repeat linear-gradient(orange 0 0);
-  width: 45px;   /* fallback so the loader keeps its size when animation is off */
+  width: 45px;
   height: 45px;
-  background: 
+  background:
     var(--c),var(--c),var(--c),
     var(--c),var(--c),var(--c),
     var(--c),var(--c),var(--c);
   background-size: 16px 16px;
-  animation: 
+  animation:
     l32-1 1s infinite,
     l32-2 1s infinite;
 }
@@ -419,8 +421,87 @@ html {
   60%,100%{background-position: 0 50%, 0 100%,50% 100%,100% 100%,100% 50%,100% 0,50% 0,0 0,  50% 50% }
 }
 
+   ------------------------------------------------------- */
+
+/* HTML: <div class="loader"><span>Loading</span></div> */
+/* From Uiverse.io by kat_2522 */
+.loader {
+  max-width: fit-content;
+  color: rgb(242, 255, 240);
+  font-size: 50px;
+  font-family: Mine;
+  position: relative;
+  font-style: italic;
+  font-weight: 600;
+}
+.loader span {
+  animation: cut 2s infinite;
+  transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.loader:hover {
+  color: #fcffdf;
+}
+.loader::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 6px;
+  border-radius: 4px;
+  background-color: #ff828291;
+  top: 0px;
+  filter: blur(10px);
+  animation: scan 2s infinite;
+  left: 0;
+  z-index: 0;
+  transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.loader::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 5px;
+  border-radius: 4px;
+  background-color: #ff8282;
+  top: 0px;
+  animation: scan 2s infinite;
+  left: 0;
+  z-index: 1;
+  filter: opacity(0.9);
+  transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes scan {
+  0% {
+    top: 0px;
+  }
+  25% {
+    top: 54px;
+  }
+  50% {
+    top: 0px;
+  }
+  75% {
+    top: 54px;
+  }
+}
+@keyframes cut {
+  0% {
+    clip-path: inset(0 0 0 0);
+  }
+  25% {
+    clip-path: inset(100% 0 0 0);
+  }
+  50% {
+    clip-path: inset(0 0 100% 0);
+  }
+  75% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .loader {
+  .loader span,
+  .loader::before,
+  .loader::after {
     animation: none;
   }
 }

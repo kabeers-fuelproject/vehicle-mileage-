@@ -362,7 +362,13 @@ export default function MileageUpdateTab({ token }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [statusFilters, setStatusFilters] = useState(['all'])
+  const [selectedSupervisors, setSelectedSupervisors] = useState([])
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false)
+  const [supervisorDropdownOpen, setSupervisorDropdownOpen] = useState(false)
+  const [supervisorDropdownPos, setSupervisorDropdownPos] = useState({
+    top: 0,
+    left: 0,
+  })
   const [codeSort, setCodeSort] = useState('asc')
   const tableRef = useRef(null)
   const copyImageRef = useRef(null)
@@ -373,6 +379,8 @@ export default function MileageUpdateTab({ token }) {
   const [autoRefresh, setAutoRefresh] = useState(false)
   const runIdRef = useRef(0)
   const statusDropdownRef = useRef(null)
+  const supervisorDropdownRef = useRef(null)
+  const supervisorBtnRef = useRef(null)
   const isNarrow = useIsNarrow()
 
   async function copyAsImage() {
@@ -460,11 +468,17 @@ export default function MileageUpdateTab({ token }) {
     if (statusCounts[value] !== undefined) statusCounts[value] += 1
     if (hasZeroMileage(vehicle, reportMap)) statusCounts.zero += 1
   }
+  const supervisorFilterActive = selectedSupervisors.length > 0
+  const supervisorFilteredVehicles = supervisorFilterActive
+    ? vehicles.filter((vehicle) =>
+        selectedSupervisors.includes(supervisorOf(codeOf(vehicle))),
+      )
+    : vehicles
   const showAllStatuses =
     statusFilters.length === 0 || statusFilters.includes('all')
   const visibleVehicles = showAllStatuses
-    ? vehicles
-    : vehicles.filter((vehicle) => {
+    ? supervisorFilteredVehicles
+    : supervisorFilteredVehicles.filter((vehicle) => {
         const status = statusOf(vehicle)
         return statusFilters.some(
           (key) =>
@@ -489,6 +503,51 @@ export default function MileageUpdateTab({ token }) {
           : ['all']
         : [...next, key]
     })
+  }
+
+  const supervisorOptions = (() => {
+    const counts = new Map()
+    for (const vehicle of vehicles) {
+      const name = supervisorOf(codeOf(vehicle))
+      if (!name) continue
+      counts.set(name, (counts.get(name) ?? 0) + 1)
+    }
+    return [...counts.entries()]
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([name, count]) => ({ name, count }))
+  })()
+
+  function dropdownPosFromRect(rect) {
+    const width = 224
+    const estimatedHeight = 300
+    const left = Math.max(
+      8,
+      Math.min(rect.left, window.innerWidth - width - 8),
+    )
+    let top = rect.bottom + 4
+    if (
+      top + estimatedHeight > window.innerHeight &&
+      rect.top - estimatedHeight > 0
+    ) {
+      top = Math.max(8, rect.top - estimatedHeight - 4)
+    }
+    return { top, left }
+  }
+
+  function toggleSupervisorDropdown() {
+    if (supervisorDropdownOpen) {
+      setSupervisorDropdownOpen(false)
+      return
+    }
+    const rect = supervisorBtnRef.current?.getBoundingClientRect()
+    if (rect) setSupervisorDropdownPos(dropdownPosFromRect(rect))
+    setSupervisorDropdownOpen(true)
+  }
+
+  function toggleSupervisor(name) {
+    setSelectedSupervisors((prev) =>
+      prev.includes(name) ? prev.filter((s) => s !== name) : [...prev, name],
+    )
   }
 
   const sortedVehicles =
@@ -615,6 +674,38 @@ export default function MileageUpdateTab({ token }) {
     }
   }, [statusDropdownOpen])
 
+  useEffect(() => {
+    if (!supervisorDropdownOpen) return
+    const onPointerDown = (event) => {
+      if (!supervisorDropdownRef.current?.contains(event.target)) {
+        setSupervisorDropdownOpen(false)
+      }
+    }
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setSupervisorDropdownOpen(false)
+    }
+    const reposition = () => {
+      const rect = supervisorBtnRef.current?.getBoundingClientRect()
+      if (rect) setSupervisorDropdownPos(dropdownPosFromRect(rect))
+    }
+    let frame = 0
+    const onScroll = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(reposition)
+    }
+    document.addEventListener('mousedown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    window.addEventListener('scroll', onScroll, true)
+    window.addEventListener('resize', reposition)
+    return () => {
+      cancelAnimationFrame(frame)
+      document.removeEventListener('mousedown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('scroll', onScroll, true)
+      window.removeEventListener('resize', reposition)
+    }
+  }, [supervisorDropdownOpen])
+
   return (
     <div>
       {(loading || refreshing || Boolean(exporting)) && (
@@ -633,6 +724,42 @@ export default function MileageUpdateTab({ token }) {
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
+          {selectedSupervisors.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-xs font-semibold tracking-wide text-green-700 uppercase">
+                Supervisors
+              </span>
+              {selectedSupervisors.map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  onClick={() => toggleSupervisor(name)}
+                  title="Untick supervisor"
+                  className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-green-700 bg-green-700 px-2.5 py-1 text-xs font-semibold text-white transition-colors hover:bg-green-600"
+                >
+                  {name}
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-3 w-3"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 6l12 12M18 6 6 18" />
+                  </svg>
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setSelectedSupervisors([])}
+                className="cursor-pointer rounded-full border border-green-300 bg-white px-2.5 py-1 text-xs font-semibold text-green-700 transition-colors hover:border-green-600 hover:bg-green-50"
+              >
+                Clear all
+              </button>
+            </div>
+          )}
           {exportMessage && (
             <span className="text-xs font-medium text-green-700">
               {exportMessage}
@@ -800,7 +927,9 @@ export default function MileageUpdateTab({ token }) {
               ? 'No vehicles with 0 mileage.'
               : statusFilters.length === 1 && statusFilters[0] !== 'all'
                 ? `No vehicles with status ${statusFilters[0]}.`
-                : 'No vehicles match the selected status filters.'}
+                : supervisorFilterActive
+                  ? 'No vehicles match the selected supervisors.'
+                  : 'No vehicles match the selected status filters.'}
           </p>
         )}
 
@@ -881,7 +1010,93 @@ export default function MileageUpdateTab({ token }) {
                       key={column.key}
                       className={`border border-b-2 border-b-black border-black px-1 py-2 text-center align-middle text-[12px] font-semibold sm:px-3 sm:py-2.5`}
                     >
-                      {column.key === 'vehicleCode' ? (
+                      {column.key === 'supervisor' ? (
+                        <span
+                          className="relative inline-flex"
+                          ref={supervisorDropdownRef}
+                        >
+                          <button
+                            type="button"
+                            ref={supervisorBtnRef}
+                            onClick={toggleSupervisorDropdown}
+                            aria-haspopup="listbox"
+                            aria-expanded={supervisorDropdownOpen}
+                            title="Filter by supervisor"
+                            className="inline-flex cursor-pointer items-center gap-1 whitespace-nowrap transition-colors hover:text-green-900"
+                          >
+                            {column.label}
+                            {selectedSupervisors.length > 0 && (
+                              <span
+                                aria-hidden="true"
+                                className="h-1.5 w-1.5 rounded-full bg-brand-600"
+                              />
+                            )}
+                            <svg
+                              viewBox="0 0 24 24"
+                              className={`h-3.5 w-3.5 transition-transform duration-200 ${supervisorDropdownOpen ? 'scale-y-[-1]' : ''}`}
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.4"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                            >
+                              <path d="m6 9 6 6 6-6" />
+                            </svg>
+                          </button>
+                          {supervisorDropdownOpen && (
+                            <div
+                              role="listbox"
+                              aria-multiselectable="true"
+                              style={{
+                                position: 'fixed',
+                                top: supervisorDropdownPos.top,
+                                left: supervisorDropdownPos.left,
+                              }}
+                              className="z-30 max-h-72 w-56 overflow-y-auto rounded-xl border border-green-200 bg-white p-1.5 shadow-lg"
+                            >
+                              {supervisorOptions.map((option) => {
+                                const selected = selectedSupervisors.includes(
+                                  option.name,
+                                )
+                                return (
+                                  <button
+                                    key={option.name}
+                                    type="button"
+                                    role="option"
+                                    aria-selected={selected}
+                                    onClick={() => toggleSupervisor(option.name)}
+                                    title={selected ? 'Untick' : 'Tick'}
+                                    className="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-semibold text-black transition-colors hover:bg-green-50"
+                                  >
+                                    <span
+                                      aria-hidden="true"
+                                      className={`grid h-4.5 w-4.5 shrink-0 place-items-center rounded-[5px] border transition-colors duration-150 ${selected ? 'border-green-700 bg-green-700' : 'border-neutral-300 bg-white'}`}
+                                    >
+                                      {selected && (
+                                        <svg
+                                          viewBox="0 0 24 24"
+                                          className="h-3 w-3 text-white"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          strokeWidth="3.2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        >
+                                          <path d="m5 13 4 4L19 7" />
+                                        </svg>
+                                      )}
+                                    </span>
+                                    <span className="flex-1 break-words">
+                                      {option.name} ({option.count})
+                                    </span>
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          )}
+                        </span>
+                      ) : column.key === 'vehicleCode' ? (
                         <button
                           type="button"
                           onClick={toggleCodeSort}
@@ -904,13 +1119,18 @@ export default function MileageUpdateTab({ token }) {
                 {sortedVehicles.map((vehicle, index) => {
                   const code = codeOf(vehicle)
                   const status = displayValue(code, 'status', reportMap)
+                  const supSelected = selectedSupervisors.includes(
+                    supervisorOf(code),
+                  )
                   return (
                     <tr
                       key={vehicle.unitID}
                       className={`transition-colors hover:bg-green-100 ${
-                        index % 2 === 0
-                          ? 'bg-green-50'
-                          : 'bg-white'
+                        supSelected
+                          ? 'bg-green-100'
+                          : index % 2 === 0
+                            ? 'bg-green-50'
+                            : 'bg-white'
                       }`}
                     >
                       <td
