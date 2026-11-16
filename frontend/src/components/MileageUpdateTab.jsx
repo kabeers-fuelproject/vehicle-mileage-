@@ -370,6 +370,12 @@ export default function MileageUpdateTab({ token }) {
     left: 0,
   })
   const [codeSort, setCodeSort] = useState('asc')
+  const [selectedVehicleCodes, setSelectedVehicleCodes] = useState([])
+  const [codeFilterDropdownOpen, setCodeFilterDropdownOpen] = useState(false)
+  const [codeFilterDropdownPos, setCodeFilterDropdownPos] = useState({
+    top: 0,
+    left: 0,
+  })
   const tableRef = useRef(null)
   const copyImageRef = useRef(null)
   const visibleTableRef = useRef(null)
@@ -381,6 +387,8 @@ export default function MileageUpdateTab({ token }) {
   const statusDropdownRef = useRef(null)
   const supervisorDropdownRef = useRef(null)
   const supervisorBtnRef = useRef(null)
+  const codeFilterDropdownRef = useRef(null)
+  const codeFilterBtnRef = useRef(null)
   const isNarrow = useIsNarrow()
 
   async function copyAsImage() {
@@ -474,11 +482,17 @@ export default function MileageUpdateTab({ token }) {
         selectedSupervisors.includes(supervisorOf(codeOf(vehicle))),
       )
     : vehicles
+  const vehicleFilterActive = selectedVehicleCodes.length > 0
+  const vehicleFilteredVehicles = vehicleFilterActive
+    ? supervisorFilteredVehicles.filter((vehicle) =>
+        selectedVehicleCodes.includes(codeOf(vehicle)),
+      )
+    : supervisorFilteredVehicles
   const showAllStatuses =
     statusFilters.length === 0 || statusFilters.includes('all')
   const visibleVehicles = showAllStatuses
-    ? supervisorFilteredVehicles
-    : supervisorFilteredVehicles.filter((vehicle) => {
+    ? vehicleFilteredVehicles
+    : vehicleFilteredVehicles.filter((vehicle) => {
         const status = statusOf(vehicle)
         return statusFilters.some(
           (key) =>
@@ -517,6 +531,18 @@ export default function MileageUpdateTab({ token }) {
       .map(([name, count]) => ({ name, count }))
   })()
 
+  const vehicleCodeOptions = (() => {
+    const counts = new Map()
+    for (const vehicle of vehicles) {
+      const code = codeOf(vehicle)
+      if (!code) continue
+      counts.set(code, (counts.get(code) ?? 0) + 1)
+    }
+    return [...counts.entries()]
+      .sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true }))
+      .map(([code, count]) => ({ code, count }))
+  })()
+
   function dropdownPosFromRect(rect) {
     const width = 224
     const estimatedHeight = 300
@@ -548,6 +574,22 @@ export default function MileageUpdateTab({ token }) {
     setSelectedSupervisors((prev) =>
       prev.includes(name) ? prev.filter((s) => s !== name) : [...prev, name],
     )
+  }
+
+  function toggleVehicleCode(code) {
+    setSelectedVehicleCodes((prev) =>
+      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code],
+    )
+  }
+
+  function toggleCodeFilterDropdown() {
+    if (codeFilterDropdownOpen) {
+      setCodeFilterDropdownOpen(false)
+      return
+    }
+    const rect = codeFilterBtnRef.current?.getBoundingClientRect()
+    if (rect) setCodeFilterDropdownPos(dropdownPosFromRect(rect))
+    setCodeFilterDropdownOpen(true)
   }
 
   const sortedVehicles =
@@ -706,6 +748,38 @@ export default function MileageUpdateTab({ token }) {
     }
   }, [supervisorDropdownOpen])
 
+  useEffect(() => {
+    if (!codeFilterDropdownOpen) return
+    const onPointerDown = (event) => {
+      if (!codeFilterDropdownRef.current?.contains(event.target)) {
+        setCodeFilterDropdownOpen(false)
+      }
+    }
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setCodeFilterDropdownOpen(false)
+    }
+    const reposition = () => {
+      const rect = codeFilterBtnRef.current?.getBoundingClientRect()
+      if (rect) setCodeFilterDropdownPos(dropdownPosFromRect(rect))
+    }
+    let frame = 0
+    const onScroll = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(reposition)
+    }
+    document.addEventListener('mousedown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    window.addEventListener('scroll', onScroll, true)
+    window.addEventListener('resize', reposition)
+    return () => {
+      cancelAnimationFrame(frame)
+      document.removeEventListener('mousedown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('scroll', onScroll, true)
+      window.removeEventListener('resize', reposition)
+    }
+  }, [codeFilterDropdownOpen])
+
   return (
     <div>
       {(loading || refreshing || Boolean(exporting)) && (
@@ -754,6 +828,42 @@ export default function MileageUpdateTab({ token }) {
               <button
                 type="button"
                 onClick={() => setSelectedSupervisors([])}
+                className="cursor-pointer rounded-full border border-green-300 bg-white px-2.5 py-1 text-xs font-semibold text-green-700 transition-colors hover:border-green-600 hover:bg-green-50"
+              >
+                Clear all
+              </button>
+            </div>
+          )}
+          {selectedVehicleCodes.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="text-xs font-semibold tracking-wide text-green-700 uppercase">
+                Vehicle Codes
+              </span>
+              {selectedVehicleCodes.map((code) => (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => toggleVehicleCode(code)}
+                  title="Untick vehicle code"
+                  className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-green-700 bg-green-700 px-2.5 py-1 text-xs font-semibold text-white transition-colors hover:bg-green-600"
+                >
+                  {code}
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-3 w-3"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 6l12 12M18 6 6 18" />
+                  </svg>
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setSelectedVehicleCodes([])}
                 className="cursor-pointer rounded-full border border-green-300 bg-white px-2.5 py-1 text-xs font-semibold text-green-700 transition-colors hover:border-green-600 hover:bg-green-50"
               >
                 Clear all
@@ -927,9 +1037,13 @@ export default function MileageUpdateTab({ token }) {
               ? 'No vehicles with 0 mileage.'
               : statusFilters.length === 1 && statusFilters[0] !== 'all'
                 ? `No vehicles with status ${statusFilters[0]}.`
-                : supervisorFilterActive
-                  ? 'No vehicles match the selected supervisors.'
-                  : 'No vehicles match the selected status filters.'}
+                : supervisorFilterActive && vehicleFilterActive
+                  ? 'No vehicles match the selected supervisors and vehicle codes.'
+                  : supervisorFilterActive
+                    ? 'No vehicles match the selected supervisors.'
+                    : vehicleFilterActive
+                      ? 'No vehicles match the selected vehicle codes.'
+                      : 'No vehicles match the selected status filters.'}
           </p>
         )}
 
@@ -1097,17 +1211,101 @@ export default function MileageUpdateTab({ token }) {
                           )}
                         </span>
                       ) : column.key === 'vehicleCode' ? (
-                        <button
-                          type="button"
-                          onClick={toggleCodeSort}
-                          title="Sort by vehicle code"
-                          className="inline-flex items-center gap-1 whitespace-nowrap transition-colors hover:text-green-900"
+                        <span
+                          className="relative inline-flex"
+                          ref={codeFilterDropdownRef}
                         >
-                          {column.label}
-                          <span className="text-[9px]">
-                            {codeSort === 'asc' ? '▲' : '▼'}
-                          </span>
-                        </button>
+                          <button
+                            type="button"
+                            onClick={toggleCodeSort}
+                            title="Sort by vehicle code"
+                            className="inline-flex cursor-pointer items-center gap-1 whitespace-nowrap transition-colors hover:text-green-900"
+                          >
+                            {column.label}
+                            <span className="text-[9px]">
+                              {codeSort === 'asc' ? '▲' : '▼'}
+                            </span>
+                          </button>
+                          <button
+                            type="button"
+                            ref={codeFilterBtnRef}
+                            onClick={toggleCodeFilterDropdown}
+                            aria-haspopup="listbox"
+                            aria-expanded={codeFilterDropdownOpen}
+                            title="Filter by vehicle code"
+                            className="inline-flex cursor-pointer items-center gap-1 whitespace-nowrap transition-colors hover:text-green-900"
+                          >
+                            {selectedVehicleCodes.length > 0 && (
+                              <span
+                                aria-hidden="true"
+                                className="h-1.5 w-1.5 rounded-full bg-brand-600"
+                              />
+                            )}
+                            <svg
+                              viewBox="0 0 24 24"
+                              className={`h-3.5 w-3.5 transition-transform duration-200 ${codeFilterDropdownOpen ? 'scale-y-[-1]' : ''}`}
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.4"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                            >
+                              <path d="m6 9 6 6 6-6" />
+                            </svg>
+                          </button>
+                          {codeFilterDropdownOpen && (
+                            <div
+                              role="listbox"
+                              aria-multiselectable="true"
+                              style={{
+                                position: 'fixed',
+                                top: codeFilterDropdownPos.top,
+                                left: codeFilterDropdownPos.left,
+                              }}
+                              className="z-30 max-h-72 w-56 overflow-y-auto rounded-xl border border-green-200 bg-white p-1.5 shadow-lg"
+                            >
+                              {vehicleCodeOptions.map((option) => {
+                                const selected = selectedVehicleCodes.includes(
+                                  option.code,
+                                )
+                                return (
+                                  <button
+                                    key={option.code}
+                                    type="button"
+                                    role="option"
+                                    aria-selected={selected}
+                                    onClick={() => toggleVehicleCode(option.code)}
+                                    title={selected ? 'Untick' : 'Tick'}
+                                    className="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-semibold text-black transition-colors hover:bg-green-50"
+                                  >
+                                    <span
+                                      aria-hidden="true"
+                                      className={`grid h-4.5 w-4.5 shrink-0 place-items-center rounded-[5px] border transition-colors duration-150 ${selected ? 'border-green-700 bg-green-700' : 'border-neutral-300 bg-white'}`}
+                                    >
+                                      {selected && (
+                                        <svg
+                                          viewBox="0 0 24 24"
+                                          className="h-3 w-3 text-white"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          strokeWidth="3.2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        >
+                                          <path d="m5 13 4 4L19 7" />
+                                        </svg>
+                                      )}
+                                    </span>
+                                    <span className="flex-1 break-words">
+                                      {option.code} ({option.count})
+                                    </span>
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          )}
+                        </span>
                       ) : (
                         column.label
                       )}
@@ -1122,11 +1320,12 @@ export default function MileageUpdateTab({ token }) {
                   const supSelected = selectedSupervisors.includes(
                     supervisorOf(code),
                   )
+                  const codeSelected = selectedVehicleCodes.includes(code)
                   return (
                     <tr
                       key={vehicle.unitID}
                       className={`transition-colors hover:bg-green-100 ${
-                        supSelected
+                        supSelected || codeSelected
                           ? 'bg-green-100'
                           : index % 2 === 0
                             ? 'bg-green-50'
