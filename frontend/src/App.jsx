@@ -12,6 +12,7 @@ import TripHistoryTab from './components/TripHistoryTab'
 import HistoryTab from './components/HistoryTab'
 import SettingsTab from './components/SettingsTab'
 import NotificationBell from './components/NotificationBell'
+import SuthraPunjabPortal from './suthra-punjab-portal/SuthraPunjabPortal'
 import { NotificationProvider, useNotifications } from './NotificationContext'
 import { SelectionProvider } from './SelectionContext'
 import { ThresholdProvider } from './ThresholdContext'
@@ -28,6 +29,7 @@ const TABS = [
   { id: 'summary', label: 'Summary' },
   { id: 'code-discrepancy', label: 'Code Discrepancy' },
   { id: 'history', label: 'History' },
+  { id: 'suthra-lr-beat', label: 'LR Beat Report' },
 ]
 
 const TAB_ICONS = {
@@ -100,6 +102,15 @@ const TAB_ICONS = {
     <>
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
+    </>
+  ),
+  'suthra-lr-beat': (
+    <>
+      <path d="M3 17h18" />
+      <path d="M5 17V7l8-4v10" />
+      <path d="M19 17v-6l-6-4" />
+      <circle cx="9" cy="9" r="1.5" />
+      <circle cx="15" cy="13" r="1.5" />
     </>
   ),
 }
@@ -437,6 +448,7 @@ function AppContent() {
           {tab === 'summary' && <SummaryTab token={token} />}
           {tab === 'code-discrepancy' && <CodeDiscrepancyTab token={token} />}
           {tab === 'history' && <HistoryTab />}
+          {tab === 'suthra-lr-beat' && <SuthraPunjabPortal />}
         </main>
       </div>
     </div>

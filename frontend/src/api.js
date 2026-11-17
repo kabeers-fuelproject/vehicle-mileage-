@@ -1,8 +1,9 @@
 const API_BASE = import.meta.env.VITE_API_BASE ?? '/api'
 
-export async function api(path, { method = 'POST', body, token } = {}) {
+export async function api(path, { method = 'POST', body, token, headers: extraHeaders } = {}) {
   const headers = { 'Content-Type': 'application/json' }
   if (token) headers.Authorization = `Bearer ${token}`
+  if (extraHeaders) Object.assign(headers, extraHeaders)
 
   const res = await fetch(API_BASE + path, {
     method,
