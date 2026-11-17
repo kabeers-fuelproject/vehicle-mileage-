@@ -10,10 +10,11 @@ import VehicleDataTab from './components/VehicleDataTab'
 import CodeDiscrepancyTab from './components/CodeDiscrepancyTab'
 import TripHistoryTab from './components/TripHistoryTab'
 import HistoryTab from './components/HistoryTab'
-import VaLogo from './components/VaLogo'
+import SettingsTab from './components/SettingsTab'
 import NotificationBell from './components/NotificationBell'
 import { NotificationProvider, useNotifications } from './NotificationContext'
 import { SelectionProvider } from './SelectionContext'
+import { ThresholdProvider } from './ThresholdContext'
 
 const TABS = [
   { id: 'status', label: 'Vehicle Status' },
@@ -22,6 +23,7 @@ const TABS = [
   { id: 'distance', label: 'Distance Report' },
   { id: 'mileage', label: 'Mileage Update' },
   { id: 'threshold', label: 'Threshold' },
+  { id: 'settings', label: 'Threshold Settings' },
   { id: 'assigned-vehicles', label: 'Assigned Vehicles' },
   { id: 'summary', label: 'Summary' },
   { id: 'code-discrepancy', label: 'Code Discrepancy' },
@@ -63,6 +65,12 @@ const TAB_ICONS = {
     <>
       <path d="M3 4h11M18 4h3M3 12h5M12 12h9M3 20h9M16 20h5" />
       <path d="M16 2v4M10 10v4M14 18v4" />
+    </>
+  ),
+  settings: (
+    <>
+      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+      <circle cx="12" cy="12" r="3" />
     </>
   ),
   'assigned-vehicles': (
@@ -213,9 +221,6 @@ function AppContent() {
               : 'items-center gap-3 px-5 py-5'
           }`}
         >
-          <VaLogo
-            className={collapsed ? 'h-9 w-9 shrink-0' : 'h-10 w-10 shrink-0'}
-          />
           {!collapsed && (
             <div className="min-w-0 flex-1">
               <p className="text-[9px] leading-tight font-semibold tracking-widest text-green-700 uppercase">
@@ -324,7 +329,6 @@ function AppContent() {
           <header className="border-b border-green-100 bg-white/95 backdrop-blur">
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
               <div className="flex min-w-0 items-center gap-3">
-                <VaLogo className="h-9 w-9 shrink-0" />
                 <div className="min-w-0">
                   <p className="text-[9px] leading-tight font-semibold tracking-widest text-green-700 uppercase">
                     Vehicle Automation
@@ -428,6 +432,7 @@ function AppContent() {
           {tab === 'distance' && <DistanceReportTab token={token} />}
           {tab === 'mileage' && <MileageUpdateTab token={token} />}
           {tab === 'threshold' && <ThresholdTab />}
+          {tab === 'settings' && <SettingsTab />}
           {tab === 'assigned-vehicles' && <AssignedVehiclesTab token={token} />}
           {tab === 'summary' && <SummaryTab token={token} />}
           {tab === 'code-discrepancy' && <CodeDiscrepancyTab token={token} />}
@@ -440,10 +445,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <NotificationProvider>
-      <SelectionProvider>
-        <AppContent />
-      </SelectionProvider>
-    </NotificationProvider>
+    <ThresholdProvider>
+      <NotificationProvider>
+        <SelectionProvider>
+          <AppContent />
+        </SelectionProvider>
+      </NotificationProvider>
+    </ThresholdProvider>
   )
 }

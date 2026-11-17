@@ -106,6 +106,10 @@ html {
   animation: va-spin 0.8s linear infinite;
 }
 
+.anim-spin-once {
+  animation: va-spin 0.6s ease-out 1;
+}
+
 .anim-zoom {
   animation: va-zoom 24s ease-in-out infinite alternate;
 }

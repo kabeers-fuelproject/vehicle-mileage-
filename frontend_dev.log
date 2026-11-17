@@ -1,139 +1,82 @@
 npm notice run frontend@0.0.0 dev
 npm notice run vite
 
-  [32m[1mVITE[22m v8.3.1[39m  [2mready in [0m[1m2211[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v8.3.1[39m  [2mready in [0m[1m10479[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.26:[1m5173[22m/[39m  [2mWi-Fi[22m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
-[2m12:44:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:44:53 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:44:56 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:45:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:45:11 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:45:21 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:45:29 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:45:50 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:45:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:45:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:46:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:46:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:47:10 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:47:10 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
-
-[31m[PARSE_ERROR] [0mUnexpected token
-     [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/components/MileageUpdateTab.jsx:499:8 [38;5;246m][0m
-     [38;5;246m│[0m
- [38;5;246m499 │[0m [38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m}[0m)
- [38;5;240m    │[0m        ┬  
- [38;5;240m    │[0m        ╰── 
-[38;5;246m─────╯[0m
-[39m
-  Plugin: [35mvite:oxc[39m
-  File: [36mE:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx[39m
-      at transformWithOxc (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:7551:19)
-      at TransformPluginContext.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:7623:26)
-      at EnvironmentPluginContainer.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:8515:51)
-      at async loadAndTransform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:19998:26)
-      at async viteTransformMiddleware (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:20217:20)
-[2m12:47:28 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:47:28 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
-
-[31m[PARSE_ERROR] [0mExpected a semicolon or an implicit semicolon after a statement, but found none
-     [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/components/MileageUpdateTab.jsx:499:16 [38;5;246m][0m
-     [38;5;246m│[0m
- [38;5;246m499 │[0m [38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m([0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249m)[0m[38;5;249m [0m[38;5;249m=[0m[38;5;249m>[0m
- [38;5;240m    │[0m                │ 
- [38;5;240m    │[0m                ╰─ 
- [38;5;240m    │[0m 
- [38;5;240m    │[0m [38;5;115mHelp[0m: Try inserting a semicolon here
-[38;5;246m─────╯[0m
-[39m
-  Plugin: [35mvite:oxc[39m
-  File: [36mE:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx[39m
-      at transformWithOxc (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:7551:19)
-      at TransformPluginContext.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:7623:26)
-      at EnvironmentPluginContainer.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:8515:51)
-      at async loadAndTransform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:19998:26)
-      at async viteTransformMiddleware (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:20217:20)
-[2m12:47:49 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Transform failed with 1 error:
-
-[31m[PARSE_ERROR] [0mExpected a semicolon or an implicit semicolon after a statement, but found none
-     [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/components/MileageUpdateTab.jsx:499:16 [38;5;246m][0m
-     [38;5;246m│[0m
- [38;5;246m499 │[0m [38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m([0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249m)[0m[38;5;249m [0m[38;5;249m=[0m[38;5;249m>[0m
- [38;5;240m    │[0m                │ 
- [38;5;240m    │[0m                ╰─ 
- [38;5;240m    │[0m 
- [38;5;240m    │[0m [38;5;115mHelp[0m: Try inserting a semicolon here
-[38;5;246m─────╯[0m
-
-  Plugin: [35mvite:oxc[39m
-  File: [36mE:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx[39m
-[2m12:47:50 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
-
-[31m[PARSE_ERROR] [0mExpected a semicolon or an implicit semicolon after a statement, but found none
-     [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/components/MileageUpdateTab.jsx:499:16 [38;5;246m][0m
-     [38;5;246m│[0m
- [38;5;246m499 │[0m [38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m([0m[38;5;249mk[0m[38;5;249me[0m[38;5;249my[0m[38;5;249m)[0m[38;5;249m [0m[38;5;249m=[0m[38;5;249m>[0m
- [38;5;240m    │[0m                │ 
- [38;5;240m    │[0m                ╰─ 
- [38;5;240m    │[0m 
- [38;5;240m    │[0m [38;5;115mHelp[0m: Try inserting a semicolon here
-[38;5;246m─────╯[0m
-[39m
-  Plugin: [35mvite:oxc[39m
-  File: [36mE:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx[39m
-      at transformWithOxc (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:7551:19)
-      at TransformPluginContext.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:7623:26)
-      at EnvironmentPluginContainer.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:8515:51)
-      at async loadAndTransform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:19998:26)
-      at async viteTransformMiddleware (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:20217:20)
-[2m12:48:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:48:49 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:48:56 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:49:00 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:49:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:49:09 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:49:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:49:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:49:27 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:49:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:49:37 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:50:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:50:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:50:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:50:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:51:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:51:36 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:51:36 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
-
-[31m[PARSE_ERROR] [0mExpected a semicolon or an implicit semicolon after a statement, but found none
-     [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/components/MileageUpdateTab.jsx:592:41 [38;5;246m][0m
-     [38;5;246m│[0m
- [38;5;246m592 │[0m [38;5;249m [0m[38;5;249m [0m[38;5;249mc[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249ms[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249ms[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249me[0m[38;5;249md[0m[38;5;249mV[0m[38;5;249me[0m[38;5;249mh[0m[38;5;249mi[0m[38;5;249mc[0m[38;5;249ml[0m[38;5;249me[0m[38;5;249ms[0m[38;5;249m [0m[38;5;249m=[0m[38;5;249m [0m[38;5;249mv[0m[38;5;249mi[0m[38;5;249ms[0m[38;5;249mi[0m[38;5;249mb[0m[38;5;249ml[0m[38;5;249me[0m[38;5;249mV[0m[38;5;249me[0m[38;5;249mh[0m[38;5;249mi[0m[38;5;249mc[0m[38;5;249ml[0m[38;5;249me[0m[38;5;249ms[0m[38;5;249m)[0m
- [38;5;240m    │[0m                                         │ 
- [38;5;240m    │[0m                                         ╰─ 
- [38;5;240m    │[0m 
- [38;5;240m    │[0m [38;5;115mHelp[0m: Try inserting a semicolon here
-[38;5;246m─────╯[0m
-[39m
-  Plugin: [35mvite:oxc[39m
-  File: [36mE:/vehicle-automation/frontend/src/components/MileageUpdateTab.jsx[39m
-      at transformWithOxc (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:7551:19)
-      at TransformPluginContext.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:7623:26)
-      at EnvironmentPluginContainer.transform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:8515:51)
-      at async loadAndTransform (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:19998:26)
-      at async viteTransformMiddleware (file:///E:/vehicle-automation/frontend/node_modules/vite/dist/node/chunks/node.js:20217:20)
-[2m12:51:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:52:30 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:55:54 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:56:09 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:56:31 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:56:45 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:56:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:57:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:57:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:57:58 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:58:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
-[2m12:58:28 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m12:22:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ThresholdTab.jsx, /src/NotificationContext.jsx, /src/components/SummaryTab.jsx, /src/components/MileageUpdateTab.jsx[22m
+[2m12:22:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ThresholdTab.jsx, /src/NotificationContext.jsx, /src/components/SummaryTab.jsx, /src/components/MileageUpdateTab.jsx[22m
+[2m12:22:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/NotificationContext.jsx[22m Could not Fast Refresh ("useNotifications" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:22:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/components/NotificationBell.jsx, /src/components/MileageUpdateTab.jsx[22m
+[2m12:23:27 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:23:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:23:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:23:54 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:24:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:24:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m12:24:29 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/MileageUpdateTab.jsx, /src/index.css[22m
+[2m12:24:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SummaryTab.jsx, /src/index.css[22m
+[2m12:24:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SummaryTab.jsx, /src/index.css[22m
+[2m12:24:56 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SummaryTab.jsx, /src/index.css[22m
+[2m12:25:02 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/NotificationContext.jsx, /src/index.css[22m
+[2m12:25:02 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/NotificationContext.jsx[22m Could not Fast Refresh ("useNotifications" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:25:02 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/components/NotificationBell.jsx, /src/components/MileageUpdateTab.jsx[22m
+[2m12:25:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/NotificationContext.jsx, /src/index.css[22m
+[2m12:25:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/NotificationContext.jsx[22m Could not Fast Refresh ("useNotifications" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:25:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/components/NotificationBell.jsx, /src/components/MileageUpdateTab.jsx[22m
+[2m12:25:13 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/NotificationContext.jsx, /src/index.css[22m
+[2m12:25:13 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/NotificationContext.jsx[22m Could not Fast Refresh ("useNotifications" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:25:13 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/components/NotificationBell.jsx, /src/components/MileageUpdateTab.jsx[22m
+[2m12:25:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/NotificationContext.jsx, /src/index.css[22m
+[2m12:25:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/NotificationContext.jsx[22m Could not Fast Refresh ("useNotifications" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:25:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/components/NotificationBell.jsx, /src/components/MileageUpdateTab.jsx[22m
+[2m12:25:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ThresholdTab.jsx, /src/index.css[22m
+[2m12:25:51 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ThresholdTab.jsx, /src/index.css[22m
+[2m12:25:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ThresholdTab.jsx, /src/index.css[22m
+[2m12:36:11 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:36:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:36:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ThresholdTab.jsx, /src/index.css[22m
+[2m12:38:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:39:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ThresholdContext.jsx, /src/index.css[22m
+[2m12:39:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/ThresholdContext.jsx[22m Could not Fast Refresh ("useThresholdVersion" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:39:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/components/SettingsTab.jsx, /src/components/MileageUpdateTab.jsx, /src/components/SummaryTab.jsx, /src/NotificationContext.jsx, /src/components/ThresholdTab.jsx[22m
+[2m12:39:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/NotificationContext.jsx[22m Could not Fast Refresh ("useNotifications" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:39:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/components/NotificationBell.jsx, /src/components/MileageUpdateTab.jsx[22m
+[2m12:39:49 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:39:58 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:40:09 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:40:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:40:27 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:40:35 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:40:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:41:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:41:53 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
+[2m12:42:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/HistoryTab.jsx, /src/index.css[22m
+[2m12:42:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m12:42:09 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
+[2m12:42:11 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
+[2m12:42:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/TripHistoryTab.jsx, /src/index.css[22m
+[2m12:42:16 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ThresholdTab.jsx, /src/index.css[22m
+[2m12:42:18 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SummaryTab.jsx, /src/index.css[22m
+[2m12:42:21 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
+[2m12:42:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleDataTab.jsx, /src/index.css[22m
+[2m12:42:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/HistoryTab.jsx, /src/index.css[22m
+[2m12:42:58 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/DistanceReportTab.jsx, /src/index.css[22m
+[2m12:42:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
+[2m12:43:00 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/AssignedVehiclesTab.jsx, /src/index.css[22m
+[2m12:43:00 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SummaryTab.jsx, /src/index.css[22m
+[2m12:43:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/Login.jsx, /src/index.css[22m
+[2m12:43:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/TripHistoryTab.jsx, /src/index.css[22m
+[2m12:43:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ThresholdTab.jsx, /src/index.css[22m
+[2m12:43:05 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleStatusTab.jsx, /src/index.css[22m
+[2m12:43:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VehicleDataTab.jsx, /src/index.css[22m
+[2m12:43:26 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/VaLogo.jsx, /src/index.css[22m
+[2m12:47:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:47:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:47:44 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:50:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:50:45 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+[2m12:51:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m
+[2m12:52:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/SettingsTab.jsx, /src/index.css[22m

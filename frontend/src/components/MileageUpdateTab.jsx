@@ -11,6 +11,7 @@ import { dayRange } from '../reportRange'
 import { logActivity } from '../activityLogger'
 import LoadingOverlay from './LoadingOverlay'
 import { useNotifications } from '../NotificationContext'
+import { useThresholdVersion } from '../ThresholdContext'
 
 const COLUMNS = [
   { key: 'sr', label: 'Sr', align: 'text-center', noWrap: true },
@@ -356,6 +357,7 @@ async function copyNodeAsImage(node, filename) {
 }
 export default function MileageUpdateTab({ token }) {
   const { refreshFingerprint, markMileageViewed } = useNotifications()
+  useThresholdVersion()
   const [vehicles, setVehicles] = useState([])
   const [reportMap, setReportMap] = useState({})
   const [generatedAt, setGeneratedAt] = useState(null)

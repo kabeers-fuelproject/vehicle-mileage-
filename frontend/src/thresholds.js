@@ -20,13 +20,34 @@ function normalize(text) {
     .replace(/[\s\-–—]+/g, ' ')
 }
 
+// Live overrides (Settings page) keyed by the exact THRESHOLDS vehType.
+// Kept in module scope so non-component code (NotificationContext,
+// module-level computeStatus helpers) can read them without prop threading.
+let overrides = {}
+
+export function setThresholdOverrides(map) {
+  overrides = map ?? {}
+}
+
+export function getThresholdOverrides() {
+  return overrides
+}
+
 export function findThreshold(vehType) {
   const normalized = normalize(vehType)
   if (!normalized) return null
   const exact = THRESHOLDS.find((t) => normalize(t.vehType) === normalized)
-  if (exact) return exact
-  // e.g. "Mini Tipper Petrol" → "Mini Tipper"
-  return (
-    THRESHOLDS.find((t) => normalized.startsWith(normalize(t.vehType))) ?? null
-  )
+  let base = exact
+  if (!base) {
+    // e.g. "Mini Tipper Petrol" → "Mini Tipper"
+    base = THRESHOLDS.find((t) => normalized.startsWith(normalize(t.vehType))) ?? null
+  }
+  if (!base) return null
+  const override = overrides[base.vehType]
+  if (!override) return base
+  return {
+    ...base,
+    mileage: override.mileage,
+    workingHours: override.workingHours,
+  }
 }

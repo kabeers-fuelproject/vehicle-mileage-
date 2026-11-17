@@ -9,8 +9,8 @@ import { findThreshold } from '../thresholds'
 import { dayRange } from '../reportRange'
 import { buildSummaryPdf } from '../summaryPdf'
 import { logActivity } from '../activityLogger'
-import VaLogo from './VaLogo'
 import LoadingOverlay from './LoadingOverlay'
+import { useThresholdVersion } from '../ThresholdContext'
 
 function formatDate(date) {
   const y = date.getFullYear()
@@ -67,6 +67,7 @@ export default function SummaryTab({ token }) {
     flagAssigned,
     flagHired,
   } = useSelection()
+  const thresholdVersion = useThresholdVersion()
 
   useEffect(() => {
     refresh()
@@ -156,7 +157,7 @@ export default function SummaryTab({ token }) {
       const hoursOk = requiredHours === null || entry.seconds >= requiredHours
       return mileageOk && hoursOk
     },
-    [distanceMap],
+    [distanceMap, thresholdVersion],
   )
 
   const summaryData = useMemo(() => {
@@ -299,7 +300,6 @@ export default function SummaryTab({ token }) {
 
       <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-6 py-5">
         <div className="flex items-center gap-4">
-          <VaLogo className="h-11 w-11" />
           <div>
             <p className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
               Vehicle Automation

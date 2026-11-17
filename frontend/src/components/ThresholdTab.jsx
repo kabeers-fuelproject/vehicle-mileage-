@@ -1,16 +1,16 @@
-import { THRESHOLDS } from '../thresholds'
-import VaLogo from './VaLogo'
+import { THRESHOLDS, findThreshold } from '../thresholds'
+import { useThresholds } from '../ThresholdContext'
 
 const COLUMNS = ['Veh Type', 'Mileage', 'Working Hours']
 
 export default function ThresholdTab() {
+  const { overrides } = useThresholds()
   return (
     <div className="max-w-3xl overflow-hidden rounded-xl border-2 border-neutral-400 bg-white shadow-sm">
       <div className="h-1.5 w-full bg-green-700" />
 
       <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-4 py-5 sm:px-6">
         <div className="flex items-center gap-4">
-          <VaLogo className="h-11 w-11" />
           <div>
             <p className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
               Vehicle Automation
@@ -61,24 +61,35 @@ export default function ThresholdTab() {
             </tr>
           </thead>
           <tbody>
-            {THRESHOLDS.map((row, index) => (
-              <tr
-                key={row.vehType}
-                className={`transition-colors hover:bg-green-100 ${
-                  index % 2 === 0 ? 'bg-green-50' : 'bg-white'
-                }`}
-              >
-                <td className="border border-neutral-300 px-4 py-2.5 font-semibold text-black">
-                  {row.vehType}
-                </td>
-                <td className="border border-neutral-300 px-4 py-2.5 text-right font-semibold tabular-nums text-black">
-                  {row.mileage}
-                </td>
-                <td className="border border-neutral-300 px-4 py-2.5 text-right font-semibold tabular-nums text-black">
-                  {row.workingHours}
-                </td>
-              </tr>
-            ))}
+            {THRESHOLDS.map((row, index) => {
+              const effective = findThreshold(row.vehType)
+              const customized = overrides[row.vehType] !== undefined
+              return (
+                <tr
+                  key={row.vehType}
+                  className={`transition-colors hover:bg-green-100 ${
+                    index % 2 === 0 ? 'bg-green-50' : 'bg-white'
+                  }`}
+                >
+                  <td className="border border-neutral-300 px-4 py-2.5 font-semibold text-black">
+                    <span className="inline-flex items-center gap-2">
+                      {row.vehType}
+                      {customized && (
+                        <span className="inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold tracking-wider text-amber-800 uppercase">
+                          Custom
+                        </span>
+                      )}
+                    </span>
+                  </td>
+                  <td className="border border-neutral-300 px-4 py-2.5 text-right font-semibold tabular-nums text-black">
+                    {effective?.mileage}
+                  </td>
+                  <td className="border border-neutral-300 px-4 py-2.5 text-right font-semibold tabular-nums text-black">
+                    {effective?.workingHours}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
@@ -95,7 +106,8 @@ export default function ThresholdTab() {
           </span>
         </div>
         <p className="text-[11px] text-green-800">
-          Reference table · {THRESHOLDS.length} vehicle types
+          Reference table · {THRESHOLDS.length} vehicle types · edit values in
+          Threshold Settings
         </p>
       </div>
       <div className="h-1 w-full bg-green-700" />

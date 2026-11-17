@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { api } from '../api'
 import loginBg from '../assets/login-bg.jpg'
-import VaLogo from './VaLogo'
 import LoadingOverlay from './LoadingOverlay'
 import { logActivity } from '../activityLogger'
 import { getDeviceDisplayName } from '../deviceInfo'
@@ -50,7 +49,6 @@ export default function Login({ onLogin }) {
           <div className="h-1.5 w-full bg-gradient-to-r from-green-800 via-green-500 to-green-800" />
 
           <div className="flex items-center gap-4 border-b border-green-200 bg-green-50 px-6 py-5">
-            <VaLogo className="h-11 w-11" />
             <div>
               <p className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
                 Vehicle Automation

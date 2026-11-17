@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../api'
 import { usedForOf } from '../usedFor'
 import { supabase } from '../supabase'
-import VaLogo from './VaLogo'
 
 const TABLE = 'summary_vehicle_selection'
 
@@ -422,7 +421,6 @@ export default function AssignedVehiclesTab({ token }) {
 
       <div className="flex flex-wrap items-end justify-between gap-6 border-b border-neutral-200 px-4 py-5 sm:px-6">
         <div className="flex items-center gap-4">
-          <VaLogo className="h-11 w-11" />
           <div>
             <p className="text-[10px] font-semibold tracking-widest text-green-700 uppercase">
               Vehicle Automation

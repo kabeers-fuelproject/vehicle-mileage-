@@ -4,6 +4,7 @@ import { api } from './api'
 import { dayRange } from './reportRange'
 import { vehicleTypeOf } from './vehicleTypes'
 import { findThreshold } from './thresholds'
+import { useThresholdVersion } from './ThresholdContext'
 
 const NotificationContext = createContext(null)
 
@@ -138,6 +139,8 @@ export function NotificationProvider({ children }) {
     () => localStorage.getItem('lastSeenMileageFingerprint'),
   )
   const [loading, setLoading] = useState(true)
+  const thresholdVersion = useThresholdVersion()
+  const lastThresholdVersionRef = useRef(thresholdVersion)
 
   const currentFpRef = useRef(currentFingerprint)
   const lastSeenFpRef = useRef(lastSeenFingerprint)
@@ -218,8 +221,12 @@ export function NotificationProvider({ children }) {
       const fp = resp.fingerprint
       const prevCurrent = currentFpRef.current
       const lastSeen = lastSeenFpRef.current
+      const thresholdChanged = thresholdVersion !== lastThresholdVersionRef.current
+      lastThresholdVersionRef.current = thresholdVersion
 
-      if (fp === prevCurrent) return
+      // Recompute the low/zero lists when the fingerprint changes (fresh
+      // data) or when thresholds were edited from the Settings page.
+      if (fp === prevCurrent && !thresholdChanged) return
 
       setCurrentFingerprint(fp)
       currentFpRef.current = fp
@@ -255,7 +262,7 @@ export function NotificationProvider({ children }) {
     } finally {
       busyRef.current = false
     }
-  }, [createNotification, notifyIfListChanged])
+  }, [createNotification, notifyIfListChanged, thresholdVersion])
 
   const markMileageViewed = useCallback(() => {
     const fp = currentFpRef.current

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../supabase'
-import VaLogo from './VaLogo'
 
 function formatDateTime(dateStr) {
   try {
@@ -102,7 +101,6 @@ export default function HistoryTab() {
 
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 px-4 py-5 sm:px-6">
         <div className="flex items-center gap-4">
-          <VaLogo className="h-11 w-11" />
           <div>
             <h2 className="text-lg font-bold text-ink">Activity History</h2>
             <p className="text-sm text-neutral-600">Track logins, downloads and activities</p>
