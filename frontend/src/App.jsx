@@ -1,21 +1,31 @@
-import { useState, useEffect, useRef } from 'react'
-import DistanceReportTab from './components/DistanceReportTab'
+import { Suspense, lazy, useState, useEffect, useRef } from 'react'
 import Login from './components/Login'
-import MileageUpdateTab from './components/MileageUpdateTab'
-import AssignedVehiclesTab from './components/AssignedVehiclesTab'
-import SummaryTab from './components/SummaryTab'
-import ThresholdTab from './components/ThresholdTab'
 import VehicleStatusTab from './components/VehicleStatusTab'
-import VehicleDataTab from './components/VehicleDataTab'
-import CodeDiscrepancyTab from './components/CodeDiscrepancyTab'
-import TripHistoryTab from './components/TripHistoryTab'
-import HistoryTab from './components/HistoryTab'
-import SettingsTab from './components/SettingsTab'
 import NotificationBell from './components/NotificationBell'
-import SuthraPunjabPortal from './suthra-punjab-portal/SuthraPunjabPortal'
 import { NotificationProvider, useNotifications } from './NotificationContext'
 import { SelectionProvider } from './SelectionContext'
 import { ThresholdProvider } from './ThresholdContext'
+
+// Split every non-default tab into its own chunk so the initial download stays
+// small. Heavy dependencies (jspdf, html-to-image, leaflet) only ship with the
+// tabs that actually use them.
+const TAB_LOADERS = {
+  'vehicle-data': () => import('./components/VehicleDataTab'),
+  'trip-history': () => import('./components/TripHistoryTab'),
+  distance: () => import('./components/DistanceReportTab'),
+  mileage: () => import('./components/MileageUpdateTab'),
+  threshold: () => import('./components/ThresholdTab'),
+  settings: () => import('./components/SettingsTab'),
+  'assigned-vehicles': () => import('./components/AssignedVehiclesTab'),
+  summary: () => import('./components/SummaryTab'),
+  'code-discrepancy': () => import('./components/CodeDiscrepancyTab'),
+  history: () => import('./components/HistoryTab'),
+  'suthra-lr-beat': () => import('./suthra-punjab-portal/SuthraPunjabPortal'),
+}
+
+const LAZY_TABS = Object.fromEntries(
+  Object.entries(TAB_LOADERS).map(([id, loader]) => [id, lazy(loader)]),
+)
 
 const TABS = [
   { id: 'status', label: 'Vehicle Status' },
@@ -141,6 +151,15 @@ function useMileagePolling(token) {
   }, [token])
 }
 
+function TabFallback() {
+  return (
+    <div className="flex items-center justify-center gap-3 rounded-xl border-2 border-neutral-400 bg-white px-6 py-16 text-sm text-neutral-500">
+      <span className="h-5 w-5 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
+      Loading section…
+    </div>
+  )
+}
+
 function TabIcon({ id }) {
   return (
     <svg
@@ -189,8 +208,24 @@ function AppContent() {
   })
   const { markMileageViewed } = useNotifications()
   const activeTab = TABS.find((t) => t.id === tab) ?? TABS[0]
+  const ActiveLazyTab = tab === 'status' ? null : LAZY_TABS[tab]
 
   useMileagePolling(token)
+
+  useEffect(() => {
+    if (!token) return
+    const prefetch = () => {
+      Object.values(TAB_LOADERS).forEach((load) => load().catch(() => {}))
+    }
+    const hasIdle = typeof window.requestIdleCallback === 'function'
+    const handle = hasIdle
+      ? window.requestIdleCallback(prefetch, { timeout: 3000 })
+      : window.setTimeout(prefetch, 2000)
+    return () => {
+      if (hasIdle) window.cancelIdleCallback(handle)
+      else window.clearTimeout(handle)
+    }
+  }, [token])
 
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0')
@@ -437,18 +472,10 @@ function AppContent() {
         </div>
 
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-          {tab === 'status' && <VehicleStatusTab token={token} />}
-          {tab === 'vehicle-data' && <VehicleDataTab token={token} />}
-          {tab === 'trip-history' && <TripHistoryTab token={token} />}
-          {tab === 'distance' && <DistanceReportTab token={token} />}
-          {tab === 'mileage' && <MileageUpdateTab token={token} />}
-          {tab === 'threshold' && <ThresholdTab />}
-          {tab === 'settings' && <SettingsTab />}
-          {tab === 'assigned-vehicles' && <AssignedVehiclesTab token={token} />}
-          {tab === 'summary' && <SummaryTab token={token} />}
-          {tab === 'code-discrepancy' && <CodeDiscrepancyTab token={token} />}
-          {tab === 'history' && <HistoryTab />}
-          {tab === 'suthra-lr-beat' && <SuthraPunjabPortal />}
+          <Suspense fallback={<TabFallback />}>
+            {tab === 'status' && <VehicleStatusTab token={token} />}
+            {ActiveLazyTab && <ActiveLazyTab token={token} />}
+          </Suspense>
         </main>
       </div>
     </div>

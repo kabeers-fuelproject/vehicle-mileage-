@@ -4,10 +4,56 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#15803d" />
+    <link rel="preconnect" href="https://hpjlgjrooqfreezhkyjr.supabase.co" crossorigin />
+    <link rel="dns-prefetch" href="https://hpjlgjrooqfreezhkyjr.supabase.co" />
     <title>vehicle-report</title>
+    <style>
+      #boot {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: #fafafa;
+        color: #15803d;
+        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      #boot::before {
+        content: '';
+        width: 28px;
+        height: 28px;
+        margin-bottom: 44px;
+        border: 3px solid #dcfce7;
+        border-top-color: #15803d;
+        border-radius: 50%;
+        animation: boot-spin 0.7s linear infinite;
+      }
+      #boot span {
+        position: absolute;
+        margin-top: 44px;
+      }
+      @keyframes boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #boot::before {
+          animation-duration: 2s;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="boot" role="status" aria-live="polite">
+        <span>Loading</span>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

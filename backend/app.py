@@ -4,10 +4,16 @@ import requests
 import json
 import hashlib
 
+import upstream
 from suthra import suthra_bp
 
 app = Flask(__name__)
 app.register_blueprint(suthra_bp)
+
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({'status': 'ok'}), 200
 
 ALLOWED_ORIGINS = {
     'http://localhost:5173',
@@ -82,7 +88,10 @@ def generate_token():
         return jsonify({'error': 'username and password are required'}), 400
 
     headers = {'Content-Type': 'application/json'}
-    resp = requests.post(TOKEN_URL, json=payload, headers=headers)
+    try:
+        resp = upstream.request('POST', TOKEN_URL, json=payload, headers=headers)
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, TOKEN_URL)
     return external_response(resp)
 
 @app.route('/api/vehicle/getstatuscount', methods=['POST'])
@@ -100,7 +109,12 @@ def vehicle_getstatuscount():
     if body is None:
         body = {}
 
-    resp = requests.post(STATUS_URL, json=body, headers=status_headers)
+    try:
+        resp = upstream.request(
+            'POST', STATUS_URL, json=body, headers=status_headers, read_only=True
+        )
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, STATUS_URL)
     return external_response(resp)
 
 @app.route('/api/vehicle/getstatus', methods=['POST'])
@@ -118,7 +132,17 @@ def vehicle_getstatus():
     if body is None:
         body = {}
 
-    resp = requests.post(VEHICLE_LIST_URL, json=body, headers=status_headers)
+    key = upstream.cache_key('vehicle/getstatus', token, body)
+    cached = upstream.cache_get(key)
+    if cached is not None:
+        return jsonify(cached), 200
+
+    try:
+        resp = upstream.request(
+            'POST', VEHICLE_LIST_URL, json=body, headers=status_headers, read_only=True
+        )
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, VEHICLE_LIST_URL)
     if resp.status_code != 200:
         return external_response(resp)
 
@@ -134,11 +158,13 @@ def vehicle_getstatus():
         for vehicle in vehicles
     ]
 
-    return jsonify({
+    result = {
         'succeeded': payload.get('succeeded'),
         'counts': data.get('vehicleStatusesCount'),
         'vehicles': extracted,
-    }), resp.status_code
+    }
+    upstream.cache_set(key, result)
+    return jsonify(result), resp.status_code
 
 @app.route('/api/vehicle/getlist', methods=['POST'])
 def vehicle_getlist():
@@ -155,8 +181,31 @@ def vehicle_getlist():
     if body is None:
         body = {}
 
-    resp = requests.post(VEHICLE_UNIT_LIST_URL, json=body, headers=status_headers)
-    return external_response(resp)
+    key = upstream.cache_key('vehicle/getlist', token, body)
+    cached = upstream.cache_get(key)
+    if cached is not None:
+        return jsonify(cached), 200
+
+    try:
+        resp = upstream.request(
+            'POST',
+            VEHICLE_UNIT_LIST_URL,
+            json=body,
+            headers=status_headers,
+            read_only=True,
+        )
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, VEHICLE_UNIT_LIST_URL)
+    if resp.status_code != 200:
+        return external_response(resp)
+
+    try:
+        payload = resp.json()
+    except ValueError:
+        return jsonify({'error': 'External API returned an invalid response'}), resp.status_code
+
+    upstream.cache_set(key, payload)
+    return jsonify(payload), resp.status_code
 
 @app.route('/api/vehicle/gethistory', methods=['POST'])
 def vehicle_gethistory():
@@ -179,7 +228,16 @@ def vehicle_gethistory():
         'Authorization': f'Bearer {token}'
     }
 
-    resp = requests.post(VEHICLE_HISTORY_URL, json=forwarded, headers=status_headers)
+    try:
+        resp = upstream.request(
+            'POST',
+            VEHICLE_HISTORY_URL,
+            json=forwarded,
+            headers=status_headers,
+            read_only=True,
+        )
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, VEHICLE_HISTORY_URL)
     if resp.status_code != 200:
         return external_response(resp)
 
@@ -218,7 +276,10 @@ def vehicle_type_getlist():
         return jsonify({'error': 'Missing or invalid Authorization header'}), 401
 
     headers = {'Authorization': f'Bearer {token}'}
-    resp = requests.get(VEHICLE_TYPE_LIST_URL, headers=headers)
+    try:
+        resp = upstream.request('GET', VEHICLE_TYPE_LIST_URL, headers=headers)
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, VEHICLE_TYPE_LIST_URL)
     return external_response(resp)
 
 @app.route('/api/report/distance/preview', methods=['POST'])
@@ -244,7 +305,16 @@ def report_distance_preview():
         'Authorization': f'Bearer {token}'
     }
 
-    resp = requests.post(DISTANCE_PREVIEW_URL, json=forwarded, headers=status_headers)
+    try:
+        resp = upstream.request(
+            'POST',
+            DISTANCE_PREVIEW_URL,
+            json=forwarded,
+            headers=status_headers,
+            read_only=True,
+        )
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, DISTANCE_PREVIEW_URL)
     if resp.status_code != 200:
         return external_response(resp)
 
@@ -286,7 +356,16 @@ def mileage_fingerprint():
         'Authorization': f'Bearer {token}'
     }
 
-    resp = requests.post(DISTANCE_PREVIEW_URL, json=body, headers=status_headers)
+    try:
+        resp = upstream.request(
+            'POST',
+            DISTANCE_PREVIEW_URL,
+            json=body,
+            headers=status_headers,
+            read_only=True,
+        )
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, DISTANCE_PREVIEW_URL)
     if resp.status_code != 200:
         return jsonify({'error': 'External API error'}), resp.status_code
 

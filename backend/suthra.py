@@ -9,6 +9,8 @@ from urllib.parse import parse_qsl, quote, urlparse
 
 import requests
 
+import upstream
+
 suthra_bp = Blueprint('suthra', __name__, url_prefix='/api/suthra')
 
 SUTHRA_API_BASE = 'https://suthra.punjab.gov.pk/suthra-punjab/backend/public/api'
@@ -95,12 +97,14 @@ def _suthra_request(method, url, token, body=None):
         'Accept': 'application/json',
     }
     headers.update(_signed_headers(token, method, url, body_text))
-    return requests.request(
+    # All Suthra metadata/report POSTs are read-only queries, so they may be
+    # retried once on a timeout/connection failure.
+    return upstream.request(
         method,
         url,
         data=body_text if body is not None else None,
         headers=headers,
-        timeout=30,
+        read_only=True,
     )
 
 
@@ -150,14 +154,10 @@ def login():
     }
 
     try:
-        resp = requests.post(
-            SUTHRA_LOGIN_URL,
-            json=payload,
-            headers=headers,
-            timeout=30,
-        )
-    except requests.RequestException:
-        return jsonify({'error': 'Could not reach the Suthra Punjab portal'}), 502
+        # Login is not idempotent - no retry.
+        resp = upstream.request('POST', SUTHRA_LOGIN_URL, json=payload, headers=headers)
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, SUTHRA_LOGIN_URL)
 
     try:
         data = resp.json()
@@ -179,8 +179,8 @@ def contractor_meta_data():
 
     try:
         resp = _suthra_request('GET', CONTRACTOR_META_DATA_URL, token)
-    except requests.RequestException:
-        return jsonify({'error': 'Could not reach the Suthra Punjab portal'}), 502
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, CONTRACTOR_META_DATA_URL)
 
     return _suthra_json(resp)
 
@@ -197,8 +197,8 @@ def global_acl_base_metadata():
 
     try:
         resp = _suthra_request('POST', GLOBAL_ACL_METADATA_URL, token, body)
-    except requests.RequestException:
-        return jsonify({'error': 'Could not reach the Suthra Punjab portal'}), 502
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, GLOBAL_ACL_METADATA_URL)
 
     return _suthra_json(resp)
 
@@ -221,7 +221,7 @@ def loader_rickshaw_beat_performance_report(tehsil_id):
     url = LOADER_RICKSHAW_REPORT_SEARCH_URL.format(tehsil_id=tehsil_id)
     try:
         resp = _suthra_request('POST', url, token, forwarded)
-    except requests.RequestException:
-        return jsonify({'error': 'Could not reach the Suthra Punjab portal'}), 502
+    except (requests.Timeout, requests.ConnectionError) as exc:
+        return upstream.error_response(exc, url)
 
     return _suthra_json(resp)
