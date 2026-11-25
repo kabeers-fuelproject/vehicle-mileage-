@@ -63,19 +63,32 @@ export default function HistoryTab() {
     setLoading(true)
     setError('')
     try {
-      let query = supabase
-        .from('activity_history')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(100)
+      const pageSize = 1000
+      const rows = []
+      let from = 0
 
-      if (filter !== 'all') {
-        query = query.eq('activity_type', filter)
+      while (true) {
+        let query = supabase
+          .from('activity_history')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .order('id', { ascending: false })
+          .range(from, from + pageSize - 1)
+
+        if (filter !== 'all') {
+          query = query.eq('activity_type', filter)
+        }
+
+        const { data, error: dbError } = await query
+        if (dbError) throw dbError
+
+        const batch = data || []
+        rows.push(...batch)
+        if (batch.length < pageSize) break
+        from += pageSize
       }
 
-      const { data, error: dbError } = await query
-      if (dbError) throw dbError
-      setHistory(data || [])
+      setHistory(rows)
     } catch (err) {
       setError(err.message || 'Failed to load history')
     } finally {

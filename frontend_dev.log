@@ -1,21 +1,9 @@
 npm notice run frontend@0.0.0 dev
 npm notice run vite
 
-  [32m[1mVITE[22m v8.3.1[39m  [2mready in [0m[1m5358[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v8.3.1[39m  [2mready in [0m[1m4498[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.26:[1m5173[22m/[39m  [2mWi-Fi[22m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
-[2m9:12:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
-[2m9:13:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
-[2m9:13:13 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
-[2m9:13:26 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.jsx, /src/index.css[22m
-[2m9:13:35 AM[22m [36m[1m[vite][22m[39m [32mvite.config.js changed, restarting server...[39m
-[2m9:13:35 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because vite config has changed
-[2m9:13:37 AM[22m [36m[1m[vite][22m[39m server restarted.
-[2m9:13:38 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [optimizer] bundling dependencies...
-[2m9:13:49 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mindex.html[22m
-[2m9:15:49 AM[22m [36m[1m[vite][22m[39m [32mvite.config.js changed, restarting server...[39m
-[2m9:15:49 AM[22m [36m[1m[vite][22m[39m server restarted.
-[2m9:16:20 AM[22m [36m[1m[vite][22m[39m [32mvite.config.js changed, restarting server...[39m
-[2m9:16:20 AM[22m [36m[1m[vite][22m[39m server restarted.
+[2m2:17:23 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/HistoryTab.jsx, /src/index.css[22m
