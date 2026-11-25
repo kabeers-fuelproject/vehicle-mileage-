@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { suthraLogin } from './suthraApi'
 
 const SUTHRA_CNIC = '6110120068569'
-const SUTHRA_PASSWORD = '123pitb3211'
+const SUTHRA_PASSWORD = '123Spa321@'
 const SUTHRA_ACCOUNT_TYPE = 'employee'
 
 function readSession() {
