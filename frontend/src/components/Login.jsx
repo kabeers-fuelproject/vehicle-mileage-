@@ -152,14 +152,27 @@ export default function Login({ onLogin }) {
                     required
                     autoComplete="current-password"
                     placeholder="Enter your password"
-                    className="w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 pr-16 text-sm text-neutral-900 shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition-colors placeholder:text-neutral-400 hover:border-neutral-400 focus:border-green-700 focus:ring-2 focus:ring-green-700/15 focus:outline-none"
+                    className="w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 pr-11 text-sm text-neutral-900 shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition-colors placeholder:text-neutral-400 hover:border-neutral-400 focus:border-green-700 focus:ring-2 focus:ring-green-700/15 focus:outline-none"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((value) => !value)}
-                    className="absolute inset-y-0 right-0 flex items-center px-3.5 text-xs font-medium text-neutral-500 transition-colors hover:text-neutral-800 focus:outline-none focus-visible:text-green-700"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    className="absolute inset-y-0 right-0 grid w-11 place-items-center text-neutral-400 transition-colors hover:text-neutral-700 focus:outline-none focus-visible:text-green-700"
                   >
-                    {showPassword ? 'Hide' : 'Show'}
+                    {showPassword ? (
+                      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                        <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                        <path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                        <line x1="2" y1="2" x2="22" y2="22" />
+                      </svg>
+                    ) : (
+                      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    )}
                   </button>
                 </div>
               </div>
@@ -178,7 +191,7 @@ export default function Login({ onLogin }) {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-1 flex w-full items-center justify-center gap-2 rounded-full bg-green-700 px-4 py-3 text-sm font-medium text-white shadow-sm shadow-green-900/20 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-green-800 hover:shadow-lg hover:shadow-green-900/30 active:translate-y-0 active:bg-green-900 active:shadow-sm focus-visible:ring-2 focus-visible:ring-green-700/40 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-green-700 disabled:hover:shadow-sm"
+                className="mt-1 flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 py-3 text-sm font-medium text-white shadow-sm shadow-emerald-900/20 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-900/30 active:translate-y-0 active:bg-emerald-800 active:shadow-sm focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-emerald-600 disabled:hover:shadow-sm"
               >
                 {loading && (
                   <span className="anim-spin inline-block h-4 w-4 rounded-full border-2 border-white/40 border-t-white" />
