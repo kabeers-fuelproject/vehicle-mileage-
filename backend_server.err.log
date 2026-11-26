@@ -490,3 +490,4 @@ Press CTRL+C to quit
 127.0.0.1 - - [26/Nov/2026 10:12:06] "POST /api/report/distance/preview HTTP/1.1" 200 -
 127.0.0.1 - - [26/Nov/2026 10:12:06] "POST /api/vehicle/getstatus HTTP/1.1" 200 -
 127.0.0.1 - - [26/Nov/2026 10:12:07] "POST /api/mileage/fingerprint HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 10:12:22] "POST /api/mileage/fingerprint HTTP/1.1" 200 -
