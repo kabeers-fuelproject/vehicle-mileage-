@@ -34,13 +34,13 @@ const TABS = [
   { id: 'trip-history', label: 'Trip History' },
   { id: 'distance', label: 'Distance Report' },
   { id: 'mileage', label: 'Mileage Update' },
+  { id: 'suthra-lr-beat', label: 'LR Beat Report' },
   { id: 'threshold', label: 'Threshold' },
   { id: 'settings', label: 'Threshold Settings' },
   { id: 'assigned-vehicles', label: 'Assigned Vehicles' },
   { id: 'summary', label: 'Summary' },
   { id: 'code-discrepancy', label: 'Code Discrepancy' },
   { id: 'history', label: 'History' },
-  { id: 'suthra-lr-beat', label: 'LR Beat Report' },
 ]
 
 const TAB_ICONS = {
