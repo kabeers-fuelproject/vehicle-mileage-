@@ -1,5 +1,6 @@
 import { useSuthraAutoLogin } from './useSuthraAutoLogin'
 import LoaderRickshawBeatReport from './LoaderRickshawBeatReport'
+import Spinner from '../components/Spinner'
 
 export default function SuthraPunjabPortal() {
   const { session: suthraSession, autoSigning, autoError } = useSuthraAutoLogin()
@@ -8,7 +9,7 @@ export default function SuthraPunjabPortal() {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-green-200 border-t-green-700" />
+          <Spinner size="md" />
           <p className="text-sm text-neutral-500">Automatically signing in to Suthra Punjab Portal…</p>
         </div>
       </div>

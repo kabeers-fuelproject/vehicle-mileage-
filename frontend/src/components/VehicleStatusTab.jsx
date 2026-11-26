@@ -218,13 +218,6 @@ export default function VehicleStatusTab({ token }) {
         </div>
       )}
 
-      {loading && !data && (
-        <div className="flex items-center gap-3 px-4 py-8 text-sm sm:px-6 text-neutral-500">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
-          Loading vehicle status...
-        </div>
-      )}
-
       {vehicles.length > 0 && (
         <div className="flex flex-wrap items-center justify-end gap-3 border-b border-neutral-200 px-4 py-3 sm:px-6">
           {search.trim() && (

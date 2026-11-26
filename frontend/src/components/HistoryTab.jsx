@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../supabase'
+import Spinner from './Spinner'
 
 function formatDateTime(dateStr) {
   try {
@@ -155,7 +156,7 @@ export default function HistoryTab() {
       <div className="p-4 sm:p-6">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-green-200 border-t-green-600" />
+            <Spinner size="md" />
           </div>
         ) : error ? (
           <div className="rounded-lg bg-red-50 p-4 text-sm text-red-700">

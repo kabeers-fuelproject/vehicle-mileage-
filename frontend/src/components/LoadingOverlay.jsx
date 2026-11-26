@@ -1,3 +1,5 @@
+import Spinner from './Spinner'
+
 export default function LoadingOverlay({ label = 'Working…' }) {
   return (
     <div
@@ -6,9 +8,7 @@ export default function LoadingOverlay({ label = 'Working…' }) {
       aria-live="polite"
       aria-label={label}
     >
-      <div className="loader">
-        <span>Loading</span>
-      </div>
+      <Spinner size="lg" />
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../api'
 import { usedForOf } from '../usedFor'
 import { supabase } from '../supabase'
+import Spinner from './Spinner'
 
 const TABLE = 'summary_vehicle_selection'
 
@@ -442,7 +443,7 @@ export default function AssignedVehiclesTab({ token }) {
 
       {loading && (
         <div className="flex items-center gap-2.5 px-4 py-5 text-sm sm:px-6 text-neutral-500">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
+          <Spinner size="sm" />
           Loading vehicles and saved selection...
         </div>
       )}
@@ -857,7 +858,7 @@ export default function AssignedVehiclesTab({ token }) {
                                 {isHired ? 'Unhire' : 'Hire'}
                               </button>
                               {isBusy && (
-                                <span className="ml-1 inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
+                                <Spinner size="xs" className="ml-1" />
                               )}
                             </div>
                           </td>

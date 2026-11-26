@@ -1054,13 +1054,6 @@ export default function VehicleDataTab({ token }) {
           </div>
         )}
 
-        {loading && rows.length === 0 && (
-          <div className="flex items-center gap-3 px-4 py-8 text-sm text-neutral-500 sm:px-6">
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
-            Loading vehicle data...
-          </div>
-        )}
-
         {rows.length > 0 && (
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-4 py-3 sm:px-6">
             <div className="flex flex-wrap items-center gap-2">

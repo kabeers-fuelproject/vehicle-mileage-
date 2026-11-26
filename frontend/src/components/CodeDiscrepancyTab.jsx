@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { api } from '../api'
 import { supabase } from '../supabase'
 import { dayRange } from '../reportRange'
+import Spinner from './Spinner'
 
 const TABLE = 'summary_vehicle_selection'
 
@@ -441,7 +442,7 @@ export default function CodeDiscrepancyTab({ token }) {
           >
             {refreshing ? (
               <span className="flex items-center gap-2">
-                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                <Spinner size="xs" />
                 Checking…
               </span>
             ) : (
@@ -532,7 +533,7 @@ export default function CodeDiscrepancyTab({ token }) {
 
       {loading && (
         <div className="flex items-center gap-3 text-sm text-neutral-500">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
+          <Spinner size="sm" />
           Checking vehicle codes…
         </div>
       )}

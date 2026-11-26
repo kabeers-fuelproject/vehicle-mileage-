@@ -4,6 +4,7 @@ import { dayRange } from '../reportRange'
 import { buildTablePdf } from '../reportPdf'
 import { logActivity } from '../activityLogger'
 import LoadingOverlay from './LoadingOverlay'
+import Spinner from './Spinner'
 
 const PDF_COLUMNS = [
   { label: 'S #', align: 'center', widthSample: '999', noWrap: true },
@@ -285,7 +286,7 @@ export default function DistanceReportTab({ token }) {
 
           {loadingUnits && (
             <div className="mt-3 flex items-center gap-2.5 text-sm text-neutral-500">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
+              <Spinner size="sm" />
               Loading vehicles...
             </div>
           )}
@@ -338,13 +339,6 @@ export default function DistanceReportTab({ token }) {
       </form>
 
       <div className="px-4 py-5 sm:px-6">
-        {generating && (
-          <div className="flex items-center gap-3 text-sm text-neutral-500">
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
-            Loading distance report...
-          </div>
-        )}
-
         {filteredRows && (
           <>
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -365,7 +359,7 @@ export default function DistanceReportTab({ token }) {
                   disabled={downloading}
                   className={`${primaryBtnClass} px-4 py-2`}
                 >
-                  {downloading ? (<><span className="anim-spin inline-block h-3.5 w-3.5 rounded-full border-2 border-white/40 border-t-white" /> Preparing…</>) : 'Download PDF'}
+                  {downloading ? 'Preparing…' : 'Download PDF'}
                 </button>
               )}
             </div>

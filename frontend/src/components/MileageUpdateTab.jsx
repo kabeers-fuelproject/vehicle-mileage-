@@ -955,14 +955,7 @@ export default function MileageUpdateTab({ token }) {
             disabled={refreshing || loading || Boolean(exporting)}
             className={outlineBtnClass}
           >
-            {refreshing ? (
-              <span className="flex items-center gap-2">
-                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-green-600 border-t-transparent" />
-                Refreshing…
-              </span>
-            ) : (
-              'Refresh Mileage'
-            )}
+            {refreshing ? 'Refreshing…' : 'Refresh Mileage'}
           </button>
           <button
             type="button"
@@ -1001,7 +994,7 @@ export default function MileageUpdateTab({ token }) {
             disabled={Boolean(exporting) || visibleVehicles.length === 0}
             className={primaryBtnClass}
           >
-            {exporting === 'pdf' ? (<><span className="anim-spin inline-block h-3.5 w-3.5 rounded-full border-2 border-white/40 border-t-white" /> Preparing…</>) : 'Download PDF'}
+            {exporting === 'pdf' ? 'Preparing…' : 'Download PDF'}
           </button>
           <button
             type="button"
@@ -1009,7 +1002,7 @@ export default function MileageUpdateTab({ token }) {
             disabled={Boolean(exporting) || visibleVehicles.length === 0}
             className={outlineBtnClass}
           >
-            {exporting === 'copy' ? (<><span className="anim-spin inline-block h-3.5 w-3.5 rounded-full border-2 border-green-600/40 border-t-green-600" /> Copying…</>) : 'Copy as Image'}
+            {exporting === 'copy' ? 'Copying…' : 'Copy as Image'}
           </button>
         </div>
       </div>
@@ -1018,13 +1011,6 @@ export default function MileageUpdateTab({ token }) {
         <p className="mb-4 border-l-4 border-green-700 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
           {error}
         </p>
-      )}
-
-      {loading && (
-        <div className="flex items-center gap-3 text-sm text-neutral-500">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-green-700 border-t-transparent" />
-          Loading vehicles...
-        </div>
       )}
 
       {!loading && vehicles.length === 0 && !error && (

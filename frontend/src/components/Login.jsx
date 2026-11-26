@@ -193,9 +193,6 @@ export default function Login({ onLogin }) {
                 disabled={loading}
                 className="mt-1 flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 py-3 text-sm font-medium text-white shadow-sm shadow-emerald-900/20 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-900/30 active:translate-y-0 active:bg-emerald-800 active:shadow-sm focus-visible:ring-2 focus-visible:ring-emerald-600/40 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-emerald-600 disabled:hover:shadow-sm"
               >
-                {loading && (
-                  <span className="anim-spin inline-block h-4 w-4 rounded-full border-2 border-white/40 border-t-white" />
-                )}
                 {loading ? 'Signing in…' : 'Sign in'}
               </button>
             </form>

@@ -427,85 +427,51 @@ html {
 
    ------------------------------------------------------- */
 
-/* HTML: <div class="loader"><span>Loading</span></div> */
-/* From Uiverse.io by kat_2522 */
+/* HTML: <div class="loader"></div> */
 .loader {
-  max-width: fit-content;
-  color: rgb(242, 255, 240);
-  font-size: 50px;
-  font-family: Mine;
-  position: relative;
-  font-style: italic;
-  font-weight: 600;
+  --loader-size: 50px;
+  --loader-border: 4px;
+  width: var(--loader-size);
+  aspect-ratio: 1;
+  display: grid;
+  border: var(--loader-border) solid #0000;
+  border-radius: 50%;
+  border-color: #ccc #0000;
+  animation: l16 1s infinite linear;
 }
-.loader span {
-  animation: cut 2s infinite;
-  transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.loader:hover {
-  color: #fcffdf;
-}
+
+.loader::before,
 .loader::after {
-  position: absolute;
   content: "";
-  width: 100%;
-  height: 6px;
-  border-radius: 4px;
-  background-color: #ff828291;
-  top: 0px;
-  filter: blur(10px);
-  animation: scan 2s infinite;
-  left: 0;
-  z-index: 0;
-  transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  grid-area: 1/1;
+  margin: calc(var(--loader-border) / 2);
+  border: inherit;
+  border-radius: 50%;
 }
+
 .loader::before {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 5px;
-  border-radius: 4px;
-  background-color: #ff8282;
-  top: 0px;
-  animation: scan 2s infinite;
-  left: 0;
-  z-index: 1;
-  filter: opacity(0.9);
-  transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-color: #f03355 #0000;
+  animation: inherit;
+  animation-duration: .5s;
+  animation-direction: reverse;
 }
-@keyframes scan {
-  0% {
-    top: 0px;
-  }
-  25% {
-    top: 54px;
-  }
-  50% {
-    top: 0px;
-  }
-  75% {
-    top: 54px;
-  }
+
+.loader::after {
+  margin: calc(var(--loader-border) * 2);
 }
-@keyframes cut {
-  0% {
-    clip-path: inset(0 0 0 0);
-  }
-  25% {
-    clip-path: inset(100% 0 0 0);
-  }
-  50% {
-    clip-path: inset(0 0 100% 0);
-  }
-  75% {
-    clip-path: inset(0 0 0 0);
-  }
+
+.loader-xs { --loader-size: 14px; --loader-border: 2px; }
+.loader-sm { --loader-size: 20px; --loader-border: 2px; }
+.loader-md { --loader-size: 30px; --loader-border: 3px; }
+.loader-lg { --loader-size: 40px; --loader-border: 4px; }
+
+@keyframes l16 {
+  100% {transform: rotate(1turn)}
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .loader span,
-  .loader::before,
-  .loader::after {
+  .loader,
+  .loader::before {
     animation: none;
   }
 }

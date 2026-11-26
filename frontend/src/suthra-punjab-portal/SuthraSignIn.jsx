@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { suthraLogin } from './suthraApi'
+import Spinner from '../components/Spinner'
 
 export default function SuthraSignIn({ onSignIn }) {
   const [cnic, setCnic] = useState('')
@@ -98,7 +99,7 @@ export default function SuthraSignIn({ onSignIn }) {
             >
               {loading ? (
                 <>
-                  <span className="anim-spin inline-block h-4 w-4 rounded-full border-2 border-white/40 border-t-white" />
+                  <Spinner size="sm" />
                   Signing in...
                 </>
               ) : (
